@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aarush Badruka — Student, aspiring entrepreneur and engineer</title>
+<meta name="description" content="Aarush Badruka. Class 12 at Sahyadri School — Krishnamurti Foundation India. Maths, mechanics, organic chemistry, economics, cooking, photography and green tech.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<!--
+════════════════════════════════════════════════════════════════
+  HOW TO ADD IMAGES
+════════════════════════════════════════════════════════════════
+  1. Put this file and a folder called  images/  side by side:
+
+       my-site/
+         index.html
+         images/
+           aarush.jpg
+
+  2. Your photo goes in at IMAGE SLOT 1 (hero). Just change the
+     src to match your filename. Until the file exists you'll see
+     a labelled placeholder instead of a broken icon.
+
+  3. Any of the black artwork wells on this page can hold a photo
+     instead of the drawing. Search for  IMAGE SLOT  to find them.
+     Delete the <svg>...</svg> and drop this in its place:
+
+       <img class="plate__img" src="images/whatever.jpg"
+            alt="Describe what is in the photo" loading="lazy">
+
+     The .plate__img class handles the crop, the greyscale and the
+     hover zoom for you. Nothing else needs changing.
+════════════════════════════════════════════════════════════════
+-->
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --ink:      #0D0D0D;   /* page ground     */
+  --paper:    #FFFFFF;   /* type            */
+  --card:     #48524D;   /* container cards */
+  --rule:     #1E2638;   /* borders         */
+  --well:     #0D0D0D;   /* artwork wells   */
+
+  --paper-78: rgba(255,255,255,.78);
+  --paper-70: rgba(255,255,255,.70);
+  --paper-52: rgba(255,255,255,.52);
+  --paper-38: rgba(255,255,255,.38);
+  --paper-30: rgba(255,255,255,.30);
+
+  --on-card:    rgba(255,255,255,.80);
+  --on-card-lo: rgba(255,255,255,.72);
+  --card-rule:  rgba(0,0,0,.28);
+
+  --display: 'Bevan', Georgia, serif;
+  --body:    'Instrument Serif', Georgia, serif;
+  --util:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --measure: 1280px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; scroll-padding-top:6rem; -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--body);
+  font-size:clamp(1.0625rem,.6vw + .95rem,1.25rem);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+h1,h2,h3{ font-family:var(--display); font-weight:400; margin:0; }
+p,figure{ margin:0; }
+ul{ margin:0; padding:0; list-style:none; }
+
+:focus-visible{ outline:2px solid var(--paper); outline-offset:3px; border-radius:2px; }
+
+.shell{ width:100%; max-width:var(--measure); margin-inline:auto; padding-inline:var(--gutter); }
+.band{ padding-block:clamp(4rem,9vw,7rem); }
+.band--ruled{ border-top:1px solid var(--rule); }
+
+.tag{
+  font-family:var(--util);
+  font-size:.6875rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--paper-52);
+}
+
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:200;
+  background:var(--paper); color:var(--ink);
+  padding:.75rem 1.25rem; font-family:var(--util); font-size:.75rem;
+}
+.skip:focus{ left:1rem; top:1rem; }
+
+/* ---- shared section header ---- */
+.head{
+  display:grid; grid-template-columns:repeat(12,1fr);
+  column-gap:var(--gutter); row-gap:1.25rem; align-items:end;
+  padding-bottom:clamp(2rem,4vw,3rem);
+}
+.head__title{ grid-column:1 / 9; }
+.head__title h2{
+  font-size:clamp(1.75rem,4vw,3.25rem);
+  line-height:1; text-transform:uppercase; letter-spacing:-.01em;
+  margin-top:1rem;
+}
+.head__aside{ grid-column:9 / 13; }
+
+/* ---- shared pull quote (sits right, offset from the grid) ---- */
+.quote{
+  margin:clamp(2.5rem,5vw,4rem) 0 0 auto;
+  max-width:min(100%, 30ch);
+  border-top:1px solid var(--rule);
+  padding-top:1.75rem;
+}
+.quote p{
+  font-style:italic;
+  font-size:clamp(1.375rem,2.9vw,2.375rem);
+  line-height:1.18; letter-spacing:-.01em;
+}
+.quote cite{ display:block; margin-top:1rem; font-style:normal; }
+
+/* ---- REUSABLE PHOTO PLATE ----------------------------------
+   Add class="plate__img" to any <img> dropped into an artwork
+   well and it inherits the crop, greyscale and hover zoom.
+   ----------------------------------------------------------- */
+.plate__img{
+  width:100%; height:100%; object-fit:cover; object-position:center;
+  filter:grayscale(1) contrast(1.05);
+  transform-origin:center;
+  transition:transform .8s var(--ease), filter .6s var(--ease);
+}
+.card:hover .plate__img,
+.card:focus-within .plate__img,
+.feature:hover .plate__img{ transform:scale(1.07); filter:grayscale(1) contrast(1.12); }
+
+/* ============================================================
+   1 — NAVIGATION
+   ============================================================ */
+.nav{
+  position:fixed; inset:0 0 auto 0; z-index:100;
+  border-bottom:1px solid transparent;
+  transition:background .4s var(--ease), border-color .4s var(--ease);
+}
+.nav.is-stuck{
+  background:rgba(13,13,13,.82);
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  border-bottom-color:var(--rule);
+}
+.nav__inner{ display:flex; align-items:center; justify-content:space-between; gap:1rem; height:5rem; }
+
+.brand{ display:flex; align-items:center; gap:.75rem; }
+.brand__mark{
+  width:1.9rem; height:1.9rem; flex:none;
+  display:grid; place-items:center;
+  border:1px solid var(--paper-30);
+  font-family:var(--display); font-size:.7rem; line-height:1;
+  padding-top:.15rem; letter-spacing:.02em;
+  transition:background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease);
+}
+.brand:hover .brand__mark{ background:var(--paper); color:var(--ink); border-color:var(--paper); }
+.brand__word{ font-family:var(--display); font-size:.9375rem; letter-spacing:.09em; text-transform:uppercase; }
+
+.nav__links{ display:flex; align-items:center; gap:1.75rem; margin-left:auto; }
+.nav__link{
+  font-family:var(--util); font-size:.75rem;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--paper-70); position:relative; padding-block:.4rem;
+  transition:color .3s var(--ease);
+}
+.nav__link::after{
+  content:''; position:absolute; left:0; bottom:0; height:1px; width:100%;
+  background:var(--paper); transform:scaleX(0); transform-origin:right;
+  transition:transform .45s var(--ease);
+}
+.nav__link:hover{ color:var(--paper); }
+.nav__link:hover::after{ transform:scaleX(1); transform-origin:left; }
+
+.pill{
+  display:inline-flex; align-items:center; gap:.6rem;
+  border:1px solid var(--paper-30); border-radius:999px;
+  padding:.7rem 1.35rem; background:transparent; color:var(--paper);
+  font-family:var(--util); font-size:.75rem; letter-spacing:.12em; text-transform:uppercase;
+  cursor:pointer; position:relative; overflow:hidden; isolation:isolate; white-space:nowrap;
+  transition:color .4s var(--ease), border-color .4s var(--ease);
+}
+.pill::before{
+  content:''; position:absolute; inset:0; z-index:-1; background:var(--paper);
+  transform:scaleX(0); transform-origin:right;
+  transition:transform .5s var(--ease);
+}
+.pill:hover, .pill:focus-visible{ color:var(--ink); border-color:var(--paper); }
+.pill:hover::before, .pill:focus-visible::before{ transform:scaleX(1); transform-origin:left; }
+.pill__arrow{ transition:transform .5s var(--ease); }
+.pill:hover .pill__arrow{ transform:translateX(4px); }
+
+/* ============================================================
+   2 — HERO
+   ============================================================ */
+.hero{ padding-top:clamp(8rem,16vh,11rem); padding-bottom:clamp(3rem,7vh,5rem); }
+.hero__meta{
+  display:flex; flex-wrap:wrap; gap:.5rem 1.25rem; align-items:baseline;
+  padding-bottom:1.25rem; border-bottom:1px solid var(--rule);
+}
+.hero__meta .tag:last-child{ margin-left:auto; }
+
+.hero__grid{
+  display:grid; grid-template-columns:repeat(12,1fr);
+  column-gap:var(--gutter); row-gap:2.5rem; align-items:end;
+  padding-top:clamp(2rem,5vw,3.5rem);
+}
+.hero__head{ grid-column:1 / 8; }
+.hero__name{
+  font-size:clamp(2.875rem,8.4vw,7.5rem);
+  line-height:.86; letter-spacing:-.025em; text-transform:uppercase;
+}
+.hero__role{
+  margin-top:1.25rem;
+  font-style:italic;
+  font-size:clamp(1.125rem,2.1vw,1.75rem);
+  line-height:1.15; letter-spacing:-.01em; color:var(--paper-70);
+  max-width:24ch;
+}
+.hero__bio{
+  margin-top:1.75rem; padding-top:1.5rem;
+  border-top:1px solid var(--rule);
+  font-size:clamp(1.0625rem,.5vw + 1rem,1.25rem);
+  line-height:1.5; color:var(--paper-70); max-width:44ch;
+}
+.hero__cta{ margin-top:1.75rem; }
+
+.hero__rail{ grid-column:9 / 13; }
+
+/* ---- hero portrait ---- */
+.portrait__frame{
+  position:relative; aspect-ratio:4 / 5; overflow:hidden;
+  background:var(--card); border:1px solid var(--rule);
+  transition:border-color .5s var(--ease);
+}
+.portrait__frame:hover{ border-color:var(--paper-30); }
+.portrait__frame .plate__img{ object-position:center 22%; }
+.portrait__frame:hover .plate__img{ transform:scale(1.05); filter:grayscale(1) contrast(1.12); }
+
+.portrait__empty{
+  position:absolute; inset:0; display:none;
+  place-content:center; justify-items:center; gap:.85rem;
+  text-align:center; padding:1.5rem;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 11px, rgba(255,255,255,.045) 11px 22px),
+    var(--card);
+}
+.portrait__empty .tag{ color:var(--on-card-lo); }
+.portrait__empty code{
+  font-family:var(--util); font-size:.8125rem; color:var(--paper);
+  border:1px solid var(--paper-38); padding:.45rem .75rem;
+}
+.portrait__frame.is-empty .portrait__empty{ display:grid; }
+.portrait__frame.is-empty .plate__img{ display:none; }
+
+.portrait figcaption{
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:.5rem 1rem;
+  margin-top:.85rem;
+}
+
+/* ---- manifesto ---- */
+.hero__manifesto{
+  display:grid; grid-template-columns:repeat(12,1fr); column-gap:var(--gutter);
+  margin-top:clamp(3rem,7vw,5rem); padding-top:1.75rem;
+  border-top:1px solid var(--rule);
+}
+.hero__manifesto p{
+  grid-column:1 / 10;
+  font-style:italic;
+  font-size:clamp(1.375rem,3.2vw,2.625rem);
+  line-height:1.16; letter-spacing:-.015em;
+}
+.hero__manifesto p span{ color:var(--paper-52); }
+
+/* ============================================================
+   3 — EDUCATION
+   Bars are scaled to years attended across a 2011–2027 axis.
+   Short courses get a tick, not a bar — they are points, not spans.
+   ============================================================ */
+.edu__list{ border-top:1px solid var(--rule); }
+.edu__row{
+  display:grid; grid-template-columns:9rem 1fr 34%;
+  gap:1rem var(--gutter); align-items:center;
+  padding:clamp(1.25rem,2.5vw,1.75rem) 0;
+  border-bottom:1px solid var(--rule);
+  transition:background .4s var(--ease);
+}
+.edu__row:hover{ background:rgba(255,255,255,.03); }
+.edu__years{ font-family:var(--util); font-size:.8125rem; letter-spacing:.08em; color:var(--paper-70); }
+.edu__school{
+  font-size:clamp(1rem,1.5vw,1.3125rem); line-height:1.15;
+  text-transform:uppercase; letter-spacing:-.005em;
+}
+.edu__stage{ font-size:1rem; color:var(--paper-52); margin-top:.4rem; }
+.edu__flag{
+  display:inline-block; margin-left:.6rem; padding:.1rem .5rem;
+  border:1px solid var(--paper-30); border-radius:999px;
+  font-family:var(--util); font-size:.625rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--paper); vertical-align:middle;
+}
+
+.edu__track{ position:relative; height:6px; background:rgba(255,255,255,.07); }
+.edu__track::after{
+  content:''; position:absolute; top:0; bottom:0;
+  left:var(--start); width:var(--span);
+  background:var(--paper); opacity:.34;
+  transform:scaleX(0); transform-origin:left;
+  transition:opacity .4s var(--ease), transform .9s var(--ease) .1s;
+}
+.edu__row.is-in .edu__track::after{ transform:scaleX(1); }
+.edu__row:hover .edu__track::after{ opacity:.75; }
+.edu__row--now .edu__track::after,
+.edu__row--now:hover .edu__track::after{ opacity:1; }
+
+/* a short course: a tick at one point on the axis */
+.edu__track--point{ background:none; }
+.edu__track--point::before{
+  content:''; position:absolute; left:0; right:0; top:50%;
+  height:1px; background:rgba(255,255,255,.12);
+}
+.edu__track--point::after{
+  content:''; left:var(--at); width:3px;
+  top:-7px; bottom:-7px;
+  background:var(--paper); opacity:1;
+  transform:scaleY(0); transform-origin:center;
+  transition:transform .6s var(--ease) .25s;
+}
+.edu__row.is-in .edu__track--point::after{ transform:scaleY(1); }
+
+.edu__axis{
+  display:flex; justify-content:space-between;
+  margin-top:.9rem; margin-left:auto; width:34%;
+}
+
+/* ============================================================
+   4 — INTERESTS
+   ============================================================ */
+.grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(1rem,2vw,1.5rem); }
+
+.card{
+  position:relative; display:flex; flex-direction:column;
+  background:var(--card); border:1px solid var(--rule);
+  padding:.875rem; overflow:hidden;
+  transition:border-color .5s var(--ease), transform .5s var(--ease);
+}
+.card::after{
+  content:''; position:absolute; inset:14px; pointer-events:none;
+  border:1px solid var(--paper); opacity:0;
+  transition:inset .6s var(--ease), opacity .6s var(--ease);
+}
+.card:hover, .card:focus-within{ border-color:var(--paper-30); transform:translateY(-3px); }
+.card:hover::after, .card:focus-within::after{ inset:6px; opacity:.28; }
+
+.card__top{ display:flex; justify-content:space-between; align-items:center; padding-bottom:.75rem; }
+.card__top .tag{ color:var(--on-card-lo); }
+
+.card__plate{
+  position:relative; aspect-ratio:4 / 3; overflow:hidden;
+  background:var(--well); border:1px solid rgba(0,0,0,.35);
+}
+.card__plate > svg{
+  width:100%; height:100%; transform-origin:center;
+  transition:transform .8s var(--ease);
+}
+.card:hover .card__plate > svg, .card:focus-within .card__plate > svg{ transform:scale(1.07); }
+
+.card__reg{ position:absolute; inset:0; opacity:0; transition:opacity .5s var(--ease); pointer-events:none; }
+.card:hover .card__reg, .card:focus-within .card__reg{ opacity:.75; }
+.card__reg i{
+  position:absolute; width:11px; height:11px;
+  background:
+    linear-gradient(var(--paper),var(--paper)) center/100% 1px no-repeat,
+    linear-gradient(var(--paper),var(--paper)) center/1px 100% no-repeat;
+}
+.card__reg i:nth-child(1){ top:8px; left:8px; }
+.card__reg i:nth-child(2){ top:8px; right:8px; }
+.card__reg i:nth-child(3){ bottom:8px; left:8px; }
+.card__reg i:nth-child(4){ bottom:8px; right:8px; }
+
+.card__body{ padding:1.125rem .25rem .25rem; display:flex; flex-direction:column; flex:1; }
+.card__name{ font-size:clamp(1rem,1.15vw,1.1875rem); line-height:1.18; text-transform:uppercase; }
+.card__note{ font-size:1rem; line-height:1.45; color:var(--on-card); margin-top:.55rem; }
+
+/* ============================================================
+   5 — ACHIEVEMENTS
+   ============================================================ */
+.feature{
+  display:grid; grid-template-columns:minmax(0,42%) 1fr;
+  background:var(--card); border:1px solid var(--rule);
+  overflow:hidden; margin-bottom:clamp(2rem,4vw,3rem);
+  transition:border-color .5s var(--ease);
+}
+.feature:hover{ border-color:var(--paper-30); }
+.feature__plate{ position:relative; background:var(--well); border-right:1px solid rgba(0,0,0,.35); overflow:hidden; }
+.feature__plate > svg{
+  width:100%; height:100%; min-height:16rem; transform-origin:center;
+  transition:transform .9s var(--ease);
+}
+.feature:hover .feature__plate > svg{ transform:scale(1.05); }
+.feature__body{ padding:clamp(1.5rem,3vw,2.5rem); display:flex; flex-direction:column; }
+.feature__top{ display:flex; flex-wrap:wrap; gap:.75rem 1.25rem; align-items:center; margin-bottom:1.25rem; }
+.feature__top .tag{ color:var(--on-card-lo); }
+.feature__flag{
+  padding:.2rem .6rem; border:1px solid rgba(255,255,255,.45); border-radius:999px;
+  font-family:var(--util); font-size:.625rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--paper);
+}
+.feature__title{ font-size:clamp(1.375rem,2.6vw,2.125rem); line-height:1.05; text-transform:uppercase; letter-spacing:-.01em; }
+.feature__text{ margin-top:1.125rem; color:var(--on-card); max-width:52ch; }
+.feature__spec{ display:grid; grid-template-columns:auto 1fr; margin:2rem 0 0; }
+.feature__spec dt,
+.feature__spec dd{
+  font-family:var(--util); font-size:.6875rem; letter-spacing:.08em;
+  padding:.55rem 0; border-top:1px solid var(--card-rule); margin:0;
+}
+.feature__spec dt{ text-transform:uppercase; color:var(--on-card-lo); padding-right:1.5rem; }
+.feature__spec dd{ text-align:right; color:var(--paper); }
+
+.roster{ border-top:1px solid var(--rule); }
+.roster__row{
+  display:grid; grid-template-columns:11rem 1fr;
+  gap:.5rem var(--gutter); align-items:baseline;
+  padding:clamp(1.125rem,2.2vw,1.5rem) 0 clamp(1.125rem,2.2vw,1.5rem) 0;
+  border-bottom:1px solid var(--rule);
+  transition:background .4s var(--ease), padding-left .5s var(--ease);
+}
+.roster__row:hover{ background:rgba(255,255,255,.03); padding-left:1rem; }
+.roster__row .tag{ transition:color .4s var(--ease); }
+.roster__row:hover .tag{ color:var(--paper); }
+.roster__text{ font-size:clamp(1.0625rem,.5vw + 1rem,1.25rem); line-height:1.45; color:var(--paper-78); max-width:62ch; }
+
+/* ============================================================
+   6 — CONTACT
+   ============================================================ */
+.contact__grid{ display:grid; grid-template-columns:repeat(12,1fr); column-gap:var(--gutter); row-gap:3rem; }
+.contact__intro{ grid-column:1 / 5; }
+.contact__title{ font-size:clamp(1.75rem,4vw,3.25rem); line-height:1; text-transform:uppercase; margin-block:1rem 1.25rem; }
+.contact__note{ color:var(--paper-70); max-width:30ch; }
+.contact__where{ margin-top:2rem; display:grid; gap:.5rem; }
+.contact__where a{ border-bottom:1px solid var(--paper-30); transition:border-color .3s var(--ease); }
+.contact__where a:hover{ border-color:var(--paper); }
+
+.form{ grid-column:6 / 13; }
+.form__row{ display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+.field{ position:relative; margin-bottom:2rem; }
+.field label{
+  display:block; font-family:var(--util); font-size:.6875rem;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--paper-52);
+  margin-bottom:.6rem; transition:color .3s var(--ease);
+}
+.field input,
+.field textarea,
+.field select{
+  width:100%; background:transparent; color:var(--paper);
+  font-family:var(--body); font-size:1.125rem; line-height:1.4;
+  border:0; border-bottom:1px solid var(--rule);
+  padding:.5rem 0 .75rem; border-radius:0;
+  appearance:none; -webkit-appearance:none;
+  transition:border-color .35s var(--ease);
+}
+.field textarea{ resize:vertical; min-height:6.5rem; }
+.field select{
+  cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--paper-52) 50%),
+                   linear-gradient(135deg,var(--paper-52) 50%,transparent 50%);
+  background-position:right 6px center, right 1px center;
+  background-size:5px 5px, 5px 5px;
+  background-repeat:no-repeat;
+}
+.field select option{ background:var(--ink); color:var(--paper); }
+.field input::placeholder,
+.field textarea::placeholder{ color:var(--paper-38); }
+.field input:focus,
+.field textarea:focus,
+.field select:focus{ outline:none; border-bottom-color:var(--paper); }
+.field:focus-within label{ color:var(--paper); }
+.field::after{
+  content:''; position:absolute; left:0; bottom:0; height:1px; width:100%;
+  background:var(--paper); transform:scaleX(0); transform-origin:left;
+  transition:transform .45s var(--ease);
+}
+.field:focus-within::after{ transform:scaleX(1); }
+.field.is-invalid input,
+.field.is-invalid textarea,
+.field.is-invalid select{ border-bottom-color:var(--paper); }
+.error{
+  display:block; font-family:var(--util); font-size:.6875rem;
+  letter-spacing:.08em; color:var(--paper); margin-top:.5rem;
+  max-height:0; opacity:0; overflow:hidden;
+  transition:max-height .3s var(--ease), opacity .3s var(--ease);
+}
+.field.is-invalid .error{ max-height:3rem; opacity:.85; }
+
+.form__foot{ display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-top:.5rem; }
+.form__foot .tag{ max-width:28ch; letter-spacing:.1em; }
+
+.sent{ border:1px solid var(--rule); background:var(--card); padding:clamp(1.75rem,4vw,2.75rem); }
+.sent h3{ font-size:1.5rem; text-transform:uppercase; margin-bottom:.75rem; }
+.sent p{ color:var(--on-card); max-width:40ch; }
+[hidden]{ display:none !important; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot{ border-top:1px solid var(--rule); padding-block:2rem 3rem; }
+.foot__inner{ display:flex; flex-wrap:wrap; gap:1rem 2rem; align-items:center; }
+.foot__inner .tag:last-child{ margin-left:auto; }
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{ opacity:0; transform:translateY(22px); }
+.reveal.is-in{
+  opacity:1; transform:none;
+  transition:opacity .8s var(--ease), transform .8s var(--ease);
+  transition-delay:var(--d,0ms);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1024px){
+  .hero__head{ grid-column:1 / 13; }
+  .hero__rail{ grid-column:1 / 13; }
+  .hero__role{ max-width:32ch; }
+  .hero__bio{ max-width:56ch; }
+  .portrait{ max-width:26rem; }
+  .hero__manifesto p{ grid-column:1 / 13; }
+  .head__title, .head__aside{ grid-column:1 / 13; }
+  .quote{ margin-left:0; max-width:min(100%, 34ch); }
+  .grid{ grid-template-columns:repeat(2,1fr); }
+  .feature{ grid-template-columns:1fr; }
+  .feature__plate{ border-right:0; border-bottom:1px solid rgba(0,0,0,.35); }
+  .feature__plate > svg{ min-height:0; height:auto; aspect-ratio:16 / 9; }
+  .contact__intro, .form{ grid-column:1 / 13; }
+}
+@media (max-width:720px){
+  .brand__word{ display:none; }
+  .nav__links{ gap:1rem; }
+  .nav__link{ font-size:.625rem; letter-spacing:.1em; }
+  .pill{ padding:.6rem 1rem; font-size:.625rem; }
+  .hero__meta .tag:last-child{ margin-left:0; }
+  .edu__row{ grid-template-columns:1fr; }
+  .edu__axis{ width:100%; }
+  .grid{ grid-template-columns:1fr; }
+  .roster__row{ grid-template-columns:1fr; }
+  .roster__row:hover{ padding-left:.5rem; }
+  .form__row{ grid-template-columns:1fr; gap:0; }
+  .foot__inner .tag:last-child{ margin-left:0; }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+  .reveal{ opacity:1; transform:none; }
+  .edu__track::after{ transform:scaleX(1); }
+  .edu__track--point::after{ transform:scaleY(1); }
+}
+</style>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ══ 1. NAVIGATION ══════════════════════════════════════ -->
+<header class="nav" id="nav">
+  <div class="shell nav__inner">
+    <a class="brand" href="#top" aria-label="Aarush Badruka, back to top">
+      <span class="brand__mark" aria-hidden="true">AB</span>
+      <span class="brand__word">Aarush Badruka</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a class="nav__link" href="#education">Education</a>
+      <a class="nav__link" href="#interests">Interests</a>
+      <a class="nav__link" href="#achievements">Achievements</a>
+      <a class="pill" href="#contact">
+        Get in touch
+        <span class="pill__arrow" aria-hidden="true">→</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ══ 2. HERO ═════════════════════════════════════════ -->
+  <section class="hero shell" id="top">
+    <div class="hero__meta reveal">
+      <span class="tag">Sahyadri School — KFI</span>
+      <span class="tag">Class 12 · ICSE &amp; ISC</span>
+      <span class="tag">Class of 2027</span>
+    </div>
+
+    <div class="hero__grid">
+      <div class="hero__head reveal" style="--d:80ms">
+        <h1 class="hero__name">Aarush<br>Badruka</h1>
+        <p class="hero__role">Dedicated Student and Aspiring Entrepreneur and Engineer.</p>
+        <p class="hero__bio">
+          I am a student at Sahyadri School — Krishnamurti Foundation India,
+          currently studying in the 12th Grade. I am a confident and adventurous
+          person who loves to turn everyone's frown upside-down!
+        </p>
+        <a class="pill hero__cta" href="#achievements">
+          See what I've been up to
+          <span class="pill__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="hero__rail reveal" style="--d:220ms">
+
+        <!-- ═══ IMAGE SLOT 1 — YOUR PHOTO ═══════════════════════
+             Change the src below to your own file.
+             Best results: portrait crop, 4:5 ratio, 800 × 1000 px
+             or larger, saved as .jpg or .webp.
+             The greyscale filter lives in .plate__img — delete
+             `filter:grayscale(1)...` there if you want it in colour.
+        -->
+        <figure class="portrait">
+          <div class="portrait__frame" id="portrait-frame">
+            <img class="plate__img" id="portrait-img"
+                 src="images/aarush.jpg"
+                 alt="Aarush Badruka"
+                 width="800" height="1000"
+                 fetchpriority="high" decoding="async">
+            <div class="portrait__empty">
+              <span class="tag">Add your photo at</span>
+              <code>images/aarush.jpg</code>
+              <span class="tag">Portrait crop · 800 × 1000 or larger</span>
+            </div>
+            <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </div>
+          <figcaption>
+            <span class="tag">Aarush Badruka</span>
+            <span class="tag">Sahyadri School — KFI</span>
+          </figcaption>
+        </figure>
+
+      </div>
+    </div>
+
+    <div class="hero__manifesto reveal" style="--d:320ms">
+      <p>
+        I am not your run of the mill, everyday student.
+        <span>I am not a gear in the industrial machine,</span>
+        I am the entire machine itself! I love to do what I enjoy!
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ 3. EDUCATION ════════════════════════════════════ -->
+  <section class="band band--ruled shell" id="education" aria-labelledby="education-title">
+    <div class="head">
+      <div class="head__title reveal">
+        <span class="tag">Education</span>
+        <h2 id="education-title">Sixteen years of school</h2>
+      </div>
+      <div class="head__aside reveal" style="--d:120ms">
+        <span class="tag">Bars are years attended · ticks are short courses</span>
+      </div>
+    </div>
+
+    <div class="edu__list">
+
+      <div class="edu__row reveal">
+        <span class="edu__years">2011 — 2012</span>
+        <div>
+          <h3 class="edu__school">Kangaroo Kids Preschool</h3>
+          <p class="edu__stage">Playgroup</p>
+        </div>
+        <div class="edu__track" style="--start:0%; --span:6.25%" aria-hidden="true"></div>
+      </div>
+
+      <div class="edu__row reveal" style="--d:80ms">
+        <span class="edu__years">2012 — 2021</span>
+        <div>
+          <h3 class="edu__school">Chirec International School</h3>
+          <p class="edu__stage">Nursery to Class 6</p>
+        </div>
+        <div class="edu__track" style="--start:6.25%; --span:56.25%" aria-hidden="true"></div>
+      </div>
+
+      <div class="edu__row edu__row--now reveal" style="--d:160ms">
+        <span class="edu__years">2021 — 2027</span>
+        <div>
+          <h3 class="edu__school">Sahyadri School — Krishnamurti Foundation India</h3>
+          <p class="edu__stage">Class 7 to Class 12 · ICSE &amp; ISC <span class="edu__flag">Here now</span></p>
+        </div>
+        <div class="edu__track" style="--start:62.5%; --span:37.5%" aria-hidden="true"></div>
+      </div>
+
+      <!-- CHECK THIS YEAR — change "2026" in both places if the programme was a different summer.
+           Tick position = (year − 2011) ÷ 16 × 100.  2026 → 93.75% -->
+      <div class="edu__row reveal" style="--d:240ms">
+        <span class="edu__years">Summer 2026</span>
+        <div>
+          <h3 class="edu__school">Saïd Business School, University of Oxford</h3>
+          <p class="edu__stage">Artificial Intelligence &amp; Machine Learning <span class="edu__flag">Two weeks</span></p>
+        </div>
+        <div class="edu__track edu__track--point" style="--at:93.75%" aria-hidden="true"></div>
+      </div>
+
+    </div>
+
+    <div class="edu__axis reveal" aria-hidden="true">
+      <span class="tag">2011</span>
+      <span class="tag">2027</span>
+    </div>
+
+    <figure class="quote reveal" style="--d:120ms">
+      <p>"I have never let my schooling interfere with my education!"</p>
+      <cite class="tag">— Mark Twain</cite>
+    </figure>
+  </section>
+
+  <!-- ══ 4. INTERESTS ════════════════════════════════════ -->
+  <section class="band band--ruled shell" id="interests" aria-labelledby="interests-title">
+    <div class="head">
+      <div class="head__title reveal">
+        <span class="tag">Passions &amp; interests</span>
+        <h2 id="interests-title">What I'm into</h2>
+      </div>
+      <div class="head__aside reveal" style="--d:120ms">
+        <span class="tag">Four on the syllabus, five off it</span>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <!-- Maths -->
+      <article class="card reveal">
+        <div class="card__top"><span class="tag">On the syllabus</span></div>
+        <div class="card__plate">
+          <!-- ═══ IMAGE SLOT — swap the drawing for a photo ═══════
+               Delete this whole <svg>...</svg> and paste in:
+               <img class="plate__img" src="images/maths.jpg"
+                    alt="My calculus notebook" loading="lazy">
+          -->
+          <svg viewBox="0 0 400 300" role="img" aria-label="A curve with the area beneath it shaded, next to an integral sign">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g stroke="#FFFFFF" stroke-width="1.5" opacity=".45">
+              <line x1="70" y1="40" x2="70" y2="248"/><line x1="70" y1="248" x2="360" y2="248"/>
+            </g>
+            <g stroke="#FFFFFF" stroke-width="1" opacity=".3">
+              <line x1="120" y1="248" x2="120" y2="196"/><line x1="160" y1="248" x2="160" y2="160"/>
+              <line x1="200" y1="248" x2="200" y2="133"/><line x1="240" y1="248" x2="240" y2="118"/>
+              <line x1="280" y1="248" x2="280" y2="114"/><line x1="320" y1="248" x2="320" y2="121"/>
+            </g>
+            <path d="M96 232 C 150 150, 210 106, 340 118" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <text x="34" y="196" fill="#FFFFFF" font-family="Georgia, serif" font-style="italic" font-size="120">∫</text>
+            <text x="330" y="272" fill="#FFFFFF" opacity=".5" font-family="monospace" font-size="12">dx</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Algebra, Geometry &amp; Calculus</h3>
+          <p class="card__note">Limits, derivatives, and the area hiding under a curve.</p>
+        </div>
+      </article>
+
+      <!-- Mechanics -->
+      <article class="card reveal" style="--d:60ms">
+        <div class="card__top"><span class="tag">On the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A pendulum swinging through a dashed arc with a gravity arrow">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <line x1="120" y1="46" x2="280" y2="46" stroke="#FFFFFF" stroke-width="3" opacity=".8"/>
+            <g stroke="#FFFFFF" stroke-width="1" opacity=".35">
+              <line x1="128" y1="46" x2="118" y2="34"/><line x1="152" y1="46" x2="142" y2="34"/>
+              <line x1="176" y1="46" x2="166" y2="34"/><line x1="200" y1="46" x2="190" y2="34"/>
+              <line x1="224" y1="46" x2="214" y2="34"/><line x1="248" y1="46" x2="238" y2="34"/>
+              <line x1="272" y1="46" x2="262" y2="34"/>
+            </g>
+            <line x1="200" y1="46" x2="200" y2="212" stroke="#FFFFFF" stroke-width="1" opacity=".3" stroke-dasharray="4 6"/>
+            <path d="M126 176 A 150 150 0 0 0 274 176" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".4" stroke-dasharray="5 7"/>
+            <line x1="200" y1="46" x2="272" y2="180" stroke="#FFFFFF" stroke-width="2"/>
+            <circle cx="272" cy="180" r="21" fill="#FFFFFF"/>
+            <g stroke="#FFFFFF" stroke-width="1.6" opacity=".7" fill="none">
+              <line x1="272" y1="212" x2="272" y2="252"/>
+              <path d="M266 244 L272 254 L278 244"/>
+            </g>
+            <text x="286" y="252" fill="#FFFFFF" opacity=".55" font-family="monospace" font-size="12">mg</text>
+            <text x="150" y="90" fill="#FFFFFF" opacity=".55" font-family="monospace" font-size="13">θ</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Classical Mechanics</h3>
+          <p class="card__note">Forces, motion, and everything Newton started.</p>
+        </div>
+      </article>
+
+      <!-- Organic Chemistry -->
+      <article class="card reveal" style="--d:120ms">
+        <div class="card__top"><span class="tag">On the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A benzene ring with a bonded side chain">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <polygon points="170,86 240,126 240,206 170,246 100,206 100,126" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <circle cx="170" cy="166" r="42" fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".7"/>
+            <g stroke="#FFFFFF" stroke-width="2.5" fill="none">
+              <line x1="240" y1="126" x2="300" y2="98"/>
+              <line x1="300" y1="98" x2="336" y2="126"/>
+            </g>
+            <text x="330" y="122" fill="#FFFFFF" font-family="monospace" font-size="20">OH</text>
+            <text x="66" y="272" fill="#FFFFFF" opacity=".5" font-family="monospace" font-size="12" letter-spacing="3">C₆H₅OH</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Organic Chemistry</h3>
+          <p class="card__note">Yes, I'm serious!!</p>
+        </div>
+      </article>
+
+      <!-- Economics -->
+      <article class="card reveal" style="--d:180ms">
+        <div class="card__top"><span class="tag">On the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Supply and demand curves crossing at an equilibrium point">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g stroke="#FFFFFF" stroke-width="1.5" opacity=".45">
+              <line x1="70" y1="40" x2="70" y2="248"/><line x1="70" y1="248" x2="360" y2="248"/>
+            </g>
+            <line x1="94" y1="228" x2="330" y2="66" stroke="#FFFFFF" stroke-width="2.5"/>
+            <line x1="94" y1="66"  x2="330" y2="228" stroke="#FFFFFF" stroke-width="2.5" opacity=".65"/>
+            <g stroke="#FFFFFF" stroke-width="1" opacity=".4" stroke-dasharray="4 5">
+              <line x1="70" y1="147" x2="212" y2="147"/><line x1="212" y1="147" x2="212" y2="248"/>
+            </g>
+            <circle cx="212" cy="147" r="7" fill="#FFFFFF"/>
+            <text x="336" y="62"  fill="#FFFFFF" opacity=".7" font-family="monospace" font-size="14">S</text>
+            <text x="336" y="234" fill="#FFFFFF" opacity=".7" font-family="monospace" font-size="14">D</text>
+            <text x="40"  y="152" fill="#FFFFFF" opacity=".5" font-family="monospace" font-size="12">P*</text>
+            <text x="204" y="272" fill="#FFFFFF" opacity=".5" font-family="monospace" font-size="12">Q*</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Microeconomics, Current Affairs &amp; Policy</h3>
+          <p class="card__note">Where the curves cross, and who that leaves better off.</p>
+        </div>
+      </article>
+
+      <!-- Cooking -->
+      <article class="card reveal" style="--d:240ms">
+        <div class="card__top"><span class="tag">Off the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A mixing bowl and whisk with steam rising">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g fill="none" stroke="#FFFFFF" stroke-width="2.5">
+              <path d="M96 178 h208 a104 104 0 0 1 -208 0 z"/>
+              <line x1="84" y1="178" x2="316" y2="178"/>
+              <line x1="176" y1="252" x2="224" y2="252"/>
+            </g>
+            <g fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".9">
+              <line x1="248" y1="52" x2="216" y2="124"/>
+              <path d="M216 124 q-30 26 -14 52"/>
+              <path d="M216 124 q-8 32 4 52"/>
+              <path d="M216 124 q16 28 20 48"/>
+              <path d="M202 176 q18 14 34 -4"/>
+            </g>
+            <g fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity=".4">
+              <path d="M128 128 q10 -16 0 -32 q-10 -16 0 -32"/>
+              <path d="M158 118 q10 -14 0 -28 q-10 -14 0 -28"/>
+            </g>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Cooking &amp; Baking</h3>
+          <p class="card__note">Chemistry you're allowed to eat afterwards.</p>
+        </div>
+      </article>
+
+      <!-- Teaching -->
+      <article class="card reveal" style="--d:300ms">
+        <div class="card__top"><span class="tag">Off the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A blackboard with a worked equation and a pointer">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <rect x="56" y="46" width="288" height="176" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <line x1="56" y1="230" x2="344" y2="230" stroke="#FFFFFF" stroke-width="5" opacity=".8"/>
+            <text x="84" y="122" fill="#FFFFFF" font-family="Georgia, serif" font-style="italic" font-size="40">a² + b²</text>
+            <text x="84" y="180" fill="#FFFFFF" font-family="Georgia, serif" font-style="italic" font-size="40">= c²</text>
+            <line x1="84" y1="192" x2="196" y2="192" stroke="#FFFFFF" stroke-width="2" opacity=".7"/>
+            <line x1="252" y1="196" x2="316" y2="150" stroke="#FFFFFF" stroke-width="2" opacity=".65"/>
+            <circle cx="250" cy="198" r="4" fill="#FFFFFF" opacity=".65"/>
+            <g fill="#FFFFFF" opacity=".45">
+              <circle cx="286" cy="88" r="3"/><circle cx="302" cy="102" r="2"/><circle cx="270" cy="104" r="2"/>
+            </g>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Talking, Teaching &amp; Explaining</h3>
+          <p class="card__note">If I can explain it to you, I actually understand it.</p>
+        </div>
+      </article>
+
+      <!-- Photography -->
+      <article class="card reveal" style="--d:360ms">
+        <div class="card__top"><span class="tag">Off the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A camera aperture with six blades">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <circle cx="200" cy="150" r="104" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <polygon points="200,96 247,123 247,177 200,204 153,177 153,123" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+            <g stroke="#FFFFFF" stroke-width="1.6" opacity=".75">
+              <line x1="200" y1="96"  x2="292" y2="96"/>
+              <line x1="247" y1="123" x2="293" y2="203"/>
+              <line x1="247" y1="177" x2="201" y2="257"/>
+              <line x1="200" y1="204" x2="108" y2="204"/>
+              <line x1="153" y1="177" x2="107" y2="97"/>
+              <line x1="153" y1="123" x2="199" y2="43"/>
+            </g>
+            <circle cx="200" cy="150" r="126" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".28"/>
+            <text x="26" y="278" fill="#FFFFFF" opacity=".45" font-family="monospace" font-size="12" letter-spacing="3">f/1.8 · 1/250</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Photography</h3>
+          <p class="card__note">Waiting for the light to do something interesting.</p>
+        </div>
+      </article>
+
+      <!-- Technology -->
+      <article class="card reveal" style="--d:420ms">
+        <div class="card__top"><span class="tag">Off the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A chip at the centre of branching circuit traces">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity=".8">
+              <path d="M40 84 h60 v-34 h84"/>
+              <path d="M40 216 h84 v34 h96"/>
+              <path d="M360 96 h-56 v-46 h-46"/>
+              <path d="M360 214 h-40 v36 h-70"/>
+              <path d="M40 150 h74"/><path d="M360 150 h-74"/>
+            </g>
+            <g fill="#FFFFFF" opacity=".85">
+              <circle cx="184" cy="50" r="4"/><circle cx="220" cy="250" r="4"/>
+              <circle cx="258" cy="50" r="4"/><circle cx="250" cy="250" r="4"/>
+              <circle cx="40" cy="150" r="4"/><circle cx="360" cy="150" r="4"/>
+            </g>
+            <rect x="146" y="112" width="108" height="76" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <g stroke="#FFFFFF" stroke-width="2" opacity=".85">
+              <line x1="146" y1="132" x2="128" y2="132"/><line x1="146" y1="168" x2="128" y2="168"/>
+              <line x1="254" y1="132" x2="272" y2="132"/><line x1="254" y1="168" x2="272" y2="168"/>
+            </g>
+            <text x="200" y="158" text-anchor="middle" fill="#FFFFFF" opacity=".7"
+                  font-family="monospace" font-size="15" letter-spacing="2">&lt;/&gt;</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Technology &amp; Development</h3>
+          <p class="card__note">Taking things apart, then building better ones.</p>
+        </div>
+      </article>
+
+      <!-- Ripple -->
+      <article class="card reveal" style="--d:480ms">
+        <div class="card__top"><span class="tag">Off the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Ripples spreading outward from a single point">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g fill="none" stroke="#FFFFFF">
+              <ellipse cx="200" cy="160" rx="24"  ry="10"  stroke-width="2.5"/>
+              <ellipse cx="200" cy="160" rx="56"  ry="22"  stroke-width="2" opacity=".8"/>
+              <ellipse cx="200" cy="160" rx="94"  ry="36"  stroke-width="1.6" opacity=".6"/>
+              <ellipse cx="200" cy="160" rx="134" ry="52"  stroke-width="1.4" opacity=".42"/>
+              <ellipse cx="200" cy="160" rx="176" ry="70"  stroke-width="1.2" opacity=".26"/>
+            </g>
+            <circle cx="200" cy="160" r="6" fill="#FFFFFF"/>
+            <g stroke="#FFFFFF" stroke-width="1.6" opacity=".6" fill="none">
+              <line x1="200" y1="46" x2="200" y2="112"/>
+              <path d="M193 102 L200 116 L207 102"/>
+            </g>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Creating a Ripple Effect of Goodness :)</h3>
+          <p class="card__note">One small thing, then the next, then everyone else's.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <figure class="quote reveal">
+      <p>"I have no special talents. I am only passionately curious."</p>
+      <cite class="tag">— Albert Einstein</cite>
+    </figure>
+  </section>
+
+  <!-- ══ 5. ACHIEVEMENTS ═════════════════════════════════ -->
+  <section class="band band--ruled shell" id="achievements" aria-labelledby="achievements-title">
+    <div class="head">
+      <div class="head__title reveal">
+        <span class="tag">Achievements</span>
+        <h2 id="achievements-title">Things I've made happen</h2>
+      </div>
+      <div class="head__aside reveal" style="--d:120ms">
+        <span class="tag">Research, student council, and a few surprises</span>
+      </div>
+    </div>
+
+    <article class="feature reveal">
+      <div class="feature__plate">
+        <!-- ═══ IMAGE SLOT — a photo of the rig or your team works well here ═══
+             Replace this <svg>...</svg> with:
+             <img class="plate__img" src="images/research.jpg"
+                  alt="The heat-recovery test rig" loading="lazy">
+        -->
+        <svg viewBox="0 0 520 400" preserveAspectRatio="xMidYMid meet" role="img"
+             aria-label="Schematic: waste heat from an air-conditioning unit passing through a recovery stage and out as electrical power">
+          <rect width="520" height="400" fill="#0D0D0D"/>
+
+          <rect x="46" y="150" width="128" height="112" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+          <circle cx="110" cy="206" r="34" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+          <g fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".85">
+            <path d="M110 206 q22 -22 26 4"/>
+            <path d="M110 206 q-6 30 -26 12"/>
+            <path d="M110 206 q-18 -8 0 -30"/>
+          </g>
+          <circle cx="110" cy="206" r="5" fill="#FFFFFF"/>
+          <g stroke="#FFFFFF" stroke-width="1" opacity=".35">
+            <line x1="58" y1="162" x2="58" y2="250"/><line x1="162" y1="162" x2="162" y2="250"/>
+          </g>
+
+          <g fill="none" stroke="#FFFFFF" stroke-width="1.6" opacity=".55">
+            <path d="M74 138 q10 -18 0 -34 q-10 -18 0 -34"/>
+            <path d="M110 130 q10 -16 0 -30 q-10 -16 0 -30"/>
+            <path d="M146 138 q10 -18 0 -34 q-10 -18 0 -34"/>
+          </g>
+
+          <g stroke="#FFFFFF" stroke-width="2" opacity=".8" fill="none">
+            <line x1="174" y1="206" x2="228" y2="206"/>
+            <path d="M218 199 L232 206 L218 213"/>
+          </g>
+
+          <rect x="236" y="156" width="96" height="100" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+          <g stroke="#FFFFFF" stroke-width="2" opacity=".9">
+            <line x1="256" y1="176" x2="256" y2="236"/><line x1="276" y1="176" x2="276" y2="236"/>
+            <line x1="296" y1="176" x2="296" y2="236"/><line x1="312" y1="176" x2="312" y2="236"/>
+          </g>
+          <line x1="246" y1="206" x2="322" y2="206" stroke="#FFFFFF" stroke-width="1" opacity=".4" stroke-dasharray="4 5"/>
+
+          <g stroke="#FFFFFF" stroke-width="2" opacity=".8" fill="none">
+            <line x1="332" y1="206" x2="386" y2="206"/>
+            <path d="M376 199 L390 206 L376 213"/>
+          </g>
+
+          <circle cx="440" cy="206" r="44" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+          <path d="M446 178 L424 210 L440 210 L434 236 L456 202 L440 202 Z" fill="#FFFFFF"/>
+
+          <g fill="#FFFFFF" opacity=".55" font-family="monospace" font-size="12" letter-spacing="2">
+            <text x="46"  y="300">EXHAUST HEAT</text>
+            <text x="236" y="300">RECOVERY</text>
+            <text x="404" y="300">POWER</text>
+          </g>
+          <line x1="46" y1="318" x2="474" y2="318" stroke="#FFFFFF" stroke-width="1" opacity=".25"/>
+          <text x="46" y="344" fill="#FFFFFF" opacity=".4" font-family="monospace" font-size="11" letter-spacing="3">THERMAL POLLUTION → USEFUL ENERGY</text>
+        </svg>
+      </div>
+
+      <div class="feature__body">
+        <div class="feature__top">
+          <span class="feature__flag">Paper finished</span>
+          <span class="tag">Green technology</span>
+        </div>
+        <h3 class="feature__title">Turning air-conditioner exhaust into power</h3>
+        <p class="feature__text">
+          I've spent the last few months diving deep into green tech with Dr. Ohm Sahu.
+          We've just finished our paper on harvesting air-conditioner exhaust to generate
+          power — turning thermal pollution into energy, taking load off our beloved
+          planet, and pushing on the Sustainable Development Goals along the way.
+          Keep an eye out for the full release in about two months.
+        </p>
+        <dl class="feature__spec">
+          <dt>Field</dt><dd>Green technology, energy recovery</dd>
+          <dt>With</dt><dd>Dr. Ohm Sahu</dd>
+          <dt>Status</dt><dd>Paper complete</dd>
+          <dt>Full release</dt><dd>In about two months</dd>
+        </dl>
+      </div>
+    </article>
+
+    <ul class="roster">
+      <li class="roster__row reveal">
+        <span class="tag">Student Council</span>
+        <p class="roster__text">Founded and headed the Dormitory Affairs Committee at Sahyadri School — KFI.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:60ms">
+        <span class="tag">Student Council</span>
+        <p class="roster__text">Made the dreaded school mess food a little better, as Head of the Dining Hall Committee.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:120ms">
+        <span class="tag">Taekwondo</span>
+        <p class="roster__text">Earned a Black Belt, Poom 1.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:180ms">
+        <span class="tag">Counselling</span>
+        <p class="roster__text">Babysat the naughtiest bunch of eleven-year-olds by visiting their dormitory to run periodic counselling sessions.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:240ms">
+        <span class="tag">AV Support Team</span>
+        <p class="roster__text">Senior member of the Audio Visual Support Team at Sahyadri School — KFI, fourth year running.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:300ms">
+        <span class="tag">Science</span>
+        <p class="roster__text">Visited the Indian Science Fest to enjoy my passion for science and technology alongside my peers.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:360ms">
+        <span class="tag">Photography</span>
+        <p class="roster__text">Captured the perfect moments as Official Student Photographer and Videographer at Sahyadri School — KFI.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:420ms">
+        <span class="tag">Theatre</span>
+        <p class="roster__text">Played the 11th Juror in <em>The Twelve Angry Jurors</em>, an adaptation of Reginald Rose's <em>Twelve Angry Men</em>.</p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ══ 6. CONTACT ══════════════════════════════════════ -->
+  <section class="band band--ruled shell" id="contact" aria-labelledby="contact-title">
+    <div class="contact__grid">
+
+      <div class="contact__intro reveal">
+        <span class="tag">Contact</span>
+        <h2 class="contact__title" id="contact-title">Say hello</h2>
+        <p class="contact__note">
+          Ideas, questions, or something you want to build together —
+          send it over and I'll write back.
+        </p>
+        <div class="contact__where">
+          <span class="tag">Sahyadri School — KFI, Pune, Maharashtra</span>
+          <!-- CHANGE THIS to your real email address (both places) -->
+          <span class="tag"><a href="mailto:hello@example.com">hello@example.com</a></span>
+          <span class="tag">Usually replies between classes</span>
+        </div>
+      </div>
+
+      <div class="form reveal" style="--d:120ms">
+        <form id="enquiry" novalidate>
+          <div class="form__row">
+            <div class="field" data-field>
+              <label for="name">Your name</label>
+              <input type="text" id="name" name="name" placeholder="Who's writing?" autocomplete="name" required>
+              <span class="error">Add a name so I know who to reply to.</span>
+            </div>
+            <div class="field" data-field>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+              <span class="error">Check the email address — it needs an @ and a domain.</span>
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field" data-field>
+              <label for="topic">What's this about</label>
+              <select id="topic" name="topic" required>
+                <option value="">Choose one</option>
+                <option>Working on something together</option>
+                <option>A question about my research</option>
+                <option>An opportunity</option>
+                <option>Just saying hello</option>
+              </select>
+              <span class="error">Pick the closest match.</span>
+            </div>
+            <div class="field" data-field>
+              <label for="org">School or organisation</label>
+              <input type="text" id="org" name="org" placeholder="Optional" autocomplete="organization">
+            </div>
+          </div>
+
+          <div class="field" data-field>
+            <label for="message">Your message</label>
+            <textarea id="message" name="message" rows="4" placeholder="Tell me what's on your mind." required></textarea>
+            <span class="error">A sentence or two is plenty to start.</span>
+          </div>
+
+          <div class="form__foot">
+            <button type="submit" class="pill">
+              Send message
+              <span class="pill__arrow" aria-hidden="true">→</span>
+            </button>
+            <span class="tag">I usually reply within a few days</span>
+          </div>
+        </form>
+
+        <div class="sent" id="sent" hidden role="status">
+          <h3>Message sent</h3>
+          <p>Thanks for writing. I'll get back to you as soon as I'm out of class — usually within a few days.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="shell foot__inner">
+    <span class="tag">Aarush Badruka</span>
+    <span class="tag">Sahyadri School — KFI · Class of 2027</span>
+    <span class="tag">© 2026</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- 1. Nav: solidify once the page has moved ------------------ */
+  var nav = document.getElementById('nav');
+  var onScroll = function () { nav.classList.toggle('is-stuck', window.scrollY > 24); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---- 2. Portrait: show a labelled placeholder if the file is
+            missing, so the page never renders a broken image ------- */
+  var portrait = document.getElementById('portrait-img');
+  var frame    = document.getElementById('portrait-frame');
+
+  var markEmpty = function () { frame.classList.add('is-empty'); };
+  if (portrait) {
+    portrait.addEventListener('error', markEmpty);
+    // catches the case where the error fired before this script ran
+    if (portrait.complete && portrait.naturalWidth === 0) markEmpty();
+  }
+
+  /* ---- 3. Smooth scrolling with a fixed-header offset ------------ */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href');
+      if (id === '#' || id.length < 2) return;
+      var target = document.querySelector(id);
+      if (!target) return;
+
+      e.preventDefault();
+      var top = target.getBoundingClientRect().top + window.scrollY - nav.offsetHeight - 16;
+      window.scrollTo({ top: top, behavior: reducedMotion ? 'auto' : 'smooth' });
+
+      // move keyboard focus with the eye, then tidy up after
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+      target.addEventListener('blur', function once () {
+        target.removeAttribute('tabindex');
+        target.removeEventListener('blur', once);
+      });
+
+      history.replaceState(null, '', id);
+    });
+  });
+
+  /* ---- 4. Entrance reveal on scroll ------------------------------ */
+  var revealables = document.querySelectorAll('.reveal');
+
+  if (reducedMotion || !('IntersectionObserver' in window)) {
+    revealables.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    revealables.forEach(function (el) { observer.observe(el); });
+  }
+
+  /* ---- 5. Contact form: validate, then confirm ------------------- */
+  var form = document.getElementById('enquiry');
+  var sent = document.getElementById('sent');
+
+  var isValid = function (input) {
+    if (!input.required) return true;
+    if (!input.value.trim()) return false;
+    if (input.type === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
+    return true;
+  };
+
+  var mark = function (input) {
+    var field = input.closest('[data-field]');
+    var ok = isValid(input);
+    field.classList.toggle('is-invalid', !ok);
+    input.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    return ok;
+  };
+
+  form.querySelectorAll('input, select, textarea').forEach(function (input) {
+    input.addEventListener('blur',   function () { mark(input); });
+    input.addEventListener('change', function () { mark(input); });
+    input.addEventListener('input',  function () {
+      if (input.closest('[data-field]').classList.contains('is-invalid')) mark(input);
+    });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var firstBad = null;
+
+    form.querySelectorAll('input, select, textarea').forEach(function (input) {
+      if (!mark(input) && !firstBad) firstBad = input;
+    });
+
+    if (firstBad) { firstBad.focus(); return; }
+
+    /* No backend wired up — swap the form for the confirmation panel. */
+    form.hidden = true;
+    sent.hidden = false;
+    sent.setAttribute('tabindex', '-1');
+    sent.focus({ preventScroll: true });
+  });
+})();
+</script>
+</body>
+</html>
