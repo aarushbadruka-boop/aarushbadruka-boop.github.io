@@ -67,8 +67,8 @@
        <img class="plate__img" src="images/whatever.jpg"
             alt="Describe what is in the photo" loading="lazy">
 
-     The .plate__img class handles the crop, the greyscale and the
-     hover zoom for you. Nothing else needs changing.
+     The .plate__img class handles the crop and the hover zoom for
+     you, and the photo stays in full colour. Nothing else needs changing.
 
 ════════════════════════════════════════════════════════════════
   HOW TO ADD THE IOQM PDF
@@ -149,13 +149,13 @@
              Change the src below to your own file.
              Best results: portrait crop, 4:5 ratio, 800 × 1000 px
              or larger, saved as .jpg or .webp.
-             The greyscale filter lives in .plate__img in
-             styles.css — delete `filter:grayscale(1)...` there if
-             you want your photos in colour.
+             This is the only black-and-white photo on the site —
+             that comes from  plate__img--mono  below. Delete that
+             word to show it in colour.
         -->
         <figure class="portrait">
           <div class="portrait__frame" data-frame>
-            <img class="plate__img"
+            <img class="plate__img plate__img--mono"
                  src="images/aarush.jpg"
                  alt="Aarush Badruka"
                  width="800" height="1000"
