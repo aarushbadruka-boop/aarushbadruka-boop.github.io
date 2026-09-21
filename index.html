@@ -22,6 +22,45 @@
 
 <link rel="stylesheet" href="styles.css">
 
+<!-- Extra styles for this page only:
+     1. CLICKABLE CARDS — an invisible link (.cover) is stretched over
+        the research card and each op-ed row, so a click anywhere on
+        them opens the page. Buttons sit above it and still work.
+        Interest cards with a "Read more" become clickable too — that
+        part is done by the script at the bottom of this page.
+     2. 3D NAME — the letters of my name float in 3D until you scroll
+        a little, then snap flat. Only switched on when the script at
+        the bottom runs (it adds the .name-3d class), so if scripting
+        fails the name just shows normally. -->
+<style>
+  .feature, .oped__row { position: relative; cursor: pointer; }
+  .cover { position: absolute; inset: 0; z-index: 1; }
+  .feature__body > .pill,
+  .oped__row .pill { position: relative; z-index: 2; }
+  .feature__body > .pill { align-self: flex-start; }
+  .card--toggle { cursor: pointer; }
+
+  .hero { overflow-x: clip; }
+  .name-3d .hero__head { perspective: 1100px; }
+  .name-3d .hero__name { transform-style: preserve-3d; }
+  .name3d__word { display: inline-block; white-space: nowrap; transform-style: preserve-3d; }
+  .name3d__ch {
+    display: inline-block;
+    transform-style: preserve-3d;
+    transition:
+      transform .9s cubic-bezier(.2, 1.5, .35, 1) calc(var(--i) * 22ms),
+      text-shadow .5s ease calc(var(--i) * 22ms);
+    transform: translate3d(var(--x), var(--y), var(--z))
+               rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz));
+    text-shadow:
+      1px 1px 0 #48524D, 2px 2px 0 #48524D, 3px 3px 0 #48524D,
+      4px 4px 0 #3A423E, 5px 5px 0 #2C3230, 6px 6px 0 #1E2638,
+      8px 10px 14px rgba(0, 0, 0, .6);
+  }
+  .name-flat .name3d__ch { transform: none; text-shadow: inherit; }
+  .name-instant .name3d__ch { transition: none; }
+</style>
+
 <!-- Flags that JS is alive. The scroll-reveal animation and the phone
      menu are scoped to .js so that if scripting fails, nothing is
      ever hidden. -->
@@ -136,6 +175,8 @@
 
     <div class="hero__grid">
       <div class="hero__head reveal" style="--d:80ms">
+        <!-- The 3D effect on this name comes from the script at the
+             bottom of the page. Change the name here as normal text. -->
         <h1 class="hero__name">Aarush<br>Badruka</h1>
         <p class="hero__role">Dedicated Student and Aspiring Entrepreneur and Engineer.</p>
         <p class="hero__bio">
@@ -315,6 +356,8 @@
     <!-- Five of these six cards open a longer piece of writing.
          They use plain HTML <details>, so they still open and
          close if the JavaScript ever fails to load.
+         Clicking anywhere on a card opens its Read more too (see
+         the script at the bottom of this page).
          To add a read-more panel to another card, copy the whole
          <details class="card__more"> block into its card body. -->
     <div class="grid">
@@ -632,6 +675,12 @@
     </div>
 
     <article class="feature reveal">
+      <!-- Invisible layer over the whole card: a click anywhere on it
+           opens the research page. Hidden from screen readers and the
+           Tab key because the "Read the abstract" button below already
+           does the same job for them. -->
+      <a class="cover" href="research-paper.html" aria-hidden="true" tabindex="-1"></a>
+
       <div class="feature__plate">
         <!-- ═══ IMAGE SLOT — a photo of the rig or your team works well here ═══
              Replace this <svg>...</svg> with:
@@ -785,7 +834,8 @@
           article (lowercase, hyphens instead of spaces), and
           replace the title, the standfirst and the text inside.
        2. Copy one <li class="oped__row"> block below, paste it
-          above the others, and point its link at the new file.
+          above the others, and point BOTH its links (the invisible
+          .cover one and the button) at the new file.
        That's the whole job — nothing else needs touching.
   -->
   <section class="band band--ruled shell" id="writing" aria-labelledby="writing-title">
@@ -801,6 +851,7 @@
 
     <ul class="oped">
       <li class="oped__row reveal">
+        <a class="cover" href="merit-over-fortune.html" aria-hidden="true" tabindex="-1"></a>
         <div class="oped__meta">
           <span class="tag">Ninad · School magazine</span>
           <span class="tag">Class 11</span>
@@ -930,6 +981,108 @@
     <span class="tag">© 2026</span>
   </div>
 </footer>
+
+<!-- ══ PAGE EXTRAS ═══════════════════════════════════════════
+     1. Clicking anywhere on an interest card opens its Read more.
+     2. The 3D name in the hero. Visitors who have "reduce motion"
+        switched on in their device settings just see the flat name.
+        To change how far you scroll before it snaps, edit THRESHOLD. -->
+<script>
+(function () {
+  /* 1. INTEREST CARDS — click anywhere on a card to open/close its
+        "Read more". Clicks on links, on the Read more line itself,
+        or inside the opened text are left alone. */
+  try {
+    document.querySelectorAll('.grid .card').forEach(function (card) {
+      var summary = card.querySelector('details.card__more > summary');
+      if (!summary) return;
+      card.classList.add('card--toggle');
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a, summary, .card__more__body')) return;
+        summary.click();
+      });
+    });
+  } catch (err) {}
+
+  /* 2. 3D NAME — the letters of the hero name float in 3D and snap
+        flat into place as soon as you scroll a little. */
+  try {
+    var el = document.querySelector('.hero__name');
+    var reduce = window.matchMedia &&
+                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!el || reduce) return;
+
+    el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+    var r = function (a, b) { return (a + Math.random() * (b - a)).toFixed(2); };
+    var i = 0;
+
+    Array.prototype.slice.call(el.childNodes).forEach(function (node) {
+      if (node.nodeType !== 3 || !node.textContent.trim()) return;
+      var frag = document.createDocumentFragment();
+      node.textContent.split(/(\s+)/).forEach(function (word) {
+        if (!word) return;
+        if (/^\s+$/.test(word)) { frag.appendChild(document.createTextNode(word)); return; }
+        var w = document.createElement('span');
+        w.className = 'name3d__word';
+        w.setAttribute('aria-hidden', 'true');
+        word.split('').forEach(function (ch) {
+          var s = document.createElement('span');
+          s.className = 'name3d__ch';
+          s.textContent = ch;
+          s.style.setProperty('--i', i++);
+          s.style.setProperty('--x', r(-0.5, 0.5) + 'em');
+          s.style.setProperty('--y', r(-0.45, 0.45) + 'em');
+          s.style.setProperty('--z', r(-2.5, 1.5) + 'em');
+          s.style.setProperty('--rx', r(-70, 70) + 'deg');
+          s.style.setProperty('--ry', r(-80, 80) + 'deg');
+          s.style.setProperty('--rz', r(-25, 25) + 'deg');
+          w.appendChild(s);
+        });
+        frag.appendChild(w);
+      });
+      el.replaceChild(frag, node);
+    });
+
+    var root = document.documentElement;
+    var THRESHOLD = 40;          /* pixels of scroll before it snaps */
+    var flat = window.scrollY > THRESHOLD;
+    if (flat) root.classList.add('name-flat', 'name-instant');
+    root.classList.add('name-3d');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { root.classList.remove('name-instant'); });
+    });
+
+    /* Gentle sway of the whole name while it's in 3D; eases to zero
+       when it snaps flat, so nothing jumps. */
+    var k = flat ? 0 : 1, running = false;
+    function tick(t) {
+      var target = flat ? 0 : 1;
+      k += (target - k) * 0.06;
+      if (Math.abs(target - k) < 0.001) k = target;
+      el.style.transform = k
+        ? 'rotateX(' + (Math.sin(t / 1700) * 10 * k).toFixed(2) + 'deg) ' +
+          'rotateY(' + (Math.sin(t / 2300) * 18 * k).toFixed(2) + 'deg)'
+        : '';
+      if (k === 0 && flat) { running = false; return; }
+      requestAnimationFrame(tick);
+    }
+    function start() {
+      if (!running) { running = true; requestAnimationFrame(tick); }
+    }
+    if (!flat) start();
+
+    window.addEventListener('scroll', function () {
+      var now = window.scrollY > THRESHOLD;
+      if (now === flat) return;
+      flat = now;
+      root.classList.toggle('name-flat', flat);
+      start();
+    }, { passive: true });
+  } catch (err) {
+    document.documentElement.classList.remove('name-3d');
+  }
+})();
+</script>
 
 <script src="site.js" defer></script>
 </body>
