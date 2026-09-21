@@ -710,7 +710,9 @@ summary::marker{ content:''; }
   .split__figure{ grid-column:1 / 13; max-width:28rem; }
 }
 
-@media (max-width:720px){
+/* The menu folds into a drop-down below 980px — five links plus the
+   contact button no longer fit on one line on a tablet. */
+@media (max-width:980px){
   /* ---- nav becomes a drop-down ----
      Default (no JavaScript): the links simply wrap onto a second
      line, so they are always reachable. When JS is running the
@@ -719,7 +721,6 @@ summary::marker{ content:''; }
   .nav__links{ flex-wrap:wrap; gap:.75rem 1.25rem; }
   .brand__word{ font-size:.8125rem; }
   .nav__link{ font-size:.6875rem; letter-spacing:.1em; }
-  .pill{ padding:.6rem 1rem; font-size:.625rem; }
 
   .js .nav__inner{ height:5rem; flex-wrap:nowrap; padding-block:0; }
   .js .nav__toggle{ display:inline-flex; }
@@ -741,6 +742,11 @@ summary::marker{ content:''; }
   }
   .js .nav__links .nav__link::after{ display:none; }
   .js .nav__links .pill{ margin-top:1.25rem; align-self:flex-start; }
+
+}
+
+@media (max-width:720px){
+  .pill{ padding:.6rem 1rem; font-size:.625rem; }
 
   .hero__meta .tag:last-child{ margin-left:0; }
   .edu__row{ grid-template-columns:1fr; }
@@ -809,4 +815,48 @@ summary::marker{ content:''; }
 @media (prefers-reduced-motion:reduce){
   .edu__track::after{ transform:scaleX(1); }
   .edu__track--point::after{ transform:scaleY(1); }
+}
+
+/* ============================================================
+   ADDITIONS — Experiences, Oxford page, colour photo
+   ============================================================ */
+
+/* extra detail lines under a school (ICSE result, ISC subjects) */
+.edu__detail{
+  font-family:var(--util); font-size:.75rem; letter-spacing:.06em;
+  color:var(--paper-70); margin-top:.45rem; line-height:1.5;
+}
+
+/* the line between schools and short courses */
+.edu__sep{
+  padding:clamp(1.75rem,3.5vw,2.5rem) 0 .75rem;
+  border-bottom:1px solid var(--paper-30);
+}
+
+/* a small heading and a dashed list inside a read-more panel */
+.card__more__label{
+  font-family:var(--util); font-size:.6875rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--paper); margin-top:1.1rem;
+}
+.card__more__list{ list-style:none; padding:0; margin-top:.6rem; display:grid; gap:.35rem; }
+.card__more__list li{ padding-left:1.1rem; position:relative; }
+.card__more__list li::before{ content:'—'; position:absolute; left:0; color:var(--on-card-lo); }
+
+/* the credit line under a roster entry */
+.roster__credit{
+  margin-top:.5rem; font-style:italic; color:var(--paper-70);
+  font-size:clamp(1rem,.4vw + .95rem,1.125rem);
+}
+
+/* a long quote needs smaller type to sit beside the picture */
+.split__quote--long p{ font-size:clamp(1.125rem,1.9vw,1.625rem); line-height:1.3; }
+
+/* ---- the one photo that stays in full colour (Sahyadri page) ---- */
+.plate__img--colour,
+.portrait__frame:hover .plate__img--colour{ filter:none; }
+
+/* captions under the photo on the Sahyadri and Oxford pages */
+.split__figure figcaption{
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:.5rem 1rem;
+  margin-top:.9rem;
 }

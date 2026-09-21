@@ -106,6 +106,7 @@
 
     <nav class="nav__links" id="nav-menu" aria-label="Primary">
       <a class="nav__link" href="#education">Education</a>
+      <a class="nav__link" href="#experiences">Experiences</a>
       <a class="nav__link" href="#interests">Interests</a>
       <a class="nav__link" href="#achievements">Achievements</a>
       <a class="nav__link" href="#writing">Op-eds</a>
@@ -194,32 +195,16 @@
 
     <div class="edu__list">
 
-      <div class="edu__row reveal">
-        <span class="edu__years">2011 — 2012</span>
-        <div>
-          <h3 class="edu__school">Kangaroo Kids Preschool</h3>
-          <p class="edu__stage">Playgroup</p>
-        </div>
-        <div class="edu__track" style="--start:0%; --span:6.25%" aria-hidden="true"></div>
-      </div>
-
-      <div class="edu__row reveal" style="--d:80ms">
-        <span class="edu__years">2012 — 2021</span>
-        <div>
-          <h3 class="edu__school">Chirec International School</h3>
-          <p class="edu__stage">Nursery to Class 6</p>
-        </div>
-        <div class="edu__track" style="--start:6.25%; --span:56.25%" aria-hidden="true"></div>
-      </div>
-
-      <!-- This row opens its own page. The invisible layer on
-           .edu__more makes the whole row clickable, so the link
-           text stays small without being fiddly to hit. -->
-      <div class="edu__row edu__row--now edu__row--link reveal" style="--d:160ms">
+      <!-- Newest first. This row opens its own page. The invisible
+           layer on .edu__more makes the whole row clickable, so the
+           link text stays small without being fiddly to hit. -->
+      <div class="edu__row edu__row--now edu__row--link reveal">
         <span class="edu__years">2021 — 2027</span>
         <div>
           <h3 class="edu__school">Sahyadri School — Krishnamurti Foundation India</h3>
           <p class="edu__stage">Class 7 to Class 12 · ICSE &amp; ISC <span class="edu__flag">Here now</span></p>
+          <p class="edu__detail">ICSE Board Exam, March 2025 · 90% average</p>
+          <p class="edu__detail">ISC · Mathematics, Physics, Chemistry, Economics &amp; General English</p>
           <a class="edu__more" href="sahyadri.html">
             Read about my school
             <span aria-hidden="true">→</span>
@@ -228,13 +213,39 @@
         <div class="edu__track" style="--start:62.5%; --span:37.5%" aria-hidden="true"></div>
       </div>
 
-      <!-- CHECK THIS YEAR — change "2026" in both places if the programme was a different summer.
-           Tick position = (year − 2011) ÷ 16 × 100.  2026 → 93.75% -->
-      <div class="edu__row reveal" style="--d:240ms">
+      <div class="edu__row reveal" style="--d:80ms">
+        <span class="edu__years">2012 — 2021</span>
+        <div>
+          <h3 class="edu__school">CHIREC International School</h3>
+          <p class="edu__stage">Nursery to Class 6</p>
+        </div>
+        <div class="edu__track" style="--start:6.25%; --span:56.25%" aria-hidden="true"></div>
+      </div>
+
+      <div class="edu__row reveal" style="--d:160ms">
+        <span class="edu__years">2011 — 2012</span>
+        <div>
+          <h3 class="edu__school">Kangaroo Kids Preschool</h3>
+          <p class="edu__stage">Playgroup</p>
+        </div>
+        <div class="edu__track" style="--start:0%; --span:6.25%" aria-hidden="true"></div>
+      </div>
+
+      <!-- The line that separates schools from short courses -->
+      <div class="edu__sep reveal" style="--d:200ms" role="separator" aria-label="Short courses">
+        <span class="tag">Short courses</span>
+      </div>
+
+      <!-- Tick position = (year − 2011) ÷ 16 × 100.  2026 → 93.75% -->
+      <div class="edu__row edu__row--link reveal" style="--d:240ms">
         <span class="edu__years">Summer 2026</span>
         <div>
           <h3 class="edu__school">Saïd Business School, University of Oxford</h3>
           <p class="edu__stage">Artificial Intelligence &amp; Machine Learning <span class="edu__flag">Two weeks</span></p>
+          <a class="edu__more" href="oxford.html">
+            Read about Oxford
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
         <div class="edu__track edu__track--point" style="--at:93.75%" aria-hidden="true"></div>
       </div>
@@ -252,6 +263,37 @@
     </figure>
   </section>
 
+  <!-- ══ 3b. EXPERIENCES ════════════════════════════════
+       Kept separate from Education on purpose.
+       TO ADD ONE: copy a <li class="roster__row"> block, change the
+       date in the tag and the words in the paragraph. Newest first. -->
+  <section class="band band--ruled shell" id="experiences" aria-labelledby="experiences-title">
+    <div class="head">
+      <div class="head__title reveal">
+        <span class="tag">Experiences</span>
+        <h2 id="experiences-title">Where I've been</h2>
+      </div>
+      <div class="head__aside reveal" style="--d:120ms">
+        <span class="tag">Treks and excursions</span>
+      </div>
+    </div>
+
+    <ul class="roster">
+      <li class="roster__row reveal">
+        <span class="tag">October 2025</span>
+        <p class="roster__text">Class 11 excursion to Kutch.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:60ms">
+        <span class="tag">October 2023</span>
+        <p class="roster__text">Class 9 excursion to Hemalkasa.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:120ms">
+        <span class="tag">May 2023</span>
+        <p class="roster__text">Himalayan trek to Pandav Pathar.</p>
+      </li>
+    </ul>
+  </section>
+
   <!-- ══ 4. INTERESTS ════════════════════════════════════ -->
   <section class="band band--ruled shell" id="interests" aria-labelledby="interests-title">
     <div class="head">
@@ -264,7 +306,7 @@
       </div>
     </div>
 
-    <!-- Four of these six cards open a longer piece of writing.
+    <!-- Five of these six cards open a longer piece of writing.
          They use plain HTML <details>, so they still open and
          close if the JavaScript ever fails to load.
          To add a read-more panel to another card, copy the whole
@@ -428,8 +470,42 @@
         </div>
       </article>
 
-      <!-- Cooking -->
+      <!-- Technology -->
       <article class="card reveal" style="--d:180ms">
+        <div class="card__top"><span class="tag">Off the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A chip at the centre of branching circuit traces">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity=".8">
+              <path d="M40 84 h60 v-34 h84"/>
+              <path d="M40 216 h84 v34 h96"/>
+              <path d="M360 96 h-56 v-46 h-46"/>
+              <path d="M360 214 h-40 v36 h-70"/>
+              <path d="M40 150 h74"/><path d="M360 150 h-74"/>
+            </g>
+            <g fill="#FFFFFF" opacity=".85">
+              <circle cx="184" cy="50" r="4"/><circle cx="220" cy="250" r="4"/>
+              <circle cx="258" cy="50" r="4"/><circle cx="250" cy="250" r="4"/>
+              <circle cx="40" cy="150" r="4"/><circle cx="360" cy="150" r="4"/>
+            </g>
+            <rect x="146" y="112" width="108" height="76" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <g stroke="#FFFFFF" stroke-width="2" opacity=".85">
+              <line x1="146" y1="132" x2="128" y2="132"/><line x1="146" y1="168" x2="128" y2="168"/>
+              <line x1="254" y1="132" x2="272" y2="132"/><line x1="254" y1="168" x2="272" y2="168"/>
+            </g>
+            <text x="200" y="158" text-anchor="middle" fill="#FFFFFF" opacity=".7"
+                  font-family="monospace" font-size="15" letter-spacing="2">&lt;/&gt;</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Technology &amp; Development</h3>
+          <p class="card__note">Taking things apart, then building better ones.</p>
+        </div>
+      </article>
+
+      <!-- Cooking -->
+      <article class="card reveal" style="--d:240ms">
         <div class="card__top"><span class="tag">Off the syllabus</span></div>
         <div class="card__plate">
           <svg viewBox="0 0 400 300" role="img" aria-label="A mixing bowl and whisk with steam rising">
@@ -456,11 +532,34 @@
         <div class="card__body">
           <h3 class="card__name">Cooking &amp; Baking</h3>
           <p class="card__note">Chemistry you're allowed to eat afterwards.</p>
+
+          <details class="card__more">
+            <summary>
+              <span class="card__more__sign" aria-hidden="true"></span>
+              Read more
+            </summary>
+            <div class="card__more__body">
+              <p>
+                To me, cooking is pure magic—a delicate balance of simple science
+                and rich flavour. There is something incredible about how the
+                simple caramelisation of raw sugars can unlock such complex, deep
+                tastes. It's equal parts art and chemistry, simple yet beautifully
+                intricate, and I honestly can't imagine life without it.
+              </p>
+              <p class="card__more__label">My personal top hits</p>
+              <ul class="card__more__list">
+                <li>Khow Suey</li>
+                <li>Tandoori Momos</li>
+                <li>Biryani</li>
+                <li>10 different elevated takes on Maggi!</li>
+              </ul>
+            </div>
+          </details>
         </div>
       </article>
 
       <!-- Photography -->
-      <article class="card reveal" style="--d:240ms">
+      <article class="card reveal" style="--d:300ms">
         <div class="card__top"><span class="tag">Off the syllabus</span></div>
         <div class="card__plate">
           <svg viewBox="0 0 400 300" role="img" aria-label="A camera aperture with six blades">
@@ -503,40 +602,6 @@
               </a>
             </div>
           </details>
-        </div>
-      </article>
-
-      <!-- Technology -->
-      <article class="card reveal" style="--d:300ms">
-        <div class="card__top"><span class="tag">Off the syllabus</span></div>
-        <div class="card__plate">
-          <svg viewBox="0 0 400 300" role="img" aria-label="A chip at the centre of branching circuit traces">
-            <rect width="400" height="300" fill="#0D0D0D"/>
-            <g fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity=".8">
-              <path d="M40 84 h60 v-34 h84"/>
-              <path d="M40 216 h84 v34 h96"/>
-              <path d="M360 96 h-56 v-46 h-46"/>
-              <path d="M360 214 h-40 v36 h-70"/>
-              <path d="M40 150 h74"/><path d="M360 150 h-74"/>
-            </g>
-            <g fill="#FFFFFF" opacity=".85">
-              <circle cx="184" cy="50" r="4"/><circle cx="220" cy="250" r="4"/>
-              <circle cx="258" cy="50" r="4"/><circle cx="250" cy="250" r="4"/>
-              <circle cx="40" cy="150" r="4"/><circle cx="360" cy="150" r="4"/>
-            </g>
-            <rect x="146" y="112" width="108" height="76" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
-            <g stroke="#FFFFFF" stroke-width="2" opacity=".85">
-              <line x1="146" y1="132" x2="128" y2="132"/><line x1="146" y1="168" x2="128" y2="168"/>
-              <line x1="254" y1="132" x2="272" y2="132"/><line x1="254" y1="168" x2="272" y2="168"/>
-            </g>
-            <text x="200" y="158" text-anchor="middle" fill="#FFFFFF" opacity=".7"
-                  font-family="monospace" font-size="15" letter-spacing="2">&lt;/&gt;</text>
-          </svg>
-          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        </div>
-        <div class="card__body">
-          <h3 class="card__name">Technology &amp; Development</h3>
-          <p class="card__note">Taking things apart, then building better ones.</p>
         </div>
       </article>
 
@@ -666,25 +731,29 @@
       </li>
       <li class="roster__row reveal" style="--d:180ms">
         <span class="tag">Taekwondo</span>
-        <p class="roster__text">Earned a Black Belt, Poom 1.</p>
+        <p class="roster__text">Earned a Black Belt, Poom 1, at age 12.</p>
       </li>
       <li class="roster__row reveal" style="--d:240ms">
+        <span class="tag">Basketball</span>
+        <p class="roster__text">Conducted a basketball boot camp at age 16 for Classes 7 and 8.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:300ms">
         <span class="tag">Counselling</span>
         <p class="roster__text">Babysat the naughtiest bunch of eleven-year-olds by visiting their dormitory to run periodic counselling sessions.</p>
       </li>
-      <li class="roster__row reveal" style="--d:300ms">
+      <li class="roster__row reveal" style="--d:360ms">
         <span class="tag">AV Support Team</span>
         <p class="roster__text">Senior member of the Audio Visual Support Team at Sahyadri School — KFI, fifth year running.</p>
       </li>
-      <li class="roster__row reveal" style="--d:360ms">
+      <li class="roster__row reveal" style="--d:420ms">
         <span class="tag">Science</span>
         <p class="roster__text">Visited the India Science Festival 2026 at IISER Pune to enjoy my passion for science and technology alongside my peers.</p>
       </li>
-      <li class="roster__row reveal" style="--d:420ms">
+      <li class="roster__row reveal" style="--d:480ms">
         <span class="tag">Photography</span>
         <p class="roster__text">Captured the perfect moments as Official Student Photographer and Videographer at Sahyadri School — KFI, 2025–2026.</p>
       </li>
-      <li class="roster__row reveal" style="--d:480ms">
+      <li class="roster__row reveal" style="--d:540ms">
         <span class="tag">Theatre</span>
         <div>
           <p class="roster__text">Played Juror 11 and served as script editor for <em>Twelve Angry Jurors</em>, an adaptation of Reginald Rose's <em>Twelve Angry Men</em>.</p>
