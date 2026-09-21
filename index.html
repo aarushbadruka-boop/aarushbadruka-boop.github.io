@@ -28,10 +28,11 @@
         them opens the page. Buttons sit above it and still work.
         Interest cards with a "Read more" become clickable too — that
         part is done by the script at the bottom of this page.
-     2. 3D NAME — the letters of my name float in 3D until you scroll
-        a little, then snap flat. Only switched on when the script at
-        the bottom runs (it adds the .name-3d class), so if scripting
-        fails the name just shows normally. -->
+     2. FULL-SCREEN NAME INTRO — the page opens on a black screen with
+        my name huge and in 3D. The first scroll flies it into place,
+        then the page appears. Everything here only switches on when
+        the script at the bottom runs, so if scripting fails the page
+        simply shows normally. -->
 <style>
   .feature, .oped__row { position: relative; cursor: pointer; }
   .cover { position: absolute; inset: 0; z-index: 1; }
@@ -40,25 +41,42 @@
   .feature__body > .pill { align-self: flex-start; }
   .card--toggle { cursor: pointer; }
 
-  .hero { overflow-x: clip; }
-  .name-3d .hero__head { perspective: 1100px; }
-  .name-3d .hero__name { transform-style: preserve-3d; }
-  .name3d__word { display: inline-block; white-space: nowrap; transform-style: preserve-3d; }
-  .name3d__ch {
-    display: inline-block;
-    transform-style: preserve-3d;
-    transition:
-      transform .9s cubic-bezier(.2, 1.5, .35, 1) calc(var(--i) * 22ms),
-      text-shadow .5s ease calc(var(--i) * 22ms);
-    transform: translate3d(var(--x), var(--y), var(--z))
-               rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz));
+  .name-intro .hero__name { visibility: hidden; }
+  .intro {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #0D0D0D;
+    transition: opacity .45s ease;
+    cursor: pointer;
+  }
+  .intro.is-done { opacity: 0; pointer-events: none; }
+  .intro__cue {
+    position: absolute; left: 50%; bottom: 32px;
+    transform: translateX(-50%);
+    animation: introCue 1.8s ease-in-out infinite;
+    transition: opacity .3s ease;
+  }
+  .intro.is-snapping .intro__cue { opacity: 0; }
+  @keyframes introCue { 50% { transform: translate(-50%, 6px); } }
+
+  .intro__fly {
+    position: fixed; top: 0; left: 0; z-index: 10000;
+    transform-origin: 0 0;
+    will-change: transform;
+    cursor: pointer;
+    transition: transform .85s cubic-bezier(.65, 0, .25, 1.12);
+  }
+  .intro__tilt { transform-style: preserve-3d; }
+  .intro__name {
+    margin: 0;
+    width: max-content;
+    white-space: nowrap;
     text-shadow:
       1px 1px 0 #48524D, 2px 2px 0 #48524D, 3px 3px 0 #48524D,
       4px 4px 0 #3A423E, 5px 5px 0 #2C3230, 6px 6px 0 #1E2638,
       8px 10px 14px rgba(0, 0, 0, .6);
+    transition: text-shadow .7s ease;
   }
-  .name-flat .name3d__ch { transform: none; text-shadow: inherit; }
-  .name-instant .name3d__ch { transition: none; }
+  .intro__fly.is-snapping .intro__name { text-shadow: none; }
 </style>
 
 <!-- Flags that JS is alive. The scroll-reveal animation and the phone
@@ -175,8 +193,8 @@
 
     <div class="hero__grid">
       <div class="hero__head reveal" style="--d:80ms">
-        <!-- The 3D effect on this name comes from the script at the
-             bottom of the page. Change the name here as normal text. -->
+        <!-- The full-screen 3D intro copies this heading, so change
+             the name here as normal text and the intro follows. -->
         <h1 class="hero__name">Aarush<br>Badruka</h1>
         <p class="hero__role">Dedicated Student and Aspiring Entrepreneur and Engineer.</p>
         <p class="hero__bio">
@@ -984,9 +1002,10 @@
 
 <!-- ══ PAGE EXTRAS ═══════════════════════════════════════════
      1. Clicking anywhere on an interest card opens its Read more.
-     2. The 3D name in the hero. Visitors who have "reduce motion"
-        switched on in their device settings just see the flat name.
-        To change how far you scroll before it snaps, edit THRESHOLD. -->
+     2. The full-screen 3D name intro. It copies the hero heading,
+        so if you change your name there, the intro follows.
+        Skipped for visitors who arrive part-way down the page or
+        who have "reduce motion" switched on in their settings. -->
 <script>
 (function () {
   /* 1. INTEREST CARDS — click anywhere on a card to open/close its
@@ -1004,82 +1023,140 @@
     });
   } catch (err) {}
 
-  /* 2. 3D NAME — the letters of the hero name float in 3D and snap
-        flat into place as soon as you scroll a little. */
+  /* 2. FULL-SCREEN 3D NAME INTRO
+        The page opens on a black screen with my name huge, in 3D,
+        gently tilting. The first scroll (or swipe, arrow key, click)
+        flies the name down into its real spot in the hero. Only once
+        it has landed does the black screen fade and the rest of the
+        page appear. Skipped if the visitor arrives part-way down the
+        page (e.g. from a #link) or has "reduce motion" switched on. */
+  var root = document.documentElement;
+  var real = document.querySelector('.hero__name');
+  var reduce = window.matchMedia &&
+               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!real || reduce || location.hash || window.scrollY > 10) return;
+
+  var intro, fly, tilt, nm;
+  var snapping = false, finished = false, k = 1, touchY = null;
+
+  function cleanup() {
+    finished = true;
+    root.classList.remove('name-intro');
+    if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
+    if (fly && fly.parentNode) fly.parentNode.removeChild(fly);
+    window.removeEventListener('wheel', onWheel);
+    window.removeEventListener('touchstart', onTouchStart);
+    window.removeEventListener('touchmove', onTouchMove);
+    window.removeEventListener('keydown', onKey);
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', layout);
+  }
+
+  function copyStyles() {
+    var cs = getComputedStyle(real);
+    ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'lineHeight',
+     'letterSpacing', 'textTransform', 'wordSpacing', 'color'].forEach(function (p) {
+      nm.style[p] = cs[p];
+    });
+  }
+
+  /* Where the name sits during the intro: centred, filling the screen. */
+  function introTransform() {
+    var w = nm.offsetWidth, h = nm.offsetHeight;
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var s = Math.min(vw * 0.86 / w, vh * 0.62 / h);
+    return 'translate(' + ((vw - w * s) / 2) + 'px,' + ((vh - h * s) / 2) + 'px) scale(' + s + ')';
+  }
+
+  /* Where it lands: exactly on top of the real heading. */
+  function targetTransform() {
+    var r = real.getBoundingClientRect();
+    return 'translate(' + r.left + 'px,' + r.top + 'px) scale(1)';
+  }
+
+  function layout() {
+    if (finished) return;
+    copyStyles();
+    fly.style.transform = snapping ? targetTransform() : introTransform();
+  }
+
+  function tick(t) {
+    if (finished) return;
+    k += ((snapping ? 0 : 1) - k) * 0.08;
+    tilt.style.transform =
+      'perspective(1000px) rotateX(' + (Math.sin(t / 1600) * 14 * k).toFixed(2) + 'deg) ' +
+      'rotateY(' + (Math.sin(t / 2200) * 22 * k).toFixed(2) + 'deg)';
+    requestAnimationFrame(tick);
+  }
+
+  function snap() {
+    if (snapping || finished) return;
+    snapping = true;
+    fly.classList.add('is-snapping');
+    intro.classList.add('is-snapping');
+    fly.style.transform = targetTransform();
+    setTimeout(function () { intro.classList.add('is-done'); }, 900);
+    setTimeout(cleanup, 1400);
+  }
+
+  /* Hold the page still until the name has landed. */
+  function onWheel(e) { e.preventDefault(); if (e.deltaY > 0) snap(); }
+  function onTouchStart(e) { touchY = e.touches[0].clientY; }
+  function onTouchMove(e) {
+    e.preventDefault();
+    if (touchY !== null && touchY - e.touches[0].clientY > 8) snap();
+  }
+  function onKey(e) {
+    if (['ArrowDown', 'PageDown', ' ', 'Spacebar', 'End', 'Enter'].indexOf(e.key) !== -1) {
+      e.preventDefault();
+      snap();
+    }
+  }
+  function onScroll() {
+    if (snapping) fly.style.transform = targetTransform();
+    else snap();
+  }
+
   try {
-    var el = document.querySelector('.hero__name');
-    var reduce = window.matchMedia &&
-                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!el || reduce) return;
+    root.classList.add('name-intro');
 
-    el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
-    var r = function (a, b) { return (a + Math.random() * (b - a)).toFixed(2); };
-    var i = 0;
+    intro = document.createElement('div');
+    intro.className = 'intro';
+    intro.setAttribute('aria-hidden', 'true');
+    intro.innerHTML = '<span class="tag intro__cue">Scroll &darr;</span>';
 
-    Array.prototype.slice.call(el.childNodes).forEach(function (node) {
-      if (node.nodeType !== 3 || !node.textContent.trim()) return;
-      var frag = document.createDocumentFragment();
-      node.textContent.split(/(\s+)/).forEach(function (word) {
-        if (!word) return;
-        if (/^\s+$/.test(word)) { frag.appendChild(document.createTextNode(word)); return; }
-        var w = document.createElement('span');
-        w.className = 'name3d__word';
-        w.setAttribute('aria-hidden', 'true');
-        word.split('').forEach(function (ch) {
-          var s = document.createElement('span');
-          s.className = 'name3d__ch';
-          s.textContent = ch;
-          s.style.setProperty('--i', i++);
-          s.style.setProperty('--x', r(-0.5, 0.5) + 'em');
-          s.style.setProperty('--y', r(-0.45, 0.45) + 'em');
-          s.style.setProperty('--z', r(-2.5, 1.5) + 'em');
-          s.style.setProperty('--rx', r(-70, 70) + 'deg');
-          s.style.setProperty('--ry', r(-80, 80) + 'deg');
-          s.style.setProperty('--rz', r(-25, 25) + 'deg');
-          w.appendChild(s);
-        });
-        frag.appendChild(w);
-      });
-      el.replaceChild(frag, node);
-    });
+    fly = document.createElement('div');
+    fly.className = 'intro__fly';
+    fly.setAttribute('aria-hidden', 'true');
+    tilt = document.createElement('div');
+    tilt.className = 'intro__tilt';
+    nm = document.createElement('div');
+    nm.className = 'intro__name';
+    nm.innerHTML = real.innerHTML;
+    tilt.appendChild(nm);
+    fly.appendChild(tilt);
 
-    var root = document.documentElement;
-    var THRESHOLD = 40;          /* pixels of scroll before it snaps */
-    var flat = window.scrollY > THRESHOLD;
-    if (flat) root.classList.add('name-flat', 'name-instant');
-    root.classList.add('name-3d');
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { root.classList.remove('name-instant'); });
-    });
+    document.body.appendChild(intro);
+    document.body.appendChild(fly);
 
-    /* Gentle sway of the whole name while it's in 3D; eases to zero
-       when it snaps flat, so nothing jumps. */
-    var k = flat ? 0 : 1, running = false;
-    function tick(t) {
-      var target = flat ? 0 : 1;
-      k += (target - k) * 0.06;
-      if (Math.abs(target - k) < 0.001) k = target;
-      el.style.transform = k
-        ? 'rotateX(' + (Math.sin(t / 1700) * 10 * k).toFixed(2) + 'deg) ' +
-          'rotateY(' + (Math.sin(t / 2300) * 18 * k).toFixed(2) + 'deg)'
-        : '';
-      if (k === 0 && flat) { running = false; return; }
-      requestAnimationFrame(tick);
+    layout();
+    window.addEventListener('resize', layout);
+    if (document.fonts) {
+      if (document.fonts.ready) document.fonts.ready.then(layout);
+      if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', layout);
     }
-    function start() {
-      if (!running) { running = true; requestAnimationFrame(tick); }
-    }
-    if (!flat) start();
 
-    window.addEventListener('scroll', function () {
-      var now = window.scrollY > THRESHOLD;
-      if (now === flat) return;
-      flat = now;
-      root.classList.toggle('name-flat', flat);
-      start();
-    }, { passive: true });
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    intro.addEventListener('click', snap);
+    fly.addEventListener('click', snap);
+
+    requestAnimationFrame(tick);
   } catch (err) {
-    document.documentElement.classList.remove('name-3d');
+    cleanup();
   }
 })();
 </script>
