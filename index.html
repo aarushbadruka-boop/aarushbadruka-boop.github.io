@@ -28,17 +28,19 @@
 <script>document.documentElement.className += ' js';</script>
 
 <!--
-════════════════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════════════
   HOW THIS SITE IS PUT TOGETHER
-════════════════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════════════
   The site is now more than one page, so the styling and the
   scripting live in their own files and every page shares them.
-  Change styles.css once and all three pages change together.
+  Change styles.css once and every page changes together.
 
       my-site/
         index.html                ← this page
         sahyadri.html             ← my school
+        oxford.html               ← Saïd Business School
         merit-over-fortune.html   ← the first op-ed
+        research-paper.html       ← my research paper (abstract)
         styles.css                ← all the design
         site.js                   ← all the behaviour
         images/
@@ -46,6 +48,7 @@
           sahyadri.jpg
         files/
           ioqm-result.pdf
+          research-paper.pdf      ← the full paper
 
   ▸ The site is hosted on GitHub Pages. EVERYTHING in this folder
     (including the CNAME file) must sit at the top level of the
@@ -53,9 +56,9 @@
     To update the site, change the files in the repo and commit;
     GitHub republishes automatically in a minute or two.
 
-════════════════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════════════
   HOW TO ADD IMAGES
-════════════════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════════════
   1. Your photo goes in at IMAGE SLOT 1 (hero). Just change the
      src to match your filename. Until the file exists you'll see
      a labelled placeholder instead of a broken icon.
@@ -70,9 +73,9 @@
      The .plate__img class handles the crop and the hover zoom for
      you, and the photo stays in full colour. Nothing else needs changing.
 
-════════════════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════════════
   HOW TO ADD THE IOQM PDF
-════════════════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════════════
   1. Make a folder called  files  next to this page.
   2. Save your IOQM result or certificate as a PDF and name it
      exactly:   ioqm-result.pdf   (all lowercase, no spaces).
@@ -82,7 +85,10 @@
   ▸ The one thing that usually goes wrong: a capital letter or a
     space in the filename (IOQM Result.pdf). The link is
     case-sensitive on a real server, so it must match exactly.
-════════════════════════════════════════════════════════════════
+  ▸ The research paper works the same way: the full PDF lives at
+    files/research-paper.pdf, and research-paper.html (the page
+    with the abstract) links to it.
+══════════════════════════════════════════════════════════════════════
 -->
 </head>
 
@@ -120,7 +126,7 @@
 
 <main id="main">
 
-  <!-- ══ 2. HERO ═════════════════════════════════════════ -->
+  <!-- ══ 2. HERO ═══════════════════════════════════════════ -->
   <section class="hero shell" id="top">
     <div class="hero__meta reveal">
       <span class="tag">Sahyadri School — KFI</span>
@@ -181,7 +187,7 @@
     </div>
   </section>
 
-  <!-- ══ 3. EDUCATION ════════════════════════════════════ -->
+  <!-- ══ 3. EDUCATION ══════════════════════════════════════ -->
   <section class="band band--ruled shell" id="education" aria-labelledby="education-title">
     <div class="head">
       <div class="head__title reveal">
@@ -263,7 +269,7 @@
     </figure>
   </section>
 
-  <!-- ══ 3b. EXPERIENCES ════════════════════════════════
+  <!-- ══ 3b. EXPERIENCES ═══════════════════════════════════
        Kept separate from Education on purpose.
        TO ADD ONE: copy a <li class="roster__row"> block, change the
        date in the tag and the words in the paragraph. Newest first. -->
@@ -294,7 +300,7 @@
     </ul>
   </section>
 
-  <!-- ══ 4. INTERESTS ════════════════════════════════════ -->
+  <!-- ══ 4. INTERESTS ══════════════════════════════════════ -->
   <section class="band band--ruled shell" id="interests" aria-labelledby="interests-title">
     <div class="head">
       <div class="head__title reveal">
@@ -613,7 +619,7 @@
     </figure>
   </section>
 
-  <!-- ══ 5. ACHIEVEMENTS ═════════════════════════════════ -->
+  <!-- ══ 5. ACHIEVEMENTS ═══════════════════════════════════ -->
   <section class="band band--ruled shell" id="achievements" aria-labelledby="achievements-title">
     <div class="head">
       <div class="head__title reveal">
@@ -691,15 +697,21 @@
         </div>
         <h3 class="feature__title">Turning air-conditioner exhaust into power</h3>
         <p class="feature__text">
-          I've spent the last few months diving deep into green tech with Dr. Om Sahu.
+          I've spent the last few months diving deep into green tech with Dr. Om Prakash Sahu.
           Together we wrote a paper on harvesting air-conditioner exhaust to generate
           power — turning thermal pollution into energy, taking load off our beloved
           planet, and pushing on the Sustainable Development Goals along the way.
         </p>
         <dl class="feature__spec">
+          <dt>Paper</dt><dd>Design and Development of a Device to Harvest AC Compressor Exhaust Heat for Sustainable Electrical Energy Production</dd>
           <dt>Field</dt><dd>Green technology, energy recovery</dd>
-          <dt>With</dt><dd>Dr. Om Sahu</dd>
+          <dt>With</dt><dd>Dr. Om Prakash Sahu (UPES, Dehradun), Khyati Verma &amp; Lekha Sahu (SSIPMT, Raipur)</dd>
         </dl>
+        <!-- Opens the paper's own page (abstract + link to the full PDF). -->
+        <a class="pill pill--sm" href="research-paper.html">
+          Read the abstract
+          <span class="pill__arrow" aria-hidden="true">→</span>
+        </a>
       </div>
     </article>
 
@@ -767,7 +779,7 @@
     </ul>
   </section>
 
-  <!-- ══ 6. OP-EDS ═══════════════════════════════════════
+  <!-- ══ 6. OP-EDS ═════════════════════════════════════════
        TO ADD A NEW ARTICLE:
        1. Copy merit-over-fortune.html, rename it after the new
           article (lowercase, hyphens instead of spaces), and
@@ -809,7 +821,7 @@
     </ul>
   </section>
 
-  <!-- ══ 7. CONTACT ══════════════════════════════════════ -->
+  <!-- ══ 7. CONTACT ════════════════════════════════════════ -->
   <section class="band band--ruled shell" id="contact" aria-labelledby="contact-title">
     <div class="contact__grid">
 
