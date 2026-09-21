@@ -26,8 +26,11 @@
 ══════════════════════════════════════════════════════════════════════
   This page introduces the paper with its abstract. It uses the same
   layout as the op-ed pages, so all the design comes from styles.css.
-  The full paper lives at  files/research-paper.pdf  — the buttons
-  below open it in a new tab.
+  The full paper lives at  files/research-paper.pdf  — the button
+  below opens it in a new tab.
+  ▸ Note: inside  <div class="prose prose--lead">  the FIRST letter of
+    the FIRST paragraph becomes a big drop cap. Keep headings like
+    "Abstract" outside that div, or they'll get the drop cap instead.
   ▸ If you publish the paper in a journal later, add the journal
     name as another tag in the masthead and a link to it next to
     the "Read the full paper" button.
@@ -102,10 +105,15 @@
     </section>
 
     <!-- ══ ABSTRACT ═══════════════════════════════════════════ -->
-    <section class="band shell">
-      <div class="prose prose--lead reveal">
-        <p class="prose__turn">Abstract</p>
+    <section class="band shell" aria-labelledby="abstract-title">
+      <div class="head">
+        <div class="head__title reveal">
+          <span class="tag">From the paper</span>
+          <h2 id="abstract-title">Abstract</h2>
+        </div>
+      </div>
 
+      <div class="prose prose--lead reveal">
         <p>
           The increasing demand for air conditioners raises the problem of thermal
           energy wastage. Domestic air conditioners waste low-grade heat of
