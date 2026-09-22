@@ -28,7 +28,7 @@
 
   --display: 'Bevan', Georgia, serif;
   --body:    'Instrument Serif', Georgia, serif;
-  --util:    'IBM Plex Serif', serif;
+  --util:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
   --measure: 1280px;
