@@ -24,8 +24,8 @@
 
 <!-- Extra styles for this page only:
      1. CLICKABLE CARDS — an invisible link (.cover) is stretched over
-        the research card and each op-ed row, so a click anywhere on
-        them opens the page. Buttons sit above it and still work.
+        each op-ed row, so a click anywhere on it opens the page.
+        Buttons sit above it and still work.
         Interest cards with a "Read more" become clickable too — that
         part is done by the script at the bottom of this page.
      2. FULL-SCREEN NAME INTRO — the page opens on a black screen with
@@ -34,11 +34,13 @@
         Everything here only switches on when the script at the
         bottom runs, so if scripting fails the page shows normally. -->
 <style>
-  .feature, .oped__row { position: relative; cursor: pointer; }
+  .feature { position: relative; }
+  .oped__row { position: relative; cursor: pointer; }
   .cover { position: absolute; inset: 0; z-index: 1; }
   .feature__body > .pill,
   .oped__row .pill { position: relative; z-index: 2; }
   .feature__body > .pill { align-self: flex-start; }
+  .feature__body > .card__more { position: relative; z-index: 2; }
   .card--toggle { cursor: pointer; }
 
   .name-intro .hero__name { visibility: hidden; }
@@ -94,7 +96,7 @@
 <!--
 ══════════════════════════════════════════════════════════════════════
   HOW THIS SITE IS PUT TOGETHER
-══════════════════════════════════════════════════════════════════════
+═════════════════════════════════════════════════════════════════════
   The site is now more than one page, so the styling and the
   scripting live in their own files and every page shares them.
   Change styles.css once and every page changes together.
@@ -120,7 +122,7 @@
     To update the site, change the files in the repo and commit;
     GitHub republishes automatically in a minute or two.
 
-══════════════════════════════════════════════════════════════════════
+═══════════════════════════════════════════════════════════════════════
   HOW TO ADD IMAGES
 ══════════════════════════════════════════════════════════════════════
   1. Your photo goes in at IMAGE SLOT 1 (hero). Just change the
@@ -137,9 +139,9 @@
      The .plate__img class handles the crop and the hover zoom for
      you, and the photo stays in full colour. Nothing else needs changing.
 
-══════════════════════════════════════════════════════════════════════
+═════════════════════════════════════════════════════════════════════
   HOW TO ADD THE IOQM PDF
-══════════════════════════════════════════════════════════════════════
+═════════════════════════════════════════════════════════════════════
   1. Make a folder called  files  next to this page.
   2. Save your IOQM result or certificate as a PDF and name it
      exactly:   ioqm-result.pdf   (all lowercase, no spaces).
@@ -152,7 +154,7 @@
   ▸ The research paper works the same way: the full PDF lives at
     files/research-paper.pdf, and research-paper.html (the page
     with the abstract) links to it.
-══════════════════════════════════════════════════════════════════════
+═════════════════════════════════════════════════════════════════════
 -->
 </head>
 
@@ -192,12 +194,6 @@
 
   <!-- ══ 2. HERO ═══════════════════════════════════════════ -->
   <section class="hero shell" id="top">
-    <div class="hero__meta reveal">
-      <span class="tag">Sahyadri School — KFI</span>
-      <span class="tag">Class 12 · ICSE &amp; ISC</span>
-      <span class="tag">Class of 2027</span>
-    </div>
-
     <div class="hero__grid">
       <div class="hero__head reveal" style="--d:80ms">
         <!-- The full-screen 3D intro reads its letters from this
@@ -254,7 +250,7 @@
     </div>
   </section>
 
-  <!-- ══ 3. EDUCATION ══════════════════════════════════════ -->
+  <!-- ══ 3. EDUCATION ═════════════════════════════════════ -->
   <section class="band band--ruled shell" id="education" aria-labelledby="education-title">
     <div class="head">
       <div class="head__title reveal">
@@ -666,9 +662,10 @@
             <div class="card__more__body">
               <p>
                 I love taking photos. I was the official photographer and
-                videographer for my school for one year, during 2025–2026. Some of
-                the photos I have taken are up on the school website — you may
-                check them out!
+                videographer for my school for one year, during 2025–2026. I have
+                also shot a corporate film for VIZ PQS Pvt. Ltd., a capacitor
+                manufacturing plant. Some of the photos I have taken are up on the
+                school website — you may check them out!
               </p>
               <a class="pill pill--sm" href="https://connect.sahyadrischool.org" target="_blank" rel="noopener">
                 See them on the school site
@@ -688,7 +685,7 @@
     </figure>
   </section>
 
-  <!-- ══ 5. ACHIEVEMENTS ═══════════════════════════════════ -->
+  <!-- ══ 5. ACHIEVEMENTS ══════════════════════════════════ -->
   <section class="band band--ruled shell" id="achievements" aria-labelledby="achievements-title">
     <div class="head">
       <div class="head__title reveal">
@@ -701,12 +698,6 @@
     </div>
 
     <article class="feature reveal">
-      <!-- Invisible layer over the whole card: a click anywhere on it
-           opens the research page. Hidden from screen readers and the
-           Tab key because the "Read the abstract" button below already
-           does the same job for them. -->
-      <a class="cover" href="research-paper.html" aria-hidden="true" tabindex="-1"></a>
-
       <div class="feature__plate">
         <!-- ═══ IMAGE SLOT — a photo of the rig or your team works well here ═══
              Replace this <svg>...</svg> with:
@@ -771,21 +762,97 @@
           <span class="tag">Green technology</span>
         </div>
         <h3 class="feature__title">Turning air-conditioner exhaust into power</h3>
+        <!-- ABSTRACT — copied from the paper (files/research-paper.pdf). -->
         <p class="feature__text">
-          I've spent the last few months diving deep into green tech with Dr. Om Prakash Sahu.
-          Together we wrote a paper on harvesting air-conditioner exhaust to generate
-          power — turning thermal pollution into energy, taking load off our beloved
-          planet, and pushing on the Sustainable Development Goals along the way.
+          <strong>Abstract.</strong>
+          The increasing demand for air conditioners raises the problem of thermal
+          energy wastage. Domestic air conditioners waste low-grade heat of 30–70 °C,
+          which cannot be used efficiently by classical heat-to-power methods. This
+          paper presents an approach to the sustainable conversion of this heat energy
+          into usable electrons, stored in an electric cell.
+        </p>
+        <p class="feature__text">
+          Experimental research has been performed on two different materials,
+          stainless-steel and copper plates, with thermal adhesive to optimize physical
+          conduction into a Peltier module. The temperature difference between the two
+          sides of the module creates the need for an optimal cold-side heat sink to
+          maximize domestic on-site power generation.
+        </p>
+        <p class="feature__text">
+          The developed algorithms are applied to real-time data, and the outcomes are
+          compared to identify the better efficiency, as proved through data
+          visualization and graphical representation.
         </p>
         <dl class="feature__spec">
           <dt>Paper</dt><dd>Design and Development of a Device to Harvest AC Compressor Exhaust Heat for Sustainable Electrical Energy Production</dd>
           <dt>Field</dt><dd>Green technology, energy recovery</dd>
           <dt>With</dt><dd>Dr. Om Prakash Sahu (UPES, Dehradun), Khyati Verma &amp; Lekha Sahu (SSIPMT, Raipur)</dd>
         </dl>
-        <!-- Opens the paper's own page (abstract + link to the full PDF). -->
-        <a class="pill pill--sm" href="research-paper.html">
-          Read the abstract
-          <span class="pill__arrow" aria-hidden="true">→</span>
+        <!-- READ MORE — the story of writing the paper (from my AIW doc). -->
+        <details class="card__more">
+          <summary>
+            <span class="card__more__sign" aria-hidden="true"></span>
+            Read more
+          </summary>
+          <div class="card__more__body">
+            <p>
+              One and a half percent. That is the number I brought to Dr. Sahu after
+              four months of work. I expected him to end the project.
+            </p>
+            <p>
+              At eight, I filled a balloon with hydrogen using aluminium foil and drain
+              cleaner, and watched it burn. That was my first real experiment with
+              materials and reactions, a thread I picked up again years later, testing
+              metals for a thermoelectric device.
+            </p>
+            <p>
+              The idea was simple to say out loud: air conditioners and refrigerators
+              throw away heat, 40 °C to 70 °C of it, through the compressor exhaust, and
+              nobody uses it. Under Dr. Om Sahu, I built a device to catch that heat and
+              turn it into electricity, using Peltier modules and the Seebeck effect.
+              Simple to say. Not simple to build.
+            </p>
+            <p>
+              Nearly four hundred hours went into it, spread over four months. I tested
+              copper against stainless steel for the catchment plate; stainless steel
+              won on performance by a whisker, and by a mile on cost. This is a win-win
+              situation, I remember writing, because a cheaper metal winning was not
+              what I expected. I wired six Peltier modules in series, then in parallel,
+              even though the theory said the two should perform the same. Series won,
+              and I still do not fully understand why! I only trust what the graphs
+              showed me.
+            </p>
+            <p>
+              Then came the number that worried me. Carnot's theorem sets a ceiling on
+              how efficient a system like this can ever be, based on the temperature
+              difference available. Mine was small: a compressor at 40 °C to 70 °C, a
+              room at 25 °C to 35 °C. That ceiling sat around 5%. My device reached 1 to
+              2%. To charge one AA battery would take it 24 to 30 hours.
+            </p>
+            <p>
+              When I brought this to Dr. Sahu, expecting a change or worse, termination
+              of the project, he changed my perspective. There are millions of air
+              conditioners running right now, in every city, wasting heat the same way
+              mine was. Even 1% efficiency, multiplied across all of them, is not
+              nothing: it is scalable impact. That reframed how I judge engineering. Not
+              by how clean a number looks on its own, but by what it could do at scale.
+            </p>
+            <p>
+              The paper itself went through as many versions as the device did.
+            </p>
+            <p>
+              In October 2026, the paper will be presented at the IEEE TEMSET symposium.
+              I still think about that balloon, at eight, and how it is really the same
+              question I am still asking: what can I make from heat nobody wants.
+            </p>
+          </div>
+        </details>
+
+        <!-- Opens the full paper (PDF) in a new tab. -->
+        <a class="pill pill--sm" href="files/research-paper.pdf" target="_blank" rel="noopener">
+          Read the full paper
+          <span class="pill__arrow" aria-hidden="true">↗</span>
+          <span class="u-hidden">(PDF, opens in a new tab)</span>
         </a>
       </div>
     </article>
@@ -810,7 +877,7 @@
       </li>
       <li class="roster__row reveal" style="--d:60ms">
         <span class="tag">Student Council</span>
-        <p class="roster__text">Founded and headed the Dormitory Affairs Committee at Sahyadri School — KFI.</p>
+        <p class="roster__text">Founded and Anchored the Dormitory Affairs Committee at Sahyadri School — KFI.</p>
       </li>
       <li class="roster__row reveal" style="--d:120ms">
         <span class="tag">Student Council</span>
@@ -854,7 +921,7 @@
     </ul>
   </section>
 
-  <!-- ══ 6. OP-EDS ═════════════════════════════════════════
+  <!-- ══ 6. OP-EDS ════════════════════════════════════════
        TO ADD A NEW ARTICLE:
        1. Copy merit-over-fortune.html, rename it after the new
           article (lowercase, hyphens instead of spaces), and
@@ -898,7 +965,7 @@
     </ul>
   </section>
 
-  <!-- ══ 7. CONTACT ════════════════════════════════════════ -->
+  <!-- ══ 7. CONTACT ═══════════════════════════════════════ -->
   <section class="band band--ruled shell" id="contact" aria-labelledby="contact-title">
     <div class="contact__grid">
 
@@ -912,7 +979,6 @@
         <div class="contact__where">
           <span class="tag">Sahyadri School — KFI, Pune, Maharashtra</span>
           <span class="tag"><a href="mailto:aarushbadruka@gmail.com">aarushbadruka@gmail.com</a></span>
-          <span class="tag">Usually replies between classes</span>
         </div>
       </div>
 
@@ -1002,8 +1068,6 @@
 
 <footer class="foot">
   <div class="shell foot__inner">
-    <span class="tag">Aarush Badruka</span>
-    <span class="tag">Sahyadri School — KFI · Class of 2027</span>
     <span class="tag">© 2026</span>
   </div>
 </footer>
