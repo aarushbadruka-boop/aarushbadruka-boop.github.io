@@ -95,7 +95,14 @@
 <!-- Flags that JS is alive. The scroll-reveal animation and the phone
      menu are scoped to .js so that if scripting fails, nothing is
      ever hidden. -->
-<script>document.documentElement.className += ' js';</script>
+<script>
+  /* "js" switches on the animations; "dyslexic" brings back the
+     dyslexia-friendly font if the visitor chose it last time. */
+  (function (d) {
+    d.className += ' js';
+    try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
+  })(document.documentElement);
+</script>
 
 <!--
 ══════════════════════════════════════════════════════════════════════
@@ -119,6 +126,8 @@
         files/
           ioqm-result.pdf
           research-paper.pdf      ← the full paper
+        fonts/                    ← OpenDyslexic, for the
+                                    dyslexia-friendly font button
 
   ▸ The site is hosted on GitHub Pages. EVERYTHING in this folder
     (including the CNAME file) must sit at the top level of the
@@ -332,7 +341,7 @@
 
     <figure class="quote reveal" style="--d:120ms">
       <p>"I have never let my schooling interfere with my education!"</p>
-      <cite class="tag">— Mark Twain</cite>
+      <cite class="tag">— Grant Allen</cite>
     </figure>
   </section>
 
@@ -927,9 +936,23 @@
           Ideas, questions, or something you want to build together —
           send it over and I'll write back.
         </p>
+        <!-- The Copy button puts the address on the visitor's clipboard
+             and shows "Copied to clipboard!". It stays hidden until
+             site.js switches it on, so it never appears broken; the
+             mailto: link beside it works either way. -->
         <div class="contact__where">
           <span class="tag">Sahyadri School — KFI, Pune, Maharashtra</span>
-          <span class="tag"><a href="mailto:aarushbadruka@gmail.com">aarushbadruka@gmail.com</a></span>
+          <div class="contact__email">
+            <span class="tag"><a href="mailto:aarushbadruka@gmail.com">aarushbadruka@gmail.com</a></span>
+            <button class="pill pill--sm" type="button" data-copy="aarushbadruka@gmail.com" hidden>
+              Copy email
+              <svg class="copy__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                   stroke-width="1.4" aria-hidden="true" focusable="false">
+                <rect x="5.5" y="5.5" width="8" height="8" rx="1"/>
+                <path d="M10.5 3.5v-1a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1057,9 +1080,8 @@
         (e.g. from a #link) or has "reduce motion" switched on. */
   var root = document.documentElement;
   var real = document.querySelector('.hero__name');
-  var reduce = window.matchMedia &&
-               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!real || reduce || location.hash || window.scrollY > 10) return;
+  var motion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!real || !motion || motion.matches || location.hash || window.scrollY > 10) return;
 
   var intro, stage, items = [], S = 1;
   var snapping = false, finished = false, k = 1, touchY = null;
@@ -1077,6 +1099,7 @@
     window.removeEventListener('keydown', onKey);
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', layout);
+    if (motion.removeEventListener) motion.removeEventListener('change', onMotionPref);
   }
 
   /* Find every letter of the heading (without changing it). */
@@ -1171,11 +1194,17 @@
     if (touchY !== null && touchY - e.touches[0].clientY > 8) snap();
   }
   function onKey(e) {
+    /* Tab or Escape: the visitor is using the keyboard to get around,
+       so drop the intro at once rather than hide their focus behind
+       it while the letters land. Tab still moves on as normal. */
+    if (e.key === 'Tab' || e.key === 'Escape') { cleanup(); return; }
     if (['ArrowDown', 'PageDown', ' ', 'Spacebar', 'End', 'Enter'].indexOf(e.key) !== -1) {
       e.preventDefault();
       snap();
     }
   }
+  /* "Reduce motion" switched on while the letters are floating. */
+  function onMotionPref(e) { if (e.matches) cleanup(); }
   function onScroll() { if (snapping) layout(); else snap(); }
 
   try {
@@ -1219,6 +1248,7 @@
     window.addEventListener('touchmove', onTouchMove, { passive: false });
     window.addEventListener('keydown', onKey);
     window.addEventListener('scroll', onScroll, { passive: true });
+    if (motion.addEventListener) motion.addEventListener('change', onMotionPref);
     intro.addEventListener('click', snap);
 
     requestAnimationFrame(tick);

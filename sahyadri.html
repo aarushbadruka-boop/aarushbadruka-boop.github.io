@@ -18,7 +18,14 @@
 </noscript>
 
 <link rel="stylesheet" href="styles.css">
-<script>document.documentElement.className += ' js';</script>
+<script>
+  /* "js" switches on the animations; "dyslexic" brings back the
+     dyslexia-friendly font if the visitor chose it last time. */
+  (function (d) {
+    d.className += ' js';
+    try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
+  })(document.documentElement);
+</script>
 </head>
 
 <body>

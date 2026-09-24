@@ -33,13 +33,68 @@
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
   --measure: 1280px;
   --ease: cubic-bezier(.22,.61,.36,1);
+
+  /* READING WIDTH — every block of running text stops at this width,
+     which keeps a line between 45 and 75 characters (about 65 is the
+     comfortable middle). Instrument Serif is a narrow face: a "ch" is
+     the width of a zero, which is much wider than an average letter,
+     so 46ch comes out at about 65 characters. The dyslexia font
+     below is wider and resets this. */
+  --read: 46ch;
+}
+
+/* ============================================================
+   DYSLEXIA-FRIENDLY FONT
+   The button in the bottom corner (made by site.js) adds the class
+   "dyslexic" to <html>, and the little script in each page's <head>
+   puts it back on the next visit. Only the body text changes;
+   headings and the small capital labels keep their own faces.
+   OpenDyslexic lives in fonts/ (free under the SIL Open Font
+   Licence — see fonts/OpenDyslexic-LICENSE.txt). Browsers only
+   download a font once something uses it, so visitors who never
+   press the button never load it.
+   ▸ size-adjust:90% makes its lower-case letters the same height as
+     Instrument Serif's, so switching changes the letters, not the
+     size of the text.
+   ▸ OpenDyslexic is about twice as wide as Instrument Serif, so the
+     reading width opens up to keep roughly 65 characters a line,
+     and the interest cards go from three across to two.
+   ============================================================ */
+@font-face{
+  font-family:'OpenDyslexic'; font-style:normal; font-weight:400; font-display:swap;
+  size-adjust:90%;
+  src:url(fonts/opendyslexic-latin-400-normal.woff2) format('woff2');
+}
+@font-face{
+  font-family:'OpenDyslexic'; font-style:italic; font-weight:400; font-display:swap;
+  size-adjust:90%;
+  src:url(fonts/opendyslexic-latin-400-italic.woff2) format('woff2');
+}
+@font-face{
+  font-family:'OpenDyslexic'; font-style:normal; font-weight:700; font-display:swap;
+  size-adjust:90%;
+  src:url(fonts/opendyslexic-latin-700-normal.woff2) format('woff2');
+}
+@font-face{
+  font-family:'OpenDyslexic'; font-style:italic; font-weight:700; font-display:swap;
+  size-adjust:90%;
+  src:url(fonts/opendyslexic-latin-700-italic.woff2) format('woff2');
+}
+:root.dyslexic{
+  --body: 'OpenDyslexic', Verdana, sans-serif;
+  --read: 70ch;
+}
+@media (min-width:1025px){
+  .dyslexic .grid{ grid-template-columns:repeat(2,1fr); }
 }
 
 /* ============================================================
    RESET / BASE
    ============================================================ */
 *,*::before,*::after{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; scroll-padding-top:6rem; -webkit-text-size-adjust:100%; }
+/* scroll-padding keeps anything Tab lands on clear of the fixed
+   header at the top and the font button in the bottom corner */
+html{ scroll-behavior:smooth; scroll-padding-top:6rem; scroll-padding-bottom:5rem; -webkit-text-size-adjust:100%; }
 body{
   margin:0;
   background:var(--ink);
@@ -66,7 +121,13 @@ summary{ list-style:none; }
 summary::-webkit-details-marker{ display:none; }
 summary::marker{ content:''; }
 
-:focus-visible{ outline:2px solid var(--paper); outline-offset:3px; border-radius:2px; }
+/* KEYBOARD FOCUS — a thick white ring, drawn a little way outside
+   whatever has focus, so the dark page shows between the two. White
+   on the near-black page (and on the grey cards) is well above the
+   3:1 contrast a focus ring needs. It appears when moving around
+   with the keyboard (and in text boxes, which always show it), not
+   on ordinary mouse clicks. */
+:focus-visible{ outline:3px solid var(--paper); outline-offset:3px; border-radius:2px; }
 
 .shell{ width:100%; max-width:var(--measure); margin-inline:auto; padding-inline:var(--gutter); }
 .band{ padding-block:clamp(4rem,9vw,7rem); }
@@ -117,7 +178,7 @@ summary::marker{ content:''; }
 .quote p{
   font-style:italic;
   font-size:clamp(1.25rem,2.9vw,2.375rem);
-  line-height:1.18; letter-spacing:-.01em;
+  line-height:1.5; letter-spacing:-.01em;
 }
 .quote cite{ display:block; margin-top:1rem; font-style:normal; }
 
@@ -257,14 +318,14 @@ summary::marker{ content:''; }
   margin-top:1.25rem;
   font-style:italic;
   font-size:clamp(1.125rem,2.1vw,1.75rem);
-  line-height:1.15; letter-spacing:-.01em; color:var(--paper-70);
+  line-height:1.5; letter-spacing:-.01em; color:var(--paper-70);
   max-width:24ch;
 }
 .hero__bio{
   margin-top:1.75rem; padding-top:1.5rem;
   border-top:1px solid var(--rule);
   font-size:clamp(1.0625rem,.5vw + 1rem,1.25rem);
-  line-height:1.5; color:var(--paper-70); max-width:44ch;
+  line-height:1.6; color:var(--paper-70); max-width:var(--read);
 }
 .hero__cta{ margin-top:1.75rem; }
 
@@ -313,7 +374,7 @@ summary::marker{ content:''; }
   grid-column:1 / 10;
   font-style:italic;
   font-size:clamp(1.375rem,3.2vw,2.625rem);
-  line-height:1.16; letter-spacing:-.015em;
+  line-height:1.5; letter-spacing:-.015em;
 }
 .hero__manifesto p span{ color:var(--paper-52); }
 
@@ -410,7 +471,7 @@ summary::marker{ content:''; }
 
 .card__body{ padding:1.125rem .25rem .25rem; display:flex; flex-direction:column; flex:1; }
 .card__name{ font-size:clamp(1rem,1.15vw,1.1875rem); line-height:1.18; text-transform:uppercase; }
-.card__note{ font-size:1rem; line-height:1.45; color:var(--on-card); margin-top:.55rem; }
+.card__note{ font-size:1rem; line-height:1.55; color:var(--on-card); margin-top:.55rem; max-width:var(--read); }
 
 /* ---- READ MORE ---------------------------------------------
    Plain HTML <details>. It opens and closes with no JavaScript
@@ -439,7 +500,9 @@ summary::marker{ content:''; }
 .card__more[open] .card__more__sign{ transform:rotate(45deg); }
 .card__more[open] > summary{ border-bottom-color:var(--paper); }
 
-.card__more__body{ padding-top:1.1rem; color:var(--on-card); font-size:1rem; line-height:1.5; }
+.card__more__body{ padding-top:1.1rem; color:var(--on-card); font-size:1rem; line-height:1.6; }
+.card__more__body > p,
+.card__more__list{ max-width:var(--read); }
 .card__more__body p + p{ margin-top:.9rem; }
 .card__more__body em{ font-style:italic; }
 .card__more__body .pill{ margin-top:1.1rem; }
@@ -469,7 +532,7 @@ summary::marker{ content:''; }
   text-transform:uppercase; color:var(--paper);
 }
 .feature__title{ font-size:clamp(1.25rem,2.6vw,2.125rem); line-height:1.05; text-transform:uppercase; letter-spacing:-.01em; }
-.feature__text{ margin-top:1.125rem; color:var(--on-card); max-width:52ch; }
+.feature__text{ margin-top:1.125rem; color:var(--on-card); max-width:var(--read); line-height:1.6; }
 .feature__spec{ display:grid; grid-template-columns:auto 1fr; margin:2rem 0 0; }
 .feature__spec dt,
 .feature__spec dd{
@@ -490,7 +553,7 @@ summary::marker{ content:''; }
 .roster__row:hover{ background:rgba(255,255,255,.03); padding-left:1rem; }
 .roster__row .tag{ transition:color .4s var(--ease); }
 .roster__row:hover .tag{ color:var(--paper); }
-.roster__text{ font-size:clamp(1.0625rem,.5vw + 1rem,1.25rem); line-height:1.45; color:var(--paper-78); max-width:62ch; }
+.roster__text{ font-size:clamp(1.0625rem,.5vw + 1rem,1.25rem); line-height:1.55; color:var(--paper-78); max-width:var(--read); }
 .roster__link{ margin-top:1rem; }
 
 /* ============================================================
@@ -510,18 +573,21 @@ summary::marker{ content:''; }
   font-size:clamp(1.25rem,2.4vw,1.875rem); line-height:1.05;
   text-transform:uppercase; letter-spacing:-.01em;
 }
-.oped__standfirst{ margin-top:1rem; color:var(--paper-70); max-width:58ch; }
+.oped__standfirst{ margin-top:1rem; color:var(--paper-70); max-width:var(--read); line-height:1.6; }
 .oped__row .pill{ margin-top:1.4rem; }
 
 /* ============================================================
    7 — CONTACT
    ============================================================ */
 .contact__grid{ display:grid; grid-template-columns:repeat(12,1fr); column-gap:var(--gutter); row-gap:3rem; }
-.contact__intro{ grid-column:1 / 5; }
+.contact__intro{ grid-column:1 / 6; }
 .contact__title{ font-size:clamp(1.5rem,4vw,3.25rem); line-height:1; text-transform:uppercase; margin-block:1rem 1.25rem; }
-.contact__note{ color:var(--paper-70); max-width:30ch; }
+.contact__note{ color:var(--paper-70); max-width:var(--read); line-height:1.6; }
 .contact__where{ margin-top:2rem; display:grid; gap:.5rem; }
 .contact__where a{ border-bottom:1px solid var(--paper-30); transition:border-color .3s var(--ease); }
+/* the email address with its Copy button beside it */
+.contact__email{ display:flex; flex-wrap:wrap; align-items:center; gap:.75rem 1rem; }
+.copy__icon{ width:.9rem; height:.9rem; flex:none; }
 .contact__where a:hover{ border-color:var(--paper); }
 
 .form{ grid-column:6 / 13; }
@@ -536,7 +602,7 @@ summary::marker{ content:''; }
 .field textarea,
 .field select{
   width:100%; background:transparent; color:var(--paper);
-  font-family:var(--body); font-size:1.125rem; line-height:1.4;
+  font-family:var(--body); font-size:1.125rem; line-height:1.5;
   border:0; border-bottom:1px solid var(--rule);
   padding:.5rem 0 .75rem; border-radius:0;
   appearance:none; -webkit-appearance:none;
@@ -557,6 +623,11 @@ summary::marker{ content:''; }
 .field input:focus,
 .field textarea:focus,
 .field select:focus{ outline:none; border-bottom-color:var(--paper); }
+/* keyboard users get the same white ring as everywhere else, pushed
+   out far enough to clear the underline */
+.field input:focus-visible,
+.field textarea:focus-visible,
+.field select:focus-visible{ outline:3px solid var(--paper); outline-offset:6px; }
 .field:focus-within label{ color:var(--paper); }
 .field::after{
   content:''; position:absolute; left:0; bottom:0; height:1px; width:100%;
@@ -579,7 +650,7 @@ summary::marker{ content:''; }
 .form__foot .tag{ max-width:28ch; letter-spacing:.1em; }
 
 .form__error{
-  margin-top:1.75rem; padding:1rem 1.25rem;
+  margin-top:1.75rem; padding:1rem 1.25rem; max-width:var(--read);
   border:1px solid var(--paper-38);
   font-size:1rem; color:var(--paper);
 }
@@ -588,7 +659,7 @@ summary::marker{ content:''; }
 
 .sent{ border:1px solid var(--rule); background:var(--card); padding:clamp(1.75rem,4vw,2.75rem); }
 .sent h3{ font-size:1.5rem; text-transform:uppercase; margin-bottom:.75rem; }
-.sent p{ color:var(--on-card); max-width:40ch; }
+.sent p{ color:var(--on-card); max-width:var(--read); line-height:1.6; }
 [hidden]{ display:none !important; }
 
 /* ============================================================
@@ -615,7 +686,7 @@ summary::marker{ content:''; }
 }
 .masthead__standfirst{
   margin-top:1.5rem; font-style:italic; color:var(--paper-70);
-  font-size:clamp(1.125rem,2vw,1.5rem); line-height:1.3; max-width:46ch;
+  font-size:clamp(1.125rem,2vw,1.5rem); line-height:1.5; max-width:var(--read);
 }
 
 /* quote on the left, picture on the right */
@@ -627,13 +698,14 @@ summary::marker{ content:''; }
 .split__quote p{
   font-style:italic;
   font-size:clamp(1.375rem,3vw,2.375rem);
-  line-height:1.2; letter-spacing:-.01em;
+  line-height:1.5; letter-spacing:-.01em;
+  max-width:var(--read);
 }
 .split__quote cite{ display:block; margin-top:1.25rem; font-style:normal; }
 .split__figure{ grid-column:8 / 13; }
 
 /* long-form article body */
-.prose{ max-width:64ch; margin-top:clamp(2rem,4vw,3rem); }
+.prose{ max-width:var(--read); margin-top:clamp(2rem,4vw,3rem); }
 .prose p{
   font-size:clamp(1.0625rem,.5vw + 1rem,1.25rem);
   line-height:1.62; color:var(--paper-78);
@@ -647,7 +719,7 @@ summary::marker{ content:''; }
 .prose__turn{
   font-style:italic; color:var(--paper) !important;
   font-size:clamp(1.25rem,2.2vw,1.625rem) !important;
-  line-height:1.3 !important;
+  line-height:1.5 !important;
   padding-left:1.25rem; border-left:1px solid var(--paper-30);
   margin-top:1.6em !important;
 }
@@ -659,10 +731,10 @@ summary::marker{ content:''; }
 .aside{
   background:var(--card); border:1px solid var(--rule);
   padding:clamp(1.5rem,3vw,2rem);
-  max-width:64ch; margin-top:clamp(2rem,4vw,2.5rem);
+  max-width:var(--read); margin-top:clamp(2rem,4vw,2.5rem);
 }
 .aside h2{ font-size:1rem; text-transform:uppercase; letter-spacing:.02em; }
-.aside p{ margin-top:.9rem; color:var(--on-card); font-size:1.0625rem; line-height:1.55; }
+.aside p{ margin-top:.9rem; color:var(--on-card); font-size:1.0625rem; line-height:1.6; }
 
 .next{
   display:flex; flex-wrap:wrap; gap:1rem 2rem; align-items:center;
@@ -675,7 +747,9 @@ summary::marker{ content:''; }
 /* ============================================================
    FOOTER
    ============================================================ */
-.foot{ border-top:1px solid var(--rule); padding-block:2rem 3rem; }
+/* the extra room at the bottom lets the last line scroll clear of
+   the font button in the corner */
+.foot{ border-top:1px solid var(--rule); padding-block:2rem 5.5rem; }
 .foot__inner{ display:flex; flex-wrap:wrap; gap:1rem 2rem; align-items:center; }
 .foot__inner .tag:last-child{ margin-left:auto; }
 
@@ -698,7 +772,6 @@ summary::marker{ content:''; }
   .hero__head{ grid-column:1 / 13; }
   .hero__rail{ grid-column:1 / 13; }
   .hero__role{ max-width:32ch; }
-  .hero__bio{ max-width:56ch; }
   .portrait{ max-width:26rem; }
   .hero__manifesto p{ grid-column:1 / 13; }
   .head__title, .head__aside{ grid-column:1 / 13; }
@@ -776,12 +849,42 @@ summary::marker{ content:''; }
 /* ============================================================
    REDUCED MOTION
    ============================================================ */
+/* For visitors who have asked their device for less motion
+   (Settings → Accessibility → Reduce motion). Everything still works
+   and still changes colour on hover; it just stops moving.
+   ▸ The full-screen 3D name intro, with its floating letters, never
+     starts (the script at the bottom of index.html checks this
+     setting) and is hidden here as well, just in case.
+   ▸ Photo and drawing zooms, card lifts, sliding arrows and the
+     scroll-in fade are all switched off.
+   ▸ Any CSS animation or transition added later is caught by the
+     first rule. Something moved by JavaScript instead (a parallax
+     scroll, a cursor trail) has to check the setting itself, the
+     way the name intro does. */
 @media (prefers-reduced-motion:reduce){
   html{ scroll-behavior:auto; }
-  *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+  *,*::before,*::after{
+    animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important; transition-delay:0s !important;
+    scroll-behavior:auto !important;
+  }
   .js .reveal{ opacity:1; transform:none; }
   .edu__track::after{ transform:scaleX(1); }
   .edu__track--point::after{ transform:scaleY(1); }
+
+  /* the 3D name intro */
+  .intro, .intro__stage{ display:none !important; }
+  .name-intro .hero__name{ visibility:visible; }
+
+  /* hover and focus movement */
+  .card:hover, .card:focus-within,
+  .card:hover .plate__img, .card:focus-within .plate__img,
+  .feature:hover .plate__img, .portrait__frame:hover .plate__img,
+  .card:hover .card__plate > svg, .card:focus-within .card__plate > svg,
+  .feature:hover .feature__plate > svg,
+  .pill:hover .pill__arrow, .edu__row--link:hover .edu__more span,
+  .crumb:hover span{ transform:none; }
+  .roster__row:hover{ padding-left:0; }
 }
 
 /* ============================================================
@@ -851,7 +954,7 @@ summary::marker{ content:''; }
 }
 
 /* a long quote needs smaller type to sit beside the picture */
-.split__quote--long p{ font-size:clamp(1.125rem,1.9vw,1.625rem); line-height:1.3; }
+.split__quote--long p{ font-size:clamp(1.125rem,1.9vw,1.625rem); line-height:1.5; }
 
 /* ---- black and white — used only for the home-page portrait ---- */
 .plate__img--mono{ filter:grayscale(1) contrast(1.05); }
@@ -870,4 +973,67 @@ summary::marker{ content:''; }
 @media (max-width:1024px){
   .split:has(.portrait__frame--wide) .split__quote,
   .split:has(.portrait__frame--wide) .split__figure{ grid-column:1 / 13; max-width:none; }
+}
+
+/* ============================================================
+   ACCESSIBILITY — font button and "Copied" message
+   Both are made by site.js, so neither appears if scripting is off.
+   ============================================================ */
+
+/* ---- the dyslexia-friendly font switch, bottom-right corner ----
+   It sits under the menu (z-index 100) and under the name intro, so
+   it never covers either. aria-pressed tells screen readers whether
+   it is on; the little switch shows the same thing on screen. */
+.font-toggle{
+  position:fixed; z-index:90;
+  right:max(1rem, env(safe-area-inset-right));
+  bottom:max(1rem, env(safe-area-inset-bottom));
+  display:inline-flex; align-items:center; gap:.65rem;
+  min-height:2.75rem; padding:.55rem 1rem .55rem .75rem;
+  background:rgba(13,13,13,.9);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  border:1px solid var(--paper-38); border-radius:999px;
+  color:var(--paper); cursor:pointer;
+  font-family:var(--util); font-size:.6875rem; letter-spacing:.12em; text-transform:uppercase;
+  transition:border-color .3s var(--ease), background .3s var(--ease);
+}
+.font-toggle:hover{ border-color:var(--paper); background:rgba(13,13,13,.97); }
+.font-toggle__switch{
+  position:relative; flex:none; width:1.9rem; height:1.05rem;
+  border:1px solid var(--paper-70); border-radius:999px;
+  transition:background .25s var(--ease), border-color .25s var(--ease);
+}
+.font-toggle__switch::after{
+  content:''; position:absolute; top:50%; left:.15rem;
+  width:.65rem; height:.65rem; border-radius:50%;
+  background:var(--paper); transform:translateY(-50%);
+  transition:transform .25s var(--ease), background .25s var(--ease);
+}
+.font-toggle[aria-pressed="true"]{ border-color:var(--paper); }
+.font-toggle[aria-pressed="true"] .font-toggle__switch{ background:var(--paper); border-color:var(--paper); }
+.font-toggle[aria-pressed="true"] .font-toggle__switch::after{
+  background:var(--ink); transform:translate(.85rem, -50%);
+}
+
+/* ---- the pop-up message after copying the email address ----
+   Bottom-centre on a wide screen; on a phone it rises above the font
+   button so the two never overlap. role="status" means screen
+   readers announce it without moving the visitor's focus. */
+.toast{
+  position:fixed; z-index:120; left:0; right:0; margin-inline:auto;
+  bottom:max(1.5rem, env(safe-area-inset-bottom));
+  width:max-content; max-width:calc(100vw - 2rem);
+  padding:.85rem 1.25rem; border-radius:1.5rem;
+  background:var(--paper); color:var(--ink);
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  font-family:var(--util); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;
+  text-align:center; pointer-events:none;
+  opacity:0; transform:translateY(.75rem);
+  transition:opacity .2s var(--ease), transform .2s var(--ease);
+}
+.toast:empty{ padding:0; box-shadow:none; }
+.toast.is-on{ opacity:1; transform:none; }
+
+@media (max-width:720px){
+  .toast{ bottom:calc(max(1rem, env(safe-area-inset-bottom)) + 3.75rem); }
 }
