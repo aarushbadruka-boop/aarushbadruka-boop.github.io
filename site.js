@@ -14,7 +14,10 @@
 (function () {
   'use strict';
 
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Read "reduce motion" fresh each time it's needed, so switching it
+     on while the page is open takes effect straight away. */
+  var motionQuery   = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var reducedMotion = function () { return motionQuery.matches; };
   var revealables   = document.querySelectorAll('.reveal');
 
   var revealAll = function () {
@@ -29,7 +32,7 @@
 
   /* ---- 1. Entrance reveal — FIRST, so content shows no matter what -- */
   safely('reveal', function () {
-    if (reducedMotion || !('IntersectionObserver' in window)) { revealAll(); return; }
+    if (reducedMotion() || !('IntersectionObserver' in window)) { revealAll(); return; }
 
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -40,6 +43,11 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 
     revealables.forEach(function (el) { observer.observe(el); });
+
+    // switched on mid-visit: show everything that's still waiting
+    if (motionQuery.addEventListener) {
+      motionQuery.addEventListener('change', function () { if (reducedMotion()) revealAll(); });
+    }
   });
 
   /* Failsafe: whatever happened above, nothing stays invisible past
@@ -75,13 +83,22 @@
       setOpen(toggle.getAttribute('aria-expanded') !== 'true');
     });
 
-    /* tapping a link, pressing Escape, or tapping the page closes it */
+    /* tapping a link, pressing Escape, or tapping the page closes it.
+       Escape also puts keyboard focus back on the Menu button, and
+       tabbing out of the menu closes it so it can't cover the page. */
     menu.addEventListener('click', function (e) {
       if (e.target.closest('a')) setOpen(false);
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key !== 'Escape' || toggle.getAttribute('aria-expanded') !== 'true') return;
+      setOpen(false);
+      toggle.focus();
     });
+    if (nav) {
+      nav.addEventListener('focusout', function (e) {
+        if (e.relatedTarget && !nav.contains(e.relatedTarget)) setOpen(false);
+      });
+    }
     document.addEventListener('click', function (e) {
       if (!nav || nav.contains(e.target)) return;
       setOpen(false);
@@ -117,7 +134,7 @@
         e.preventDefault();
         var offset = nav ? nav.offsetHeight : 0;
         var top = target.getBoundingClientRect().top + window.scrollY - offset - 16;
-        window.scrollTo({ top: top, behavior: reducedMotion ? 'auto' : 'smooth' });
+        window.scrollTo({ top: top, behavior: reducedMotion() ? 'auto' : 'smooth' });
 
         // move keyboard focus with the eye, then tidy up after
         target.setAttribute('tabindex', '-1');
@@ -132,7 +149,144 @@
     });
   });
 
-  /* ---- 6. Contact form: validate, then confirm -------------------
+  /* ---- 6. Dyslexia-friendly font switch -------------------------
+            A button in the bottom-right corner that swaps the body
+            text to OpenDyslexic (the font itself is set up in
+            styles.css). The choice is remembered for the next visit
+            — the small script in each page's <head> reads it back
+            before anything is drawn, so the page never flickers.
+            It is placed straight after "Skip to content", so it is
+            the second thing the Tab key reaches on every page. */
+  safely('font-toggle', function () {
+    var root = document.documentElement;
+    var KEY  = 'dyslexic-font';
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'font-toggle';
+    btn.innerHTML = '<span class="font-toggle__switch" aria-hidden="true"></span>' +
+                    'Dyslexia-friendly font';
+
+    var show = function (on) {
+      root.classList.toggle('dyslexic', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    };
+    show(root.classList.contains('dyslexic'));
+
+    btn.addEventListener('click', function () {
+      var on = !root.classList.contains('dyslexic');
+      show(on);
+      try {
+        if (on) localStorage.setItem(KEY, 'on');
+        else localStorage.removeItem(KEY);
+      } catch (err) { /* private browsing: it still works, just isn't remembered */ }
+    });
+
+    var skip = document.querySelector('.skip');
+    if (skip) skip.parentNode.insertBefore(btn, skip.nextSibling);
+    else document.body.insertBefore(btn, document.body.firstChild);
+
+    /* The button floats over the page, so it could sit on top of
+       whatever the Tab key has just reached (on a phone, the message
+       box is the usual one). If it does, nudge the page up a little. */
+    var nudge = function (el) {
+      if (document.activeElement !== el) return;
+      var a = el.getBoundingClientRect();
+      var c = btn.getBoundingClientRect();
+      var covered = a.bottom > c.top && a.top < c.bottom && a.right > c.left && a.left < c.right;
+      // only for things that are otherwise on screen — never a whole
+      // section (the menu links focus those), and never so far that
+      // the top slides under the header
+      if (!covered || a.bottom > window.innerHeight) return;
+      var head = nav ? nav.getBoundingClientRect().bottom : 0;
+      var by = Math.min(a.bottom - c.top + 16, a.top - head - 16);
+      if (by > 0) window.scrollBy({ top: by, behavior: reducedMotion() ? 'auto' : 'smooth' });
+    };
+    document.addEventListener('focusin', function (e) {
+      var el = e.target;
+      if (el === btn || !el.getBoundingClientRect) return;
+      nudge(el);
+      // look again once the form's error messages have finished
+      // opening, since they push the fields below them down
+      window.setTimeout(function () { nudge(el); }, 350);
+    });
+  });
+
+  /* ---- 7. Pop-up message ("toast") ------------------------------
+            One shared box at the bottom of the screen. role="status"
+            makes screen readers read it out without moving focus. */
+  var toastBox = null, toastTimer = null;
+  var toast = function (message) {
+    if (!toastBox) {
+      toastBox = document.createElement('div');
+      toastBox.className = 'toast';
+      toastBox.setAttribute('role', 'status');
+      toastBox.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toastBox);
+    }
+    window.clearTimeout(toastTimer);
+    /* empty it first, then fill it a moment later, so the same message
+       twice in a row is still read out the second time */
+    toastBox.classList.remove('is-on');
+    toastBox.textContent = '';
+    toastTimer = window.setTimeout(function () {
+      toastBox.textContent = message;
+      toastBox.classList.add('is-on');
+      toastTimer = window.setTimeout(function () {
+        toastBox.classList.remove('is-on');
+        toastTimer = window.setTimeout(function () { toastBox.textContent = ''; }, 250);
+      }, 2600);
+    }, 50);
+  };
+
+  /* ---- 8. One-click copy ----------------------------------------
+            Any button with data-copy="…" copies that text and shows
+            "Copied to clipboard!". The buttons start out hidden in the
+            HTML and only appear here, so without JavaScript nobody
+            sees a button that does nothing — the mailto: link next
+            to it still works either way. */
+  safely('copy', function () {
+    var buttons = document.querySelectorAll('[data-copy]');
+    if (!buttons.length) return;
+
+    /* the old way, for browsers without the Clipboard API, or pages
+       opened straight from a file rather than over https */
+    var copyOldWay = function (text) {
+      var had = document.activeElement;
+      var box = document.createElement('textarea');
+      box.value = text;
+      box.setAttribute('readonly', '');
+      box.style.position = 'fixed';
+      box.style.top = '0';
+      box.style.opacity = '0';
+      document.body.appendChild(box);
+      box.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) {}
+      document.body.removeChild(box);
+      if (had && had.focus) had.focus();   // selecting the text moved focus; hand it back
+      return ok ? Promise.resolve() : Promise.reject(new Error('copy failed'));
+    };
+
+    var copy = function (text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text).catch(function () { return copyOldWay(text); });
+      }
+      return copyOldWay(text);
+    };
+
+    buttons.forEach(function (btn) {
+      btn.hidden = false;
+      btn.addEventListener('click', function () {
+        var text = btn.getAttribute('data-copy');
+        copy(text)
+          .then(function () { toast('Copied to clipboard!'); })
+          .catch(function () { toast('Couldn’t copy — the address is ' + text); });
+      });
+    });
+  });
+
+  /* ---- 9. Contact form: validate, then confirm -------------------
             Only on the home page. Everywhere else this block finds
             no form and stops here, which is fine. */
   var form = document.getElementById('enquiry');
