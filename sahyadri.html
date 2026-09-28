@@ -23,6 +23,12 @@
      dyslexia-friendly font if the visitor chose it last time. */
   (function (d) {
     d.className += ' js';
+    /* clean address bar: /research-paper.html shows as /research-paper */
+    try {
+      var p = location.pathname;
+      if (/^https?:$/.test(location.protocol) && /\.html$/.test(p))
+        history.replaceState(null, '', p.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    } catch (e) {}
     try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
   })(document.documentElement);
 </script>
@@ -36,7 +42,7 @@
      index.html because we are one level down the corridor. -->
 <header class="nav" id="nav">
   <div class="shell nav__inner">
-    <a class="brand" href="index.html" aria-label="Aarush Badruka, home">
+    <a class="brand" href="/" aria-label="Aarush Badruka, home">
       <span class="brand__mark" aria-hidden="true">AB</span>
       <span class="brand__word">Aarush Badruka</span>
     </a>
@@ -48,12 +54,12 @@
     </button>
 
     <nav class="nav__links" id="nav-menu" aria-label="Primary">
-      <a class="nav__link" href="index.html#education" aria-current="true">Education</a>
-      <a class="nav__link" href="index.html#experiences">Experiences</a>
-      <a class="nav__link" href="index.html#interests">Interests</a>
-      <a class="nav__link" href="index.html#achievements">Achievements</a>
-      <a class="nav__link" href="index.html#writing">Op-eds</a>
-      <a class="pill" href="index.html#contact">
+      <a class="nav__link" href="/#education" aria-current="true">Education</a>
+      <a class="nav__link" href="/#experiences">Experiences</a>
+      <a class="nav__link" href="/#interests">Interests</a>
+      <a class="nav__link" href="/#achievements">Achievements</a>
+      <a class="nav__link" href="/#writing">Op-eds</a>
+      <a class="pill" href="/#contact">
         Get in touch
         <span class="pill__arrow" aria-hidden="true">→</span>
       </a>
@@ -61,11 +67,11 @@
   </div>
 </header>
 
-<main id="main">
+<main id="main" tabindex="-1">
 
   <!-- ══ MASTHEAD ════════════════════════════════════════ -->
   <section class="masthead shell">
-    <a class="crumb reveal" href="index.html#education">
+    <a class="crumb reveal" href="/#education">
       <span aria-hidden="true">←</span> Back to the timeline
     </a>
 
@@ -159,10 +165,10 @@
     </div>
 
     <div class="next next--tight reveal" style="--d:140ms">
-      <a class="crumb" href="index.html#education">
+      <a class="crumb" href="/#education">
         <span aria-hidden="true">←</span> Back to the timeline
       </a>
-      <a class="pill pill--sm" href="index.html#contact">
+      <a class="pill pill--sm" href="/#contact">
         Get in touch
         <span class="pill__arrow" aria-hidden="true">→</span>
       </a>

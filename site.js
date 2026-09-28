@@ -108,6 +108,22 @@
     });
   });
 
+  /* ---- 3b. Read more: Escape closes it --------------------------
+     Enter and Space already open and close a "Read more" (it is a
+     plain <details>). Escape, pressed anywhere inside an open one,
+     closes it and puts focus back on its "Read more" line. */
+  safely('read-more-escape', function () {
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' && e.key !== 'Esc') return;
+      var el = document.activeElement;
+      var more = el && el.closest ? el.closest('details[open]') : null;
+      if (!more) return;
+      var summary = more.querySelector('summary');
+      more.open = false;
+      if (summary) summary.focus();
+    });
+  });
+
   /* ---- 4. Photos: show a labelled placeholder if the file is
             missing, so the page never renders a broken image ------ */
   safely('image-slots', function () {
@@ -137,12 +153,15 @@
         window.scrollTo({ top: top, behavior: reducedMotion() ? 'auto' : 'smooth' });
 
         // move keyboard focus with the eye, then tidy up after
-        target.setAttribute('tabindex', '-1');
+        // (<main> keeps its own tabindex, so the skip link always works)
+        if (!target.hasAttribute('tabindex')) {
+          target.setAttribute('tabindex', '-1');
+          target.addEventListener('blur', function once () {
+            target.removeAttribute('tabindex');
+            target.removeEventListener('blur', once);
+          });
+        }
         target.focus({ preventScroll: true });
-        target.addEventListener('blur', function once () {
-          target.removeAttribute('tabindex');
-          target.removeEventListener('blur', once);
-        });
 
         history.replaceState(null, '', id);
       });

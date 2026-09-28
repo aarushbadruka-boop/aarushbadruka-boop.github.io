@@ -23,6 +23,12 @@
      dyslexia-friendly font if the visitor chose it last time. */
   (function (d) {
     d.className += ' js';
+    /* clean address bar: /research-paper.html shows as /research-paper */
+    try {
+      var p = location.pathname;
+      if (/^https?:$/.test(location.protocol) && /\.html$/.test(p))
+        history.replaceState(null, '', p.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    } catch (e) {}
     try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
   })(document.documentElement);
 </script>
@@ -31,13 +37,10 @@
 ═════════════════════════════════════════════════════════════════════
   MY RESEARCH PAPER
 ═══════════════════════════════════════════════════════════════════
-  This page introduces the paper with its abstract. It uses the same
+  This page tells the story of writing the paper. It uses the same
   layout as the op-ed pages, so all the design comes from styles.css.
   The full paper lives at  files/research-paper.pdf  — the button
   below opens it in a new tab.
-  ▸ Note: inside  <div class="prose prose--lead">  the FIRST letter of
-    the FIRST paragraph becomes a big drop cap. Keep headings like
-    "Abstract" outside that div, or they'll get the drop cap instead.
   ▸ If you publish the paper in a journal later, add the journal
     name as another tag in the masthead and a link to it next to
     the "Read the full paper" button.
@@ -50,7 +53,7 @@
 
 <header class="nav" id="nav">
   <div class="shell nav__inner">
-    <a class="brand" href="index.html" aria-label="Aarush Badruka, home">
+    <a class="brand" href="/" aria-label="Aarush Badruka, home">
       <span class="brand__mark" aria-hidden="true">AB</span>
       <span class="brand__word">Aarush Badruka</span>
     </a>
@@ -62,12 +65,12 @@
     </button>
 
     <nav class="nav__links" id="nav-menu" aria-label="Primary">
-      <a class="nav__link" href="index.html#education">Education</a>
-      <a class="nav__link" href="index.html#experiences">Experiences</a>
-      <a class="nav__link" href="index.html#interests">Interests</a>
-      <a class="nav__link" href="index.html#achievements" aria-current="true">Achievements</a>
-      <a class="nav__link" href="index.html#writing">Op-eds</a>
-      <a class="pill" href="index.html#contact">
+      <a class="nav__link" href="/#education">Education</a>
+      <a class="nav__link" href="/#experiences">Experiences</a>
+      <a class="nav__link" href="/#interests">Interests</a>
+      <a class="nav__link" href="/#achievements" aria-current="true">Achievements</a>
+      <a class="nav__link" href="/#writing">Op-eds</a>
+      <a class="pill" href="/#contact">
         Get in touch
         <span class="pill__arrow" aria-hidden="true">→</span>
       </a>
@@ -75,12 +78,12 @@
   </div>
 </header>
 
-<main id="main">
+<main id="main" tabindex="-1">
 
   <article>
     <!-- ══ MASTHEAD ═══════════════════════════════════════════ -->
     <section class="masthead shell">
-      <a class="crumb reveal" href="index.html#achievements">
+      <a class="crumb reveal" href="/#achievements">
         <span aria-hidden="true">←</span> Back to achievements
       </a>
 
@@ -108,51 +111,6 @@
           together with Khyati Verma and Lekha Sahu of the Department of Computer
           Science and Engineering, SSIPMT Raipur.
         </p>
-      </div>
-    </section>
-
-    <!-- ══ ABSTRACT ═══════════════════════════════════════════ -->
-    <section class="band shell" aria-labelledby="abstract-title">
-      <div class="head">
-        <div class="head__title reveal">
-          <span class="tag">From the paper</span>
-          <h2 id="abstract-title">Abstract</h2>
-        </div>
-      </div>
-
-      <div class="prose prose--lead reveal">
-        <p>
-          The increasing demand for air conditioners raises the problem of thermal
-          energy wastage. Domestic air conditioners waste low-grade heat of
-          30–70 °C, which cannot be used efficiently by classical heat-to-power
-          methods. This paper presents an approach to the sustainable conversion
-          of this heat energy into usable electrons, stored in an electric cell.
-        </p>
-
-        <p>
-          Experimental research has been performed on two different materials,
-          stainless-steel and copper plates, with thermal adhesive to optimize
-          physical conduction into a Peltier module. The temperature difference
-          between the two sides of the module creates the need for an optimal
-          cold-side heat sink to maximize domestic on-site power generation.
-        </p>
-
-        <p>
-          The developed algorithms are applied to real-time data, and the outcomes
-          are compared to identify the better efficiency, as proved through data
-          visualization and graphical representation.
-        </p>
-
-        <p>
-          <em>Index terms — Sustainable energy; Heat harvesting; Charged electrons.</em>
-        </p>
-
-        <div class="prose__sign">
-          <span class="tag">Dr. Om Prakash Sahu · UPES Dehradun</span>
-          <span class="tag">Aarush Badruka · Sahyadri School — KFI</span>
-          <span class="tag">Khyati Verma · SSIPMT Raipur</span>
-          <span class="tag">Lekha Sahu · SSIPMT Raipur</span>
-        </div>
       </div>
     </section>
 
@@ -220,7 +178,7 @@
       </div>
 
       <div class="next reveal" style="--d:80ms">
-        <a class="crumb" href="index.html#achievements">
+        <a class="crumb" href="/#achievements">
           <span aria-hidden="true">←</span> Back to achievements
         </a>
         <a class="pill pill--sm" href="files/research-paper.pdf" target="_blank" rel="noopener">

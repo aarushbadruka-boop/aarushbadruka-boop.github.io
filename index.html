@@ -100,6 +100,12 @@
      dyslexia-friendly font if the visitor chose it last time. */
   (function (d) {
     d.className += ' js';
+    /* clean address bar: /research-paper.html shows as /research-paper */
+    try {
+      var p = location.pathname;
+      if (/^https?:$/.test(location.protocol) && /\.html$/.test(p))
+        history.replaceState(null, '', p.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    } catch (e) {}
     try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
   })(document.documentElement);
 </script>
@@ -117,7 +123,7 @@
         sahyadri.html             ← my school
         oxford.html               ← Saïd Business School
         merit-over-fortune.html   ← the first op-ed
-        research-paper.html       ← my research paper (abstract + story)
+        research-paper.html       ← my research paper (the story of writing it)
         styles.css                ← all the design
         site.js                   ← all the behaviour
         images/
@@ -165,8 +171,7 @@
     space in the filename (IOQM Result.pdf). The link is
     case-sensitive on a real server, so it must match exactly.
   ▸ The research paper works the same way: the full PDF lives at
-    files/research-paper.pdf, and research-paper.html (the page
-    with the abstract) links to it.
+    files/research-paper.pdf, and research-paper.html links to it.
 ══════════════════════════════════════════════════════════════════════
 -->
 </head>
@@ -203,7 +208,7 @@
   </div>
 </header>
 
-<main id="main">
+<main id="main" tabindex="-1">
 
   <!-- ══ 2. HERO ═══════════════════════════════════════════ -->
   <section class="hero shell" id="top">
@@ -287,7 +292,7 @@
           <p class="edu__stage">Class 7 to Class 12 · ICSE &amp; ISC <span class="edu__flag">Here now</span></p>
           <p class="edu__detail">ICSE Board Exam, March 2025 · 90% average</p>
           <p class="edu__detail">ISC · Mathematics, Physics, Chemistry, Economics &amp; General English</p>
-          <a class="edu__more" href="sahyadri.html">
+          <a class="edu__more" href="sahyadri">
             Read about my school
             <span aria-hidden="true">→</span>
           </a>
@@ -324,7 +329,7 @@
         <div>
           <h3 class="edu__school">Saïd Business School, University of Oxford</h3>
           <p class="edu__stage">Artificial Intelligence &amp; Machine Learning <span class="edu__flag">Two weeks</span></p>
-          <a class="edu__more" href="oxford.html">
+          <a class="edu__more" href="oxford">
             Read about Oxford
             <span aria-hidden="true">→</span>
           </a>
@@ -362,14 +367,18 @@
 
     <ul class="roster">
       <li class="roster__row reveal">
+        <span class="tag">2026</span>
+        <p class="roster__text">Visited the India Science Festival 2026 at IISER Pune to enjoy my passion for science and technology alongside my peers.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:60ms">
         <span class="tag">October 2025</span>
         <p class="roster__text">Class 11 excursion to Kutch.</p>
       </li>
-      <li class="roster__row reveal" style="--d:60ms">
+      <li class="roster__row reveal" style="--d:120ms">
         <span class="tag">October 2023</span>
         <p class="roster__text">Class 9 excursion to Hemalkasa.</p>
       </li>
-      <li class="roster__row reveal" style="--d:120ms">
+      <li class="roster__row reveal" style="--d:180ms">
         <span class="tag">May 2023</span>
         <p class="roster__text">Himalayan trek to Pandav Pathar.</p>
       </li>
@@ -545,7 +554,7 @@
                 subject and go above and beyond my syllabus, I took the Advanced
                 Placement (AP) Microeconomics exam and got a 5.
               </p>
-              <a class="pill pill--sm" href="merit-over-fortune.html">
+              <a class="pill pill--sm" href="merit-over-fortune">
                 Read my op-ed on merit
                 <span class="pill__arrow" aria-hidden="true">→</span>
               </a>
@@ -796,6 +805,9 @@
           compared to identify the better efficiency, as proved through data
           visualization and graphical representation.
         </p>
+        <p class="feature__text">
+          <strong>My role:</strong> I built and tested the device and collected the experimental data.
+        </p>
         <dl class="feature__spec">
           <dt>Paper</dt><dd>Design and Development of a Device to Harvest AC Compressor Exhaust Heat for Sustainable Electrical Energy Production</dd>
           <dt>Field</dt><dd>Green technology, energy recovery</dd>
@@ -804,7 +816,7 @@
         <!-- Two buttons side by side: the paper's own page (the story of
              writing it) and the full PDF. -->
         <div class="feature__actions">
-          <a class="pill pill--sm" href="research-paper.html">
+          <a class="pill pill--sm" href="research-paper">
             How I wrote the paper
             <span class="pill__arrow" aria-hidden="true">→</span>
           </a>
@@ -853,21 +865,17 @@
       </li>
       <li class="roster__row reveal" style="--d:300ms">
         <span class="tag">Counselling</span>
-        <p class="roster__text">Babysat the naughtiest bunch of eleven-year-olds by visiting their dormitory to run periodic counselling sessions.</p>
+        <p class="roster__text">Ran periodic counselling sessions for the naughtiest bunch of eleven-year-olds, visiting their dormitory to sit with them and discuss their dorm problems.</p>
       </li>
       <li class="roster__row reveal" style="--d:360ms">
         <span class="tag">AV Support Team</span>
         <p class="roster__text">Senior member of the Audio Visual Support Team at Sahyadri School — KFI, fifth year running.</p>
       </li>
       <li class="roster__row reveal" style="--d:420ms">
-        <span class="tag">Science</span>
-        <p class="roster__text">Visited the India Science Festival 2026 at IISER Pune to enjoy my passion for science and technology alongside my peers.</p>
-      </li>
-      <li class="roster__row reveal" style="--d:480ms">
         <span class="tag">Photography</span>
         <p class="roster__text">Captured the perfect moments as Official Student Photographer and Videographer at Sahyadri School — KFI, 2025–2026.</p>
       </li>
-      <li class="roster__row reveal" style="--d:540ms">
+      <li class="roster__row reveal" style="--d:480ms">
         <span class="tag">Theatre</span>
         <div>
           <p class="roster__text">Played Juror 11 and served as script editor for <em>Twelve Angry Jurors</em>, an adaptation of Reginald Rose's <em>Twelve Angry Men</em>.</p>
@@ -904,7 +912,7 @@
 
     <ul class="oped">
       <li class="oped__row reveal">
-        <a class="cover" href="merit-over-fortune.html" aria-hidden="true" tabindex="-1"></a>
+        <a class="cover" href="merit-over-fortune" aria-hidden="true" tabindex="-1"></a>
         <div class="oped__meta">
           <span class="tag">Ninad · School magazine</span>
           <span class="tag">Class 11</span>
@@ -916,7 +924,7 @@
             article on the relevance of Krishnamurti in today's day and age turned
             into a sociological scrutiny of my favourite economic system.
           </p>
-          <a class="pill pill--sm" href="merit-over-fortune.html">
+          <a class="pill pill--sm" href="merit-over-fortune">
             Read the article
             <span class="pill__arrow" aria-hidden="true">→</span>
           </a>

@@ -128,6 +128,9 @@ summary::marker{ content:''; }
    with the keyboard (and in text boxes, which always show it), not
    on ordinary mouse clicks. */
 :focus-visible{ outline:3px solid var(--paper); outline-offset:3px; border-radius:2px; }
+/* Places focus is sent to (the skip link's target, a section reached
+   from the menu) aren't controls, so they don't get the ring. */
+[tabindex="-1"]:focus{ outline:none; }
 
 .shell{ width:100%; max-width:var(--measure); margin-inline:auto; padding-inline:var(--gutter); }
 .band{ padding-block:clamp(4rem,9vw,7rem); }
@@ -152,7 +155,7 @@ summary::marker{ content:''; }
   background:var(--paper); color:var(--ink);
   padding:.75rem 1.25rem; font-family:var(--util); font-size:.75rem;
 }
-.skip:focus{ left:1rem; top:1rem; }
+.skip:focus{ left:1rem; top:1rem; outline:3px solid var(--paper); outline-offset:3px; }
 
 /* ---- shared section header ---- */
 .head{
@@ -238,7 +241,7 @@ summary::marker{ content:''; }
   background:var(--paper); transform:scaleX(0); transform-origin:right;
   transition:transform .45s var(--ease);
 }
-.nav__link:hover{ color:var(--paper); }
+.nav__link:hover, .nav__link:focus-visible{ color:var(--paper); }
 .nav__link:hover::after{ transform:scaleX(1); transform-origin:left; }
 .nav__link[aria-current]{ color:var(--paper); }
 .nav__link[aria-current]::after{ transform:scaleX(1); }
@@ -485,7 +488,8 @@ summary::marker{ content:''; }
   color:var(--paper); border-bottom:1px solid rgba(255,255,255,.35); padding-bottom:.3rem;
   transition:border-color .3s var(--ease);
 }
-.card__more > summary:hover{ border-bottom-color:var(--paper); }
+.card__more > summary:hover,
+.card__more > summary:focus-visible{ border-bottom-color:var(--paper); }
 .card__more__sign{
   display:inline-block; width:.7rem; height:.7rem; position:relative;
   transition:transform .35s var(--ease);
@@ -810,7 +814,12 @@ summary::marker{ content:''; }
     opacity:0; visibility:hidden; transform:translateY(-10px);
     transition:opacity .3s var(--ease), transform .3s var(--ease), visibility .3s;
   }
-  .js .nav__links.is-open{ opacity:1; visibility:visible; transform:none; }
+  /* visibility switches on at once when opening (the fade still
+     plays), so a Tab pressed straight after Enter lands in the menu */
+  .js .nav__links.is-open{
+    opacity:1; visibility:visible; transform:none;
+    transition:opacity .3s var(--ease), transform .3s var(--ease), visibility 0s;
+  }
   .js .nav__links .nav__link{
     font-size:.8125rem; padding-block:1rem;
     border-bottom:1px solid var(--rule);
@@ -997,7 +1006,7 @@ summary::marker{ content:''; }
   font-family:var(--util); font-size:.6875rem; letter-spacing:.12em; text-transform:uppercase;
   transition:border-color .3s var(--ease), background .3s var(--ease);
 }
-.font-toggle:hover{ border-color:var(--paper); background:rgba(13,13,13,.97); }
+.font-toggle:hover, .font-toggle:focus-visible{ border-color:var(--paper); background:rgba(13,13,13,.97); }
 .font-toggle__switch{
   position:relative; flex:none; width:1.9rem; height:1.05rem;
   border:1px solid var(--paper-70); border-radius:999px;
