@@ -100,6 +100,12 @@
      dyslexia-friendly font if the visitor chose it last time. */
   (function (d) {
     d.className += ' js';
+    /* clean address bar: /research-paper.html shows as /research-paper */
+    try {
+      var p = location.pathname;
+      if (/^https?:$/.test(location.protocol) && /\.html$/.test(p))
+        history.replaceState(null, '', p.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    } catch (e) {}
     try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
   })(document.documentElement);
 </script>
@@ -286,7 +292,7 @@
           <p class="edu__stage">Class 7 to Class 12 · ICSE &amp; ISC <span class="edu__flag">Here now</span></p>
           <p class="edu__detail">ICSE Board Exam, March 2025 · 90% average</p>
           <p class="edu__detail">ISC · Mathematics, Physics, Chemistry, Economics &amp; General English</p>
-          <a class="edu__more" href="sahyadri.html">
+          <a class="edu__more" href="sahyadri">
             Read about my school
             <span aria-hidden="true">→</span>
           </a>
@@ -323,7 +329,7 @@
         <div>
           <h3 class="edu__school">Saïd Business School, University of Oxford</h3>
           <p class="edu__stage">Artificial Intelligence &amp; Machine Learning <span class="edu__flag">Two weeks</span></p>
-          <a class="edu__more" href="oxford.html">
+          <a class="edu__more" href="oxford">
             Read about Oxford
             <span aria-hidden="true">→</span>
           </a>
@@ -548,7 +554,7 @@
                 subject and go above and beyond my syllabus, I took the Advanced
                 Placement (AP) Microeconomics exam and got a 5.
               </p>
-              <a class="pill pill--sm" href="merit-over-fortune.html">
+              <a class="pill pill--sm" href="merit-over-fortune">
                 Read my op-ed on merit
                 <span class="pill__arrow" aria-hidden="true">→</span>
               </a>
@@ -810,7 +816,7 @@
         <!-- Two buttons side by side: the paper's own page (the story of
              writing it) and the full PDF. -->
         <div class="feature__actions">
-          <a class="pill pill--sm" href="research-paper.html">
+          <a class="pill pill--sm" href="research-paper">
             How I wrote the paper
             <span class="pill__arrow" aria-hidden="true">→</span>
           </a>
@@ -906,7 +912,7 @@
 
     <ul class="oped">
       <li class="oped__row reveal">
-        <a class="cover" href="merit-over-fortune.html" aria-hidden="true" tabindex="-1"></a>
+        <a class="cover" href="merit-over-fortune" aria-hidden="true" tabindex="-1"></a>
         <div class="oped__meta">
           <span class="tag">Ninad · School magazine</span>
           <span class="tag">Class 11</span>
@@ -918,7 +924,7 @@
             article on the relevance of Krishnamurti in today's day and age turned
             into a sociological scrutiny of my favourite economic system.
           </p>
-          <a class="pill pill--sm" href="merit-over-fortune.html">
+          <a class="pill pill--sm" href="merit-over-fortune">
             Read the article
             <span class="pill__arrow" aria-hidden="true">→</span>
           </a>

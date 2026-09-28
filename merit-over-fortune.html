@@ -23,6 +23,12 @@
      dyslexia-friendly font if the visitor chose it last time. */
   (function (d) {
     d.className += ' js';
+    /* clean address bar: /research-paper.html shows as /research-paper */
+    try {
+      var p = location.pathname;
+      if (/^https?:$/.test(location.protocol) && /\.html$/.test(p))
+        history.replaceState(null, '', p.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    } catch (e) {}
     try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
   })(document.documentElement);
 </script>
@@ -49,7 +55,7 @@
 
 <header class="nav" id="nav">
   <div class="shell nav__inner">
-    <a class="brand" href="index.html" aria-label="Aarush Badruka, home">
+    <a class="brand" href="/" aria-label="Aarush Badruka, home">
       <span class="brand__mark" aria-hidden="true">AB</span>
       <span class="brand__word">Aarush Badruka</span>
     </a>
@@ -61,12 +67,12 @@
     </button>
 
     <nav class="nav__links" id="nav-menu" aria-label="Primary">
-      <a class="nav__link" href="index.html#education">Education</a>
-      <a class="nav__link" href="index.html#experiences">Experiences</a>
-      <a class="nav__link" href="index.html#interests">Interests</a>
-      <a class="nav__link" href="index.html#achievements">Achievements</a>
-      <a class="nav__link" href="index.html#writing" aria-current="true">Op-eds</a>
-      <a class="pill" href="index.html#contact">
+      <a class="nav__link" href="/#education">Education</a>
+      <a class="nav__link" href="/#experiences">Experiences</a>
+      <a class="nav__link" href="/#interests">Interests</a>
+      <a class="nav__link" href="/#achievements">Achievements</a>
+      <a class="nav__link" href="/#writing" aria-current="true">Op-eds</a>
+      <a class="pill" href="/#contact">
         Get in touch
         <span class="pill__arrow" aria-hidden="true">→</span>
       </a>
@@ -79,7 +85,7 @@
   <article>
     <!-- ══ MASTHEAD ══════════════════════════════════════ -->
     <section class="masthead shell">
-      <a class="crumb reveal" href="index.html#writing">
+      <a class="crumb reveal" href="/#writing">
         <span aria-hidden="true">←</span> Back to op-eds
       </a>
 
@@ -165,10 +171,10 @@
       </div>
 
       <div class="next reveal" style="--d:80ms">
-        <a class="crumb" href="index.html#writing">
+        <a class="crumb" href="/#writing">
           <span aria-hidden="true">←</span> Back to op-eds
         </a>
-        <a class="pill pill--sm" href="index.html#contact">
+        <a class="pill pill--sm" href="/#contact">
           Tell me what you think
           <span class="pill__arrow" aria-hidden="true">→</span>
         </a>
