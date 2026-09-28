@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The "AB" mark from the top-left of the site: Bevan letters in a
+       thin-bordered square, white on the near-black page colour. -->
+  <rect width="64" height="64" fill="#0D0D0D"/>
+  <rect x="3" y="3" width="58" height="58" fill="none" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="2.5"/>
+  <g fill="#FFFFFF" transform="translate(11.84 41.37) scale(0.01177 -0.01177)">
+    <path transform="translate(0 0)" d="M14 0V345H159L458 1247H243V1592H1231L1605 345H1750V0H853V345H1018L972 520H560L508 345H673V0ZM634 770H906L779 1256Z"/>
+    <path transform="translate(1812 0)" d="M64 0V345H224V1247H64V1592H927Q1247 1592 1410.5 1482.0Q1574 1372 1574 1154Q1574 1039 1517.5 950.0Q1461 861 1354 814Q1469 768 1535.0 675.5Q1601 583 1601 454Q1601 235 1441.0 117.5Q1281 0 983 0ZM866 1257H732V951H866Q1052 951 1052 1104Q1052 1257 866 1257ZM732 335H887Q1079 335 1079 504Q1079 673 887 673H732Z"/>
+  </g>
+</svg>
