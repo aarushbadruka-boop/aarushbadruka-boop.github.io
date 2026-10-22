@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Aarush Badruka — Student, aspiring entrepreneur and engineer</title>
+<meta name="description" content="Aarush Badruka. Class 12 at Sahyadri School — Krishnamurti Foundation India. Mathematics, physics, economics, cooking, photography, green tech and writing.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Fonts load without blocking the page. If Google Fonts is slow or
+     unreachable, the page still renders immediately in Georgia. -->
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap">
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap">
+</noscript>
+
+<link rel="stylesheet" href="styles.css">
+
+<!-- Extra styles for this page only:
+     1. CLICKABLE CARDS — an invisible link (.cover) is stretched over
+        each op-ed row, so a click anywhere on it opens the page.
+        Buttons sit above it and still work.
+        Interest cards with a "Read more" become clickable too — that
+        part is done by the script at the bottom of this page.
+     2. FULL-SCREEN NAME INTRO — the page opens on a black screen with
+        the letters of my name scattered across it in 3D. The first
+        scroll flies every letter into place, then the page appears.
+        Everything here only switches on when the script at the
+        bottom runs, so if scripting fails the page shows normally. -->
+<style>
+  .feature { position: relative; }
+  .oped__row { position: relative; cursor: pointer; }
+  .cover { position: absolute; inset: 0; z-index: 1; }
+  .feature__body > .pill,
+  .oped__row .pill { position: relative; z-index: 2; }
+  .feature__body > .pill { align-self: flex-start; }
+  .feature__actions {
+    position: relative; z-index: 2;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+    margin-top: 8px;
+  }
+  .card--toggle { cursor: pointer; }
+
+  .name-intro .hero__name { visibility: hidden; }
+  .intro {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #0D0D0D;
+    transition: opacity .45s ease;
+    cursor: pointer;
+  }
+  .intro.is-done { opacity: 0; pointer-events: none; }
+  .intro__cue {
+    position: absolute; left: 50%; bottom: 32px;
+    transform: translateX(-50%);
+    animation: introCue 1.8s ease-in-out infinite;
+    transition: opacity .3s ease;
+  }
+  .intro.is-snapping .intro__cue { opacity: 0; }
+  @keyframes introCue { 50% { transform: translate(-50%, 6px); } }
+
+  .intro__stage {
+    position: fixed; inset: 0; z-index: 10000;
+    perspective: 1400px;
+    pointer-events: none;
+  }
+  .intro__ch {
+    position: absolute;
+    display: block;
+    white-space: pre;
+    transform-origin: 0 0;
+    transform-style: preserve-3d;
+    transition:
+      transform .9s cubic-bezier(.2, 1.25, .35, 1) calc(var(--i) * 30ms),
+      opacity .7s ease calc(var(--i) * 45ms);
+  }
+  .intro__stage.is-loading .intro__ch { opacity: 0; transition: none; }
+  .intro__glyph {
+    display: block;
+    transform-origin: 50% 50%;
+    text-shadow:
+      .01em .01em 0 #48524D, .02em .02em 0 #48524D, .03em .03em 0 #48524D,
+      .04em .04em 0 #3A423E, .05em .05em 0 #2C3230, .06em .06em 0 #1E2638,
+      .08em .1em .12em rgba(0, 0, 0, .6);
+    transition: text-shadow .6s ease;
+  }
+  .intro__stage.is-snapping .intro__glyph { text-shadow: none; }
+</style>
+
+<!-- Flags that JS is alive. The scroll-reveal animation and the phone
+     menu are scoped to .js so that if scripting fails, nothing is
+     ever hidden. -->
+<script>
+  /* "js" switches on the animations; "dyslexic" brings back the
+     dyslexia-friendly font if the visitor chose it last time. */
+  (function (d) {
+    d.className += ' js';
+    /* clean address bar: /research-paper.html shows as /research-paper */
+    try {
+      var p = location.pathname;
+      if (/^https?:$/.test(location.protocol) && /\.html$/.test(p))
+        history.replaceState(null, '', p.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    } catch (e) {}
+    try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
+  })(document.documentElement);
+</script>
+
+<!--
+══════════════════════════════════════════════════════════════════════
+  HOW THIS SITE IS PUT TOGETHER
+══════════════════════════════════════════════════════════════════════
+  The site is now more than one page, so the styling and the
+  scripting live in their own files and every page shares them.
+  Change styles.css once and every page changes together.
+
+      my-site/
+        index.html                ← this page
+        sahyadri.html             ← my school
+        oxford.html               ← Saïd Business School
+        merit-over-fortune.html   ← the first op-ed
+        research-paper.html       ← my research paper (the story of writing it)
+        styles.css                ← all the design
+        site.js                   ← all the behaviour
+        images/
+          aarush.jpg
+          sahyadri.jpg
+        files/
+          ioqm-result.pdf
+          research-paper.pdf      ← the full paper
+        fonts/                    ← OpenDyslexic, for the
+                                    dyslexia-friendly font button
+
+  ▸ The site is hosted on GitHub Pages. EVERYTHING in this folder
+    (including the CNAME file) must sit at the top level of the
+    repository — index.html in the root, not inside a subfolder.
+    To update the site, change the files in the repo and commit;
+    GitHub republishes automatically in a minute or two.
+
+══════════════════════════════════════════════════════════════════════
+  HOW TO ADD IMAGES
+══════════════════════════════════════════════════════════════════════
+  1. Your photo goes in at IMAGE SLOT 1 (hero). Just change the
+     src to match your filename. Until the file exists you'll see
+     a labelled placeholder instead of a broken icon.
+
+  2. Any of the black artwork wells on this page can hold a photo
+     instead of the drawing. Search for  IMAGE SLOT  to find them.
+     Delete the <svg>...</svg> and drop this in its place:
+
+       <img class="plate__img" src="images/whatever.jpg"
+            alt="Describe what is in the photo" loading="lazy">
+
+     The .plate__img class handles the crop and the hover zoom for
+     you, and the photo stays in full colour. Nothing else needs changing.
+
+══════════════════════════════════════════════════════════════════════
+  HOW TO ADD THE IOQM PDF
+══════════════════════════════════════════════════════════════════════
+  1. Make a folder called  files  next to this page.
+  2. Save your IOQM result or certificate as a PDF and name it
+     exactly:   ioqm-result.pdf   (all lowercase, no spaces).
+  3. Put it in  files/  and re-upload the folder. Done — the
+     button in Achievements already points at it and opens it
+     in a new tab.
+  ▸ The one thing that usually goes wrong: a capital letter or a
+    space in the filename (IOQM Result.pdf). The link is
+    case-sensitive on a real server, so it must match exactly.
+  ▸ The research paper works the same way: the full PDF lives at
+    files/research-paper.pdf, and research-paper.html links to it.
+══════════════════════════════════════════════════════════════════════
+-->
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ══ 1. NAVIGATION ══════════════════════════════════════ -->
+<header class="nav" id="nav">
+  <div class="shell nav__inner">
+    <a class="brand" href="#top" aria-label="Aarush Badruka, back to top">
+      <span class="brand__mark" aria-hidden="true">AB</span>
+      <span class="brand__word">Aarush Badruka</span>
+    </a>
+
+    <!-- Shows only on phones, and only when JavaScript is running. -->
+    <button class="nav__toggle" id="nav-toggle" type="button"
+            aria-expanded="false" aria-controls="nav-menu">
+      Menu
+      <span class="nav__burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+
+    <nav class="nav__links" id="nav-menu" aria-label="Primary">
+      <a class="nav__link" href="#education">Education</a>
+      <a class="nav__link" href="#experiences">Experiences</a>
+      <a class="nav__link" href="#interests">Interests</a>
+      <a class="nav__link" href="#achievements">Achievements</a>
+      <a class="nav__link" href="#writing">Op-eds</a>
+      <a class="pill" href="#contact">
+        Get in touch
+        <span class="pill__arrow" aria-hidden="true">→</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <!-- ══ 2. HERO ═══════════════════════════════════════════ -->
+  <section class="hero shell" id="top">
+    <div class="hero__grid">
+      <div class="hero__head reveal" style="--d:80ms">
+        <!-- The full-screen 3D intro reads its letters from this
+             heading, so change the name here as normal text and the
+             intro follows. -->
+        <h1 class="hero__name">Aarush<br>Badruka</h1>
+        <p class="hero__role">Dedicated Student and Aspiring Entrepreneur and Engineer.</p>
+        <p class="hero__bio">
+          I am a student at Sahyadri School — Krishnamurti Foundation India,
+          currently studying in the 12th Grade. I am a confident and adventurous
+          person who loves to turn everyone's frown upside-down!
+        </p>
+        <a class="pill hero__cta" href="#achievements">
+          See what I've been up to
+          <span class="pill__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="hero__rail reveal" style="--d:220ms">
+
+        <!-- ═══ IMAGE SLOT 1 — YOUR PHOTO ═══════════════════════
+             Change the src below to your own file.
+             Best results: portrait crop, 4:5 ratio, 800 × 1000 px
+             or larger, saved as .jpg or .webp.
+             This is the only black-and-white photo on the site —
+             that comes from  plate__img--mono  below. Delete that
+             word to show it in colour.
+        -->
+        <figure class="portrait">
+          <div class="portrait__frame" data-frame>
+            <img class="plate__img plate__img--mono"
+                 src="images/aarush.jpg"
+                 alt="Aarush Badruka"
+                 width="800" height="1000"
+                 fetchpriority="high" decoding="async">
+            <div class="portrait__empty">
+              <span class="tag">Add your photo at</span>
+              <code>images/aarush.jpg</code>
+              <span class="tag">Portrait crop · 800 × 1000 or larger</span>
+            </div>
+            <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </div>
+          <figcaption>
+            <span class="tag">Aarush Badruka</span>
+            <span class="tag">Sahyadri School — KFI</span>
+          </figcaption>
+        </figure>
+
+      </div>
+    </div>
+
+    <div class="hero__manifesto reveal" style="--d:320ms">
+      <p><span>I don't just follow the path—</span>I build it</p>
+    </div>
+  </section>
+
+  <!-- ══ 3. EDUCATION ═════════════════════════════════════ -->
+  <section class="band band--ruled shell" id="education" aria-labelledby="education-title">
+    <div class="head">
+      <div class="head__title reveal">
+        <span class="tag">Education</span>
+        <h2 id="education-title">Sixteen years of school</h2>
+      </div>
+      <div class="head__aside reveal" style="--d:120ms">
+        <span class="tag">Bars are years attended · ticks are short courses</span>
+      </div>
+    </div>
+
+    <div class="edu__list">
+
+      <!-- Newest first. This row opens its own page. The invisible
+           layer on .edu__more makes the whole row clickable, so the
+           link text stays small without being fiddly to hit. -->
+      <div class="edu__row edu__row--now edu__row--link reveal">
+        <span class="edu__years">2021 — 2027</span>
+        <div>
+          <h3 class="edu__school">Sahyadri School — Krishnamurti Foundation India</h3>
+          <p class="edu__stage">Class 7 to Class 12 · ICSE &amp; ISC <span class="edu__flag">Here now</span></p>
+          <p class="edu__detail">ICSE Board Exam, March 2025 · 90% average</p>
+          <p class="edu__detail">ISC · Mathematics, Physics, Chemistry, Economics &amp; General English</p>
+          <a class="edu__more" href="sahyadri">
+            Read about my school
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="edu__track" style="--start:62.5%; --span:37.5%" aria-hidden="true"></div>
+      </div>
+
+      <div class="edu__row reveal" style="--d:80ms">
+        <span class="edu__years">2012 — 2021</span>
+        <div>
+          <h3 class="edu__school">CHIREC International School</h3>
+          <p class="edu__stage">Nursery to Class 6</p>
+        </div>
+        <div class="edu__track" style="--start:6.25%; --span:56.25%" aria-hidden="true"></div>
+      </div>
+
+      <div class="edu__row reveal" style="--d:160ms">
+        <span class="edu__years">2011 — 2012</span>
+        <div>
+          <h3 class="edu__school">Kangaroo Kids Preschool</h3>
+          <p class="edu__stage">Playgroup</p>
+        </div>
+        <div class="edu__track" style="--start:0%; --span:6.25%" aria-hidden="true"></div>
+      </div>
+
+      <!-- The line that separates schools from short courses -->
+      <div class="edu__sep reveal" style="--d:200ms" role="separator" aria-label="Short courses">
+        <span class="tag">Short courses</span>
+      </div>
+
+      <!-- Tick position = (year − 2011) ÷ 16 × 100.  2026 → 93.75% -->
+      <div class="edu__row edu__row--link reveal" style="--d:240ms">
+        <span class="edu__years">Summer 2026</span>
+        <div>
+          <h3 class="edu__school">Saïd Business School, University of Oxford</h3>
+          <p class="edu__stage">Artificial Intelligence &amp; Machine Learning <span class="edu__flag">Two weeks</span></p>
+          <a class="edu__more" href="oxford">
+            Read about Oxford
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="edu__track edu__track--point" style="--at:93.75%" aria-hidden="true"></div>
+      </div>
+
+    </div>
+
+    <div class="edu__axis reveal" aria-hidden="true">
+      <span class="tag">2011</span>
+      <span class="tag">2027</span>
+    </div>
+
+    <figure class="quote reveal" style="--d:120ms">
+      <p>"I have never let my schooling interfere with my education!"</p>
+      <cite class="tag">— Grant Allen</cite>
+    </figure>
+  </section>
+
+  <!-- ══ 3b. EXPERIENCES ═══════════════════════════════════
+       Kept separate from Education on purpose.
+       TO ADD ONE: copy a <li class="roster__row"> block, change the
+       date in the tag and the words in the paragraph. Newest first. -->
+  <section class="band band--ruled shell" id="experiences" aria-labelledby="experiences-title">
+    <div class="head">
+      <div class="head__title reveal">
+        <span class="tag">Experiences</span>
+        <h2 id="experiences-title">Where I've been</h2>
+      </div>
+      <div class="head__aside reveal" style="--d:120ms">
+        <span class="tag">Treks and excursions</span>
+      </div>
+    </div>
+
+    <ul class="roster">
+      <li class="roster__row reveal">
+        <span class="tag">2026</span>
+        <p class="roster__text">Visited the India Science Festival 2026 at IISER Pune to enjoy my passion for science and technology alongside my peers.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:60ms">
+        <span class="tag">October 2025</span>
+        <p class="roster__text">Class 11 excursion to Kutch.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:120ms">
+        <span class="tag">October 2023</span>
+        <p class="roster__text">Class 9 excursion to Hemalkasa.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:180ms">
+        <span class="tag">May 2023</span>
+        <p class="roster__text">Himalayan trek to Pandav Pathar.</p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ══ 4. INTERESTS ══════════════════════════════════════ -->
+  <section class="band band--ruled shell" id="interests" aria-labelledby="interests-title">
+    <div class="head">
+      <div class="head__title reveal">
+        <span class="tag">Passions &amp; interests</span>
+        <h2 id="interests-title">What I'm into</h2>
+      </div>
+      <div class="head__aside reveal" style="--d:120ms">
+        <span class="tag">Three on the syllabus, three off it</span>
+      </div>
+    </div>
+
+    <!-- Five of these six cards open a longer piece of writing.
+         They use plain HTML <details>, so they still open and
+         close if the JavaScript ever fails to load.
+         Clicking anywhere on a card opens its Read more too (see
+         the script at the bottom of this page).
+         To add a read-more panel to another card, copy the whole
+         <details class="card__more"> block into its card body. -->
+    <div class="grid">
+
+      <!-- Maths -->
+      <article class="card reveal">
+        <div class="card__top"><span class="tag">On the syllabus</span></div>
+        <div class="card__plate">
+          <!-- ═══ IMAGE SLOT — swap the drawing for a photo ═══════
+               Delete this whole <svg>...</svg> and paste in:
+               <img class="plate__img" src="images/maths.jpg"
+                    alt="My calculus notebook" loading="lazy">
+          -->
+          <svg viewBox="0 0 400 300" role="img" aria-label="A curve with the area beneath it shaded, next to an integral sign">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g stroke="#FFFFFF" stroke-width="1.5" opacity=".45">
+              <line x1="70" y1="40" x2="70" y2="248"/><line x1="70" y1="248" x2="360" y2="248"/>
+            </g>
+            <g stroke="#FFFFFF" stroke-width="1" opacity=".3">
+              <line x1="120" y1="248" x2="120" y2="196"/><line x1="160" y1="248" x2="160" y2="160"/>
+              <line x1="200" y1="248" x2="200" y2="133"/><line x1="240" y1="248" x2="240" y2="118"/>
+              <line x1="280" y1="248" x2="280" y2="114"/><line x1="320" y1="248" x2="320" y2="121"/>
+            </g>
+            <path d="M96 232 C 150 150, 210 106, 340 118" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <text x="34" y="196" fill="#FFFFFF" font-family="Georgia, serif" font-style="italic" font-size="120">∫</text>
+            <text x="330" y="272" fill="#FFFFFF" opacity=".5" font-family="monospace" font-size="12">dx</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Algebra, Geometry &amp; Calculus</h3>
+          <p class="card__note">Limits, derivatives, and the area hiding under a curve.</p>
+
+          <details class="card__more">
+            <summary>
+              <span class="card__more__sign" aria-hidden="true"></span>
+              Read more
+            </summary>
+            <div class="card__more__body">
+              <p>
+                I love doing mathematics. As an ISC student I rarely come across
+                difficult questions, so I regularly go beyond my syllabus and
+                extend my knowledge using books such as <em>Mathematical Circles</em>
+                and <em>Higher Algebra</em> by Hall and Knight. Using these books I
+                took the IOQM — the Indian Olympiad Qualifier in Mathematics —
+                and scored in the top 10% both nationwide and statewide.
+              </p>
+              <p>
+                I furthered my studies in calculus using <em>Thomas' Calculus</em>.
+                It was a tremendously useful resource and helped me achieve a 4 in
+                Advanced Placement (AP) Calculus BC.
+              </p>
+              <a class="pill pill--sm" href="files/ioqm-result.pdf" target="_blank" rel="noopener">
+                See my IOQM result
+                <span class="pill__arrow" aria-hidden="true">↗</span>
+                <span class="u-hidden">(PDF, opens in a new tab)</span>
+              </a>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <!-- Physics -->
+      <article class="card reveal" style="--d:60ms">
+        <div class="card__top"><span class="tag">On the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A pendulum swinging through a dashed arc with a gravity arrow">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <line x1="120" y1="46" x2="280" y2="46" stroke="#FFFFFF" stroke-width="3" opacity=".8"/>
+            <g stroke="#FFFFFF" stroke-width="1" opacity=".35">
+              <line x1="128" y1="46" x2="118" y2="34"/><line x1="152" y1="46" x2="142" y2="34"/>
+              <line x1="176" y1="46" x2="166" y2="34"/><line x1="200" y1="46" x2="190" y2="34"/>
+              <line x1="224" y1="46" x2="214" y2="34"/><line x1="248" y1="46" x2="238" y2="34"/>
+              <line x1="272" y1="46" x2="262" y2="34"/>
+            </g>
+            <line x1="200" y1="46" x2="200" y2="212" stroke="#FFFFFF" stroke-width="1" opacity=".3" stroke-dasharray="4 6"/>
+            <path d="M126 176 A 150 150 0 0 0 274 176" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".4" stroke-dasharray="5 7"/>
+            <line x1="200" y1="46" x2="272" y2="180" stroke="#FFFFFF" stroke-width="2"/>
+            <circle cx="272" cy="180" r="21" fill="#FFFFFF"/>
+            <g stroke="#FFFFFF" stroke-width="1.6" opacity=".7" fill="none">
+              <line x1="272" y1="212" x2="272" y2="252"/>
+              <path d="M266 244 L272 254 L278 244"/>
+            </g>
+            <text x="286" y="252" fill="#FFFFFF" opacity=".55" font-family="monospace" font-size="12">mg</text>
+            <text x="150" y="90" fill="#FFFFFF" opacity=".55" font-family="monospace" font-size="13">θ</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Physics</h3>
+          <p class="card__note">Forces, motion, and everything Newton started.</p>
+
+          <details class="card__more">
+            <summary>
+              <span class="card__more__sign" aria-hidden="true"></span>
+              Read more
+            </summary>
+            <div class="card__more__body">
+              <p>
+                I am extremely passionate about physics. I love reading articles
+                about scientists pushing the frontiers and boundaries of what is
+                possible. I try to push myself using amazing online resources from
+                Walter Lewin and books like <em>Resnick and Halliday</em> and
+                <em>Kleppner and Kolenkow</em>. Through striving and pushing myself
+                I achieved a 5 in Advanced Placement (AP) Physics 1 and a 4 in
+                AP Physics C: Mechanics.
+              </p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <!-- Economics -->
+      <article class="card reveal" style="--d:120ms">
+        <div class="card__top"><span class="tag">On the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Supply and demand curves crossing at an equilibrium point">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g stroke="#FFFFFF" stroke-width="1.5" opacity=".45">
+              <line x1="70" y1="40" x2="70" y2="248"/><line x1="70" y1="248" x2="360" y2="248"/>
+            </g>
+            <line x1="94" y1="228" x2="330" y2="66" stroke="#FFFFFF" stroke-width="2.5"/>
+            <line x1="94" y1="66"  x2="330" y2="228" stroke="#FFFFFF" stroke-width="2.5" opacity=".65"/>
+            <g stroke="#FFFFFF" stroke-width="1" opacity=".4" stroke-dasharray="4 5">
+              <line x1="70" y1="147" x2="212" y2="147"/><line x1="212" y1="147" x2="212" y2="248"/>
+            </g>
+            <circle cx="212" cy="147" r="7" fill="#FFFFFF"/>
+            <text x="336" y="62"  fill="#FFFFFF" opacity=".7" font-family="monospace" font-size="14">S</text>
+            <text x="336" y="234" fill="#FFFFFF" opacity=".7" font-family="monospace" font-size="14">D</text>
+            <text x="40"  y="152" fill="#FFFFFF" opacity=".5" font-family="monospace" font-size="12">P*</text>
+            <text x="204" y="272" fill="#FFFFFF" opacity=".5" font-family="monospace" font-size="12">Q*</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Microeconomics, Current Affairs &amp; Policy</h3>
+          <p class="card__note">Where the curves cross, and who that leaves better off.</p>
+
+          <details class="card__more">
+            <summary>
+              <span class="card__more__sign" aria-hidden="true"></span>
+              Read more
+            </summary>
+            <div class="card__more__body">
+              <p>
+                I love to argue, and debating comes naturally to me. I love to
+                discuss everything, although I especially love talking about
+                current affairs and policy. To really understand current affairs,
+                economics becomes essential. To improve my understanding of the
+                subject and go above and beyond my syllabus, I took the Advanced
+                Placement (AP) Microeconomics exam and got a 5.
+              </p>
+              <a class="pill pill--sm" href="merit-over-fortune">
+                Read my op-ed on merit
+                <span class="pill__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <!-- Technology -->
+      <article class="card reveal" style="--d:180ms">
+        <div class="card__top"><span class="tag">Off the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A chip at the centre of branching circuit traces">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity=".8">
+              <path d="M40 84 h60 v-34 h84"/>
+              <path d="M40 216 h84 v34 h96"/>
+              <path d="M360 96 h-56 v-46 h-46"/>
+              <path d="M360 214 h-40 v36 h-70"/>
+              <path d="M40 150 h74"/><path d="M360 150 h-74"/>
+            </g>
+            <g fill="#FFFFFF" opacity=".85">
+              <circle cx="184" cy="50" r="4"/><circle cx="220" cy="250" r="4"/>
+              <circle cx="258" cy="50" r="4"/><circle cx="250" cy="250" r="4"/>
+              <circle cx="40" cy="150" r="4"/><circle cx="360" cy="150" r="4"/>
+            </g>
+            <rect x="146" y="112" width="108" height="76" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <g stroke="#FFFFFF" stroke-width="2" opacity=".85">
+              <line x1="146" y1="132" x2="128" y2="132"/><line x1="146" y1="168" x2="128" y2="168"/>
+              <line x1="254" y1="132" x2="272" y2="132"/><line x1="254" y1="168" x2="272" y2="168"/>
+            </g>
+            <text x="200" y="158" text-anchor="middle" fill="#FFFFFF" opacity=".7"
+                  font-family="monospace" font-size="15" letter-spacing="2">&lt;/&gt;</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Technology &amp; Development</h3>
+          <p class="card__note">Taking things apart, then building better ones.</p>
+        </div>
+      </article>
+
+      <!-- Cooking -->
+      <article class="card reveal" style="--d:240ms">
+        <div class="card__top"><span class="tag">Off the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A mixing bowl and whisk with steam rising">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <g fill="none" stroke="#FFFFFF" stroke-width="2.5">
+              <path d="M96 178 h208 a104 104 0 0 1 -208 0 z"/>
+              <line x1="84" y1="178" x2="316" y2="178"/>
+              <line x1="176" y1="252" x2="224" y2="252"/>
+            </g>
+            <g fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".9">
+              <line x1="248" y1="52" x2="216" y2="124"/>
+              <path d="M216 124 q-30 26 -14 52"/>
+              <path d="M216 124 q-8 32 4 52"/>
+              <path d="M216 124 q16 28 20 48"/>
+              <path d="M202 176 q18 14 34 -4"/>
+            </g>
+            <g fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity=".4">
+              <path d="M128 128 q10 -16 0 -32 q-10 -16 0 -32"/>
+              <path d="M158 118 q10 -14 0 -28 q-10 -14 0 -28"/>
+            </g>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Cooking &amp; Baking</h3>
+          <p class="card__note">Chemistry you're allowed to eat afterwards.</p>
+
+          <details class="card__more">
+            <summary>
+              <span class="card__more__sign" aria-hidden="true"></span>
+              Read more
+            </summary>
+            <div class="card__more__body">
+              <p>
+                To me, cooking is pure magic—a delicate balance of simple science
+                and rich flavour. There is something incredible about how the
+                simple caramelisation of raw sugars can unlock such complex, deep
+                tastes. It's equal parts art and chemistry, simple yet beautifully
+                intricate, and I honestly can't imagine life without it.
+              </p>
+              <p class="card__more__label">My personal top hits</p>
+              <ul class="card__more__list">
+                <li>Khow Suey</li>
+                <li>Tandoori Momos</li>
+                <li>Biryani</li>
+                <li>10 different elevated takes on Maggi!</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <!-- Photography -->
+      <article class="card reveal" style="--d:300ms">
+        <div class="card__top"><span class="tag">Off the syllabus</span></div>
+        <div class="card__plate">
+          <svg viewBox="0 0 400 300" role="img" aria-label="A camera aperture with six blades">
+            <rect width="400" height="300" fill="#0D0D0D"/>
+            <circle cx="200" cy="150" r="104" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <polygon points="200,96 247,123 247,177 200,204 153,177 153,123" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+            <g stroke="#FFFFFF" stroke-width="1.6" opacity=".75">
+              <line x1="200" y1="96"  x2="292" y2="96"/>
+              <line x1="247" y1="123" x2="293" y2="203"/>
+              <line x1="247" y1="177" x2="201" y2="257"/>
+              <line x1="200" y1="204" x2="108" y2="204"/>
+              <line x1="153" y1="177" x2="107" y2="97"/>
+              <line x1="153" y1="123" x2="199" y2="43"/>
+            </g>
+            <circle cx="200" cy="150" r="126" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".28"/>
+            <text x="26" y="278" fill="#FFFFFF" opacity=".45" font-family="monospace" font-size="12" letter-spacing="3">f/1.8 · 1/250</text>
+          </svg>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Photography</h3>
+          <p class="card__note">Waiting for the light to do something interesting.</p>
+
+          <details class="card__more">
+            <summary>
+              <span class="card__more__sign" aria-hidden="true"></span>
+              Read more
+            </summary>
+            <div class="card__more__body">
+              <p>
+                I love taking photos. I was the official photographer and
+                videographer for my school for one year, during 2025–2026. I have
+                also shot a corporate film for VIZ PQS Pvt. Ltd., a capacitor
+                manufacturing plant. Some of the photos I have taken are up on the
+                school website — you may check them out!
+              </p>
+              <a class="pill pill--sm" href="https://connect.sahyadrischool.org" target="_blank" rel="noopener">
+                See them on the school site
+                <span class="pill__arrow" aria-hidden="true">↗</span>
+                <span class="u-hidden">(opens in a new tab)</span>
+              </a>
+            </div>
+          </details>
+        </div>
+      </article>
+
+    </div>
+
+    <figure class="quote reveal">
+      <p>"I have no special talents. I am only passionately curious."</p>
+      <cite class="tag">— Albert Einstein</cite>
+    </figure>
+  </section>
+
+  <!-- ══ 5. ACHIEVEMENTS ══════════════════════════════════ -->
+  <section class="band band--ruled shell" id="achievements" aria-labelledby="achievements-title">
+    <div class="head">
+      <div class="head__title reveal">
+        <span class="tag">Achievements</span>
+        <h2 id="achievements-title">Things I've made happen</h2>
+      </div>
+      <div class="head__aside reveal" style="--d:120ms">
+        <span class="tag">Research, student council, and a few surprises</span>
+      </div>
+    </div>
+
+    <article class="feature reveal">
+      <div class="feature__plate">
+        <!-- ═══ IMAGE SLOT — a photo of the rig or your team works well here ═══
+             Replace this <svg>...</svg> with:
+             <img class="plate__img" src="images/research.jpg"
+                  alt="The heat-recovery test rig" loading="lazy">
+        -->
+        <svg viewBox="0 0 520 400" preserveAspectRatio="xMidYMid meet" role="img"
+             aria-label="Schematic: waste heat from an air-conditioning unit passing through a recovery stage and out as electrical power">
+          <rect width="520" height="400" fill="#0D0D0D"/>
+
+          <rect x="46" y="150" width="128" height="112" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+          <circle cx="110" cy="206" r="34" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+          <g fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".85">
+            <path d="M110 206 q22 -22 26 4"/>
+            <path d="M110 206 q-6 30 -26 12"/>
+            <path d="M110 206 q-18 -8 0 -30"/>
+          </g>
+          <circle cx="110" cy="206" r="5" fill="#FFFFFF"/>
+          <g stroke="#FFFFFF" stroke-width="1" opacity=".35">
+            <line x1="58" y1="162" x2="58" y2="250"/><line x1="162" y1="162" x2="162" y2="250"/>
+          </g>
+
+          <g fill="none" stroke="#FFFFFF" stroke-width="1.6" opacity=".55">
+            <path d="M74 138 q10 -18 0 -34 q-10 -18 0 -34"/>
+            <path d="M110 130 q10 -16 0 -30 q-10 -16 0 -30"/>
+            <path d="M146 138 q10 -18 0 -34 q-10 -18 0 -34"/>
+          </g>
+
+          <g stroke="#FFFFFF" stroke-width="2" opacity=".8" fill="none">
+            <line x1="174" y1="206" x2="228" y2="206"/>
+            <path d="M218 199 L232 206 L218 213"/>
+          </g>
+
+          <rect x="236" y="156" width="96" height="100" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+          <g stroke="#FFFFFF" stroke-width="2" opacity=".9">
+            <line x1="256" y1="176" x2="256" y2="236"/><line x1="276" y1="176" x2="276" y2="236"/>
+            <line x1="296" y1="176" x2="296" y2="236"/><line x1="312" y1="176" x2="312" y2="236"/>
+          </g>
+          <line x1="246" y1="206" x2="322" y2="206" stroke="#FFFFFF" stroke-width="1" opacity=".4" stroke-dasharray="4 5"/>
+
+          <g stroke="#FFFFFF" stroke-width="2" opacity=".8" fill="none">
+            <line x1="332" y1="206" x2="386" y2="206"/>
+            <path d="M376 199 L390 206 L376 213"/>
+          </g>
+
+          <circle cx="440" cy="206" r="44" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+          <path d="M446 178 L424 210 L440 210 L434 236 L456 202 L440 202 Z" fill="#FFFFFF"/>
+
+          <g fill="#FFFFFF" opacity=".55" font-family="monospace" font-size="12" letter-spacing="2">
+            <text x="46"  y="300">EXHAUST HEAT</text>
+            <text x="236" y="300">RECOVERY</text>
+            <text x="404" y="300">POWER</text>
+          </g>
+          <line x1="46" y1="318" x2="474" y2="318" stroke="#FFFFFF" stroke-width="1" opacity=".25"/>
+          <text x="46" y="344" fill="#FFFFFF" opacity=".4" font-family="monospace" font-size="11" letter-spacing="3">THERMAL POLLUTION → USEFUL ENERGY</text>
+        </svg>
+      </div>
+
+      <div class="feature__body">
+        <div class="feature__top">
+          <span class="feature__flag">Research</span>
+          <span class="tag">Green technology</span>
+        </div>
+        <h3 class="feature__title">Turning air-conditioner exhaust into power</h3>
+        <!-- ABSTRACT — copied from the paper (files/research-paper.pdf). -->
+        <p class="feature__text">
+          <strong>Abstract.</strong>
+          The increasing demand for air conditioners raises the problem of thermal
+          energy wastage. Domestic air conditioners waste low-grade heat of 30–70 °C,
+          which cannot be used efficiently by classical heat-to-power methods. This
+          paper presents an approach to the sustainable conversion of this heat energy
+          into usable electrons, stored in an electric cell.
+        </p>
+        <p class="feature__text">
+          Experimental research has been performed on two different materials,
+          stainless-steel and copper plates, with thermal adhesive to optimize physical
+          conduction into a Peltier module. The temperature difference between the two
+          sides of the module creates the need for an optimal cold-side heat sink to
+          maximize domestic on-site power generation.
+        </p>
+        <p class="feature__text">
+          The developed algorithms are applied to real-time data, and the outcomes are
+          compared to identify the better efficiency, as proved through data
+          visualization and graphical representation.
+        </p>
+        <p class="feature__text">
+          <strong>My role:</strong> I built and tested the device and collected the experimental data.
+        </p>
+        <dl class="feature__spec">
+          <dt>Paper</dt><dd>Design and Development of a Device to Harvest AC Compressor Exhaust Heat for Sustainable Electrical Energy Production</dd>
+          <dt>Field</dt><dd>Green technology, energy recovery</dd>
+          <dt>With</dt><dd>Dr. Om Prakash Sahu (UPES, Dehradun), Khyati Verma &amp; Lekha Sahu (SSIPMT, Raipur)</dd>
+        </dl>
+        <!-- Two buttons side by side: the paper's own page (the story of
+             writing it) and the full PDF. -->
+        <div class="feature__actions">
+          <a class="pill pill--sm" href="research-paper">
+            How I wrote the paper
+            <span class="pill__arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="pill pill--sm" href="files/research-paper.pdf" target="_blank" rel="noopener">
+            Read the full paper
+            <span class="pill__arrow" aria-hidden="true">↗</span>
+            <span class="u-hidden">(PDF, opens in a new tab)</span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <ul class="roster">
+      <li class="roster__row reveal">
+        <span class="tag">Mathematics</span>
+        <div>
+          <p class="roster__text">
+            Placed in the top 10% nationally and statewide in the IOQM — the Indian
+            Olympiad Qualifier in Mathematics, the entry stage of India's mathematical
+            olympiad programme.
+          </p>
+          <!-- Drop your PDF in at  files/ioqm-result.pdf  and this button works.
+               See the notes at the top of this file. -->
+          <a class="pill pill--sm roster__link" href="files/ioqm-result.pdf" target="_blank" rel="noopener">
+            See the result
+            <span class="pill__arrow" aria-hidden="true">↗</span>
+            <span class="u-hidden">(PDF, opens in a new tab)</span>
+          </a>
+        </div>
+      </li>
+      <li class="roster__row reveal" style="--d:60ms">
+        <span class="tag">Student Council</span>
+        <p class="roster__text">Founded and Anchored the Dormitory Affairs Committee at Sahyadri School — KFI.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:120ms">
+        <span class="tag">Student Council</span>
+        <p class="roster__text">Made the dreaded school mess food a little better, as Anchor of the Dining Hall Committee.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:180ms">
+        <span class="tag">Taekwondo</span>
+        <p class="roster__text">Earned a Black Belt, Poom 1, at age 12.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:240ms">
+        <span class="tag">Basketball</span>
+        <p class="roster__text">Conducted a basketball boot camp at age 16 for Classes 7 and 8.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:300ms">
+        <span class="tag">Counselling</span>
+        <p class="roster__text">Ran periodic counselling sessions for the naughtiest bunch of eleven-year-olds, visiting their dormitory to sit with them and discuss their dorm problems.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:360ms">
+        <span class="tag">AV Support Team</span>
+        <p class="roster__text">Senior member of the Audio Visual Support Team at Sahyadri School — KFI, fifth year running.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:420ms">
+        <span class="tag">Photography</span>
+        <p class="roster__text">Captured the perfect moments as Official Student Photographer and Videographer at Sahyadri School — KFI, 2025–2026.</p>
+      </li>
+      <li class="roster__row reveal" style="--d:480ms">
+        <span class="tag">Theatre</span>
+        <div>
+          <p class="roster__text">Played Juror 11 and served as script editor for <em>Twelve Angry Jurors</em>, an adaptation of Reginald Rose's <em>Twelve Angry Men</em>.</p>
+          <a class="pill pill--sm roster__link" href="https://youtu.be/AY7zaDn7RCo" target="_blank" rel="noopener">
+            Watch the performance
+            <span class="pill__arrow" aria-hidden="true">↗</span>
+            <span class="u-hidden">(opens YouTube in a new tab)</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ══ 6. OP-EDS ════════════════════════════════════════
+       TO ADD A NEW ARTICLE:
+       1. Copy merit-over-fortune.html, rename it after the new
+          article (lowercase, hyphens instead of spaces), and
+          replace the title, the standfirst and the text inside.
+       2. Copy one <li class="oped__row"> block below, paste it
+          above the others, and point BOTH its links (the invisible
+          .cover one and the button) at the new file.
+       That's the whole job — nothing else needs touching.
+  -->
+  <section class="band band--ruled shell" id="writing" aria-labelledby="writing-title">
+    <div class="head">
+      <div class="head__title reveal">
+        <span class="tag">Op-eds</span>
+        <h2 id="writing-title">Things I've written</h2>
+      </div>
+      <div class="head__aside reveal" style="--d:120ms">
+        <span class="tag">Opinion, argument, and the occasional detour</span>
+      </div>
+    </div>
+
+    <ul class="oped">
+      <li class="oped__row reveal">
+        <a class="cover" href="merit-over-fortune" aria-hidden="true" tabindex="-1"></a>
+        <div class="oped__meta">
+          <span class="tag">Ninad · School magazine</span>
+          <span class="tag">Class 11</span>
+        </div>
+        <div>
+          <h3 class="oped__title">Merit over Fortune</h3>
+          <p class="oped__standfirst">
+            Written for Ninad, my school's annual magazine. What started out as an
+            article on the relevance of Krishnamurti in today's day and age turned
+            into a sociological scrutiny of my favourite economic system.
+          </p>
+          <a class="pill pill--sm" href="merit-over-fortune">
+            Read the article
+            <span class="pill__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ══ 7. CONTACT ═══════════════════════════════════════ -->
+  <section class="band band--ruled shell" id="contact" aria-labelledby="contact-title">
+    <div class="contact__grid">
+
+      <div class="contact__intro reveal">
+        <span class="tag">Contact</span>
+        <h2 class="contact__title" id="contact-title">Say hello</h2>
+        <p class="contact__note">
+          Ideas, questions, or something you want to build together —
+          send it over and I'll write back.
+        </p>
+        <!-- The Copy button puts the address on the visitor's clipboard
+             and shows "Copied to clipboard!". It stays hidden until
+             site.js switches it on, so it never appears broken; the
+             mailto: link beside it works either way. -->
+        <div class="contact__where">
+          <span class="tag">Sahyadri School — KFI, Pune, Maharashtra</span>
+          <div class="contact__email">
+            <span class="tag"><a href="mailto:aarushbadruka@gmail.com">aarushbadruka@gmail.com</a></span>
+            <button class="pill pill--sm" type="button" data-copy="aarushbadruka@gmail.com" hidden>
+              Copy email
+              <svg class="copy__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                   stroke-width="1.4" aria-hidden="true" focusable="false">
+                <rect x="5.5" y="5.5" width="8" height="8" rx="1"/>
+                <path d="M10.5 3.5v-1a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form reveal" style="--d:120ms">
+        <!-- ═══ CONTACT FORM (FormSubmit) ═════════════════════════
+             GitHub Pages only serves files — it can't receive form
+             submissions the way Netlify did. So the form sends to
+             FormSubmit (formsubmit.co), a free service that forwards
+             each message straight to my Gmail. No account needed.
+
+             ▸ The FIRST time anyone submits, FormSubmit emails me an
+               "Activate form" link. Click it once — until then no
+               messages come through.
+             ▸ After activating, FormSubmit sends a random code that
+               can replace my email in the action URL below (and in
+               site.js) so my address isn't visible in the source.
+
+             _honey is the spam trap: humans can't see it, bots fill it
+             in, and FormSubmit silently drops anything that has it.
+        -->
+        <form id="enquiry" name="contact" method="POST"
+              action="https://formsubmit.co/aarushbadruka@gmail.com" novalidate>
+          <input type="hidden" name="_subject" value="New message from aarushbadruka.com">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <p hidden><label>Leave this blank: <input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></p>
+          <div class="form__row">
+            <div class="field" data-field>
+              <label for="name">Your name</label>
+              <input type="text" id="name" name="name" placeholder="Who's writing?" autocomplete="name" required>
+              <span class="error">Add a name so I know who to reply to.</span>
+            </div>
+            <div class="field" data-field>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+              <span class="error">Check the email address — it needs an @ and a domain.</span>
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field" data-field>
+              <label for="topic">What's this about</label>
+              <select id="topic" name="topic" required>
+                <option value="">Choose one</option>
+                <option>Working on something together</option>
+                <option>A question about my research</option>
+                <option>An opportunity</option>
+                <option>Just saying hello</option>
+              </select>
+              <span class="error">Pick the closest match.</span>
+            </div>
+            <div class="field" data-field>
+              <label for="org">School or organisation</label>
+              <input type="text" id="org" name="org" placeholder="Optional" autocomplete="organization">
+            </div>
+          </div>
+
+          <div class="field" data-field>
+            <label for="message">Your message</label>
+            <textarea id="message" name="message" rows="4" placeholder="Tell me what's on your mind." required></textarea>
+            <span class="error">A sentence or two is plenty to start.</span>
+          </div>
+
+          <div class="form__foot">
+            <button type="submit" class="pill">
+              Send message
+              <span class="pill__arrow" aria-hidden="true">→</span>
+            </button>
+            <span class="tag">I usually reply within a few days</span>
+          </div>
+
+          <p class="form__error" role="alert" hidden>
+            That didn't send. Please email me directly at
+            <a href="mailto:aarushbadruka@gmail.com">aarushbadruka@gmail.com</a>.
+          </p>
+        </form>
+
+        <div class="sent" id="sent" hidden role="status">
+          <h3>Message sent</h3>
+          <p>Thanks for writing. I'll get back to you as soon as I'm out of class — usually within a few days.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="shell foot__inner">
+    <span class="tag">© 2026</span>
+  </div>
+</footer>
+
+<!-- ══ PAGE EXTRAS ═══════════════════════════════════════════
+     1. Clicking anywhere on an interest card opens its Read more.
+     2. The full-screen 3D name intro. It reads its letters from the
+        hero heading, so if you change your name there, the intro
+        follows. Skipped for visitors who arrive part-way down the
+        page or who have "reduce motion" switched on. -->
+<script>
+(function () {
+  /* 1. INTEREST CARDS — click anywhere on a card to open/close its
+        "Read more". Clicks on links, on the Read more line itself,
+        or inside the opened text are left alone. */
+  try {
+    document.querySelectorAll('.grid .card').forEach(function (card) {
+      var summary = card.querySelector('details.card__more > summary');
+      if (!summary) return;
+      card.classList.add('card--toggle');
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a, summary, .card__more__body')) return;
+        summary.click();
+      });
+    });
+  } catch (err) {}
+
+  /* 2. FULL-SCREEN 3D NAME INTRO
+        The page opens on a black screen with the letters of my name
+        scattered across it in 3D, drifting. The first scroll (or
+        swipe, arrow key, click) sends every letter flying into its
+        real spot in the hero heading. Only once they've all landed
+        does the black screen fade and the rest of the page appear.
+        Letters are drawn big and shrunk on landing, so they stay
+        sharp. Skipped if the visitor arrives part-way down the page
+        (e.g. from a #link) or has "reduce motion" switched on. */
+  var root = document.documentElement;
+  var real = document.querySelector('.hero__name');
+  var motion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!real || !motion || motion.matches || location.hash || window.scrollY > 10) return;
+
+  var intro, stage, items = [], S = 1;
+  var snapping = false, finished = false, k = 1, touchY = null;
+  var range = document.createRange();
+  var rnd = function (a, b) { return a + Math.random() * (b - a); };
+
+  function cleanup() {
+    finished = true;
+    root.classList.remove('name-intro');
+    if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
+    if (stage && stage.parentNode) stage.parentNode.removeChild(stage);
+    window.removeEventListener('wheel', onWheel);
+    window.removeEventListener('touchstart', onTouchStart);
+    window.removeEventListener('touchmove', onTouchMove);
+    window.removeEventListener('keydown', onKey);
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', layout);
+    if (motion.removeEventListener) motion.removeEventListener('change', onMotionPref);
+  }
+
+  /* Find every letter of the heading (without changing it). */
+  function collect() {
+    var walker = document.createTreeWalker(real, NodeFilter.SHOW_TEXT, null);
+    var node;
+    while ((node = walker.nextNode())) {
+      for (var j = 0; j < node.textContent.length; j++) {
+        if (/\s/.test(node.textContent[j])) continue;
+        items.push({
+          node: node, j: j, ch: node.textContent[j],
+          rx: rnd(-65, 65), ry: rnd(-75, 75), rz: rnd(-30, 30),
+          z: rnd(-350, 250), sc: rnd(0.5, 0.95),
+          v: Math.random(), jit: rnd(-0.3, 0.3), ph: rnd(0, 6.28)
+        });
+      }
+    }
+  }
+
+  /* Where each letter will land: measured from the real heading. */
+  function measure() {
+    items.forEach(function (it) {
+      range.setStart(it.node, it.j);
+      range.setEnd(it.node, it.j + 1);
+      var r = range.getBoundingClientRect();
+      it.x = r.left; it.y = r.top; it.w = r.width; it.h = r.height;
+    });
+    var h = items[0].h || 1;
+    S = Math.max(1, Math.min(4, window.innerHeight * 0.28 / h));
+  }
+
+  /* Where each letter floats during the intro: spread across the
+     whole screen, roughly left to right in name order. */
+  function scatter(it, i) {
+    var vw = window.innerWidth, vh = window.innerHeight, n = items.length;
+    var bw = it.w * S * it.sc, bh = it.h * S * it.sc;
+    var u = Math.min(1, Math.max(0, (i + 0.5 + it.jit) / n));
+    var fx = 0.03 * vw + u * Math.max(0, vw * 0.94 - bw);
+    var fy = 0.08 * vh + it.v * Math.max(0, vh * 0.8 - bh);
+    return 'translate3d(' + (fx - it.x).toFixed(1) + 'px,' + (fy - it.y).toFixed(1) + 'px,' +
+           it.z.toFixed(1) + 'px) rotateX(' + it.rx.toFixed(1) + 'deg) rotateY(' +
+           it.ry.toFixed(1) + 'deg) rotateZ(' + it.rz.toFixed(1) + 'deg) scale(' +
+           it.sc.toFixed(3) + ')';
+  }
+
+  function layout() {
+    if (finished) return;
+    measure();
+    var cs = getComputedStyle(real);
+    var fs = parseFloat(cs.fontSize) * S;
+    ['fontFamily', 'fontWeight', 'fontStyle', 'textTransform', 'color'].forEach(function (p) {
+      stage.style[p] = cs[p];
+    });
+    items.forEach(function (it, i) {
+      var s = it.el.style;
+      s.left = it.x + 'px';
+      s.top = it.y + 'px';
+      s.fontSize = fs + 'px';
+      s.lineHeight = (it.h * S) + 'px';
+      s.transform = snapping ? 'scale(' + (1 / S) + ')' : scatter(it, i);
+    });
+  }
+
+  /* Gentle bobbing while they float; eases to zero on landing. */
+  function tick(t) {
+    if (finished) return;
+    k += ((snapping ? 0 : 1) - k) * 0.1;
+    items.forEach(function (it) {
+      it.glyph.style.transform =
+        'translate3d(0,' + (Math.sin(t / 900 + it.ph) * 12 * k).toFixed(2) + 'px,0) ' +
+        'rotate(' + (Math.sin(t / 1300 + it.ph) * 7 * k).toFixed(2) + 'deg)';
+    });
+    // Resolve the decorative intro automatically; never block access to content.
+    window.setTimeout(snap, 900);
+    window.setTimeout(cleanup, 3500);
+    requestAnimationFrame(tick);
+  }
+
+  function snap() {
+    if (snapping || finished) return;
+    snapping = true;
+    stage.classList.add('is-snapping');
+    intro.classList.add('is-snapping');
+    layout();
+    var landed = 900 + items.length * 30;
+    setTimeout(function () { intro.classList.add('is-done'); }, landed);
+    setTimeout(cleanup, landed + 450);
+  }
+
+  /* Hold the page still until the letters have landed. */
+  function onWheel(e) { e.preventDefault(); if (e.deltaY > 0) snap(); }
+  function onTouchStart(e) { touchY = e.touches[0].clientY; }
+  function onTouchMove(e) {
+    e.preventDefault();
+    if (touchY !== null && touchY - e.touches[0].clientY > 8) snap();
+  }
+  function onKey(e) {
+    /* Tab or Escape: the visitor is using the keyboard to get around,
+       so drop the intro at once rather than hide their focus behind
+       it while the letters land. Tab still moves on as normal. */
+    if (e.key === 'Tab' || e.key === 'Escape') { cleanup(); return; }
+    if (['ArrowDown', 'PageDown', ' ', 'Spacebar', 'End', 'Enter'].indexOf(e.key) !== -1) {
+      e.preventDefault();
+      snap();
+    }
+  }
+  /* "Reduce motion" switched on while the letters are floating. */
+  function onMotionPref(e) { if (e.matches) cleanup(); }
+  function onScroll() { if (snapping) layout(); else snap(); }
+
+  try {
+    collect();
+    if (!items.length) return;
+    root.classList.add('name-intro');
+
+    intro = document.createElement('div');
+    intro.className = 'intro';
+    intro.setAttribute('aria-hidden', 'true');
+    intro.innerHTML = '<span class="tag intro__cue">Scroll &darr;</span>';
+
+    stage = document.createElement('div');
+    stage.className = 'intro__stage is-loading';
+    stage.setAttribute('aria-hidden', 'true');
+    items.forEach(function (it, i) {
+      it.el = document.createElement('span');
+      it.el.className = 'intro__ch';
+      it.el.style.setProperty('--i', i);
+      it.glyph = document.createElement('span');
+      it.glyph.className = 'intro__glyph';
+      it.glyph.textContent = it.ch;
+      it.el.appendChild(it.glyph);
+      stage.appendChild(it.el);
+    });
+
+    document.body.appendChild(intro);
+    document.body.appendChild(stage);
+    layout();
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { stage.classList.remove('is-loading'); });
+    });
+
+    window.addEventListener('resize', layout);
+    if (document.fonts) {
+      if (document.fonts.ready) document.fonts.ready.then(layout);
+      if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', layout);
+    }
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (motion.addEventListener) motion.addEventListener('change', onMotionPref);
+    intro.addEventListener('click', snap);
+
+    // Resolve the decorative intro automatically; never block access to content.
+    window.setTimeout(snap, 900);
+    window.setTimeout(cleanup, 3500);
+    requestAnimationFrame(tick);
+  } catch (err) {
+    cleanup();
+  }
+})();
+</script>
+
+<script src="site.js" defer></script>
+</body>
+</html>

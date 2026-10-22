@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>University of Oxford — Saïd Business School · Aarush Badruka</title>
+<meta name="description" content="Two weeks at Saïd Business School, University of Oxford: an Artificial Intelligence and Machine Learning summer programme, Hugging Face models, the AI stack, punting and my first Macbeth.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap">
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap">
+</noscript>
+
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* "js" switches on the animations; "dyslexic" brings back the
+     dyslexia-friendly font if the visitor chose it last time. */
+  (function (d) {
+    d.className += ' js';
+    /* clean address bar: /research-paper.html shows as /research-paper */
+    try {
+      var p = location.pathname;
+      if (/^https?:$/.test(location.protocol) && /\.html$/.test(p))
+        history.replaceState(null, '', p.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    } catch (e) {}
+    try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
+  })(document.documentElement);
+</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ══ NAVIGATION ═════════════════════════════════════════
+     Same bar as the home page. The links point back at
+     index.html because we are one level down the corridor. -->
+<header class="nav" id="nav">
+  <div class="shell nav__inner">
+    <a class="brand" href="/" aria-label="Aarush Badruka, home">
+      <span class="brand__mark" aria-hidden="true">AB</span>
+      <span class="brand__word">Aarush Badruka</span>
+    </a>
+
+    <button class="nav__toggle" id="nav-toggle" type="button"
+            aria-expanded="false" aria-controls="nav-menu">
+      Menu
+      <span class="nav__burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+
+    <nav class="nav__links" id="nav-menu" aria-label="Primary">
+      <a class="nav__link" href="/#education" aria-current="true">Education</a>
+      <a class="nav__link" href="/#experiences">Experiences</a>
+      <a class="nav__link" href="/#interests">Interests</a>
+      <a class="nav__link" href="/#achievements">Achievements</a>
+      <a class="nav__link" href="/#writing">Op-eds</a>
+      <a class="pill" href="/#contact">
+        Get in touch
+        <span class="pill__arrow" aria-hidden="true">→</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <!-- ══ MASTHEAD ════════════════════════════════════════ -->
+  <section class="masthead shell">
+    <a class="crumb reveal" href="/#education">
+      <span aria-hidden="true">←</span> Back to the timeline
+    </a>
+
+    <h1 class="reveal" style="--d:60ms">University<br>of Oxford</h1>
+
+    <p class="masthead__standfirst reveal" style="--d:140ms">
+      Saïd Business School — two weeks of Artificial Intelligence and Machine Learning.
+    </p>
+
+    <div class="masthead__meta reveal" style="--d:200ms">
+      <span class="tag">Summer 2026</span>
+      <span class="tag">Two weeks</span>
+      <span class="tag">Oxford, United Kingdom</span>
+    </div>
+  </section>
+
+  <!-- ══ QUOTE + PICTURE ═════════════════════════════════ -->
+  <section class="band shell">
+    <div class="split">
+
+      <figure class="split__quote reveal">
+        <p>"Impact from within"</p>
+        <cite class="tag">— Saïd Business School</cite>
+      </figure>
+
+      <!-- ═══ IMAGE SLOT — THE OXFORD SUMMER SCHOOL PHOTO ═══════
+           Save it as  images/oxford.jpg  and it appears here in
+           full colour. Set up for the Fisher Studios photo:
+           landscape, 3:2 (4868 × 3245). Resize it to about
+           1800 px wide before uploading so the page loads fast. -->
+      <figure class="split__figure reveal" style="--d:140ms">
+        <div class="portrait__frame portrait__frame--wide" style="--ratio:3/2" data-frame>
+          <img class="plate__img"
+               src="images/oxford.jpg"
+               alt="At Saïd Business School, University of Oxford"
+               width="4868" height="3245"
+               decoding="async">
+          <div class="portrait__empty">
+            <span class="tag">Add a photo from Oxford at</span>
+            <code>images/oxford.jpg</code>
+            <span class="tag">Landscape · 3:2</span>
+          </div>
+          <span class="card__reg" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <figcaption>
+          <span class="tag">Saïd Business School · Summer 2026</span>
+          <span class="tag">Photo: Fisher Studios</span>
+        </figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ══ THE WRITE-UP ════════════════════════════════════ -->
+  <section class="band band--ruled shell">
+    <div class="prose prose--lead reveal">
+      <p>
+        Attending the AI and ML Summer Programme at the University of Oxford has
+        been a privilege. I got to scratch the tip of the iceberg and get a taste
+        of the rigour that comes from being a university student.
+      </p>
+      <p>
+        In this programme, I explored Artificial Intelligence in a holistic
+        manner. We discussed two major aspects: the technical one, where we
+        downloaded models from Hugging Face and played with parameters to
+        understand neural networks, and the financial one, where we learned about
+        the AI stack and investing in the AI boom and bubble. I really enjoyed my
+        time with our tutors, who helped push me above and beyond the prescribed
+        curriculum. I tried adjusting many hyperparameters, like temperature and
+        max tokens, trying to develop a deeper understanding.
+      </p>
+      <p>
+        I really enjoyed my time at the University. Travelling alone to another
+        country and discovering new places has all been an amazing experience. I
+        was most overjoyed when I learned about the rich history of the place and
+        the university, and tried new things like punting and watching my first
+        play, <em>Macbeth</em>!
+      </p>
+      <p>
+        All these experiences really helped develop and foster my curiosity
+        towards the subject and the field.
+      </p>
+    </div>
+
+    <div class="next reveal" style="--d:80ms">
+      <a class="crumb" href="/#education">
+        <span aria-hidden="true">←</span> Back to the timeline
+      </a>
+      <a class="pill pill--sm" href="/#contact">
+        Get in touch
+        <span class="pill__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="shell foot__inner">
+    <span class="tag">Aarush Badruka</span>
+    <span class="tag">Sahyadri School — KFI · Class of 2027</span>
+    <span class="tag">© 2026</span>
+  </div>
+</footer>
+
+<script src="site.js" defer></script>
+</body>
+</html>

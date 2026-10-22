@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Harvesting AC Compressor Exhaust Heat — Research by Aarush Badruka</title>
+<meta name="description" content="Design and Development of a Device to Harvest AC Compressor Exhaust Heat for Sustainable Electrical Energy Production — a green-technology research paper by Dr. Om Prakash Sahu, Aarush Badruka, Khyati Verma and Lekha Sahu.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap">
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bevan&family=Instrument+Serif:ital@0;1&display=swap">
+</noscript>
+
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* "js" switches on the animations; "dyslexic" brings back the
+     dyslexia-friendly font if the visitor chose it last time. */
+  (function (d) {
+    d.className += ' js';
+    /* clean address bar: /research-paper.html shows as /research-paper */
+    try {
+      var p = location.pathname;
+      if (/^https?:$/.test(location.protocol) && /\.html$/.test(p))
+        history.replaceState(null, '', p.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    } catch (e) {}
+    try { if (localStorage.getItem('dyslexic-font') === 'on') d.className += ' dyslexic'; } catch (e) {}
+  })(document.documentElement);
+</script>
+
+<!--
+═════════════════════════════════════════════════════════════════════
+  MY RESEARCH PAPER
+═══════════════════════════════════════════════════════════════════
+  This page tells the story of writing the paper. It uses the same
+  layout as the op-ed pages, so all the design comes from styles.css.
+  The full paper lives at  files/research-paper.pdf  — the button
+  below opens it in a new tab.
+  ▸ If you publish the paper in a journal later, add the journal
+    name as another tag in the masthead and a link to it next to
+    the "Read the full paper" button.
+══════════════════════════════════════════════════════════════════════
+-->
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="shell nav__inner">
+    <a class="brand" href="/" aria-label="Aarush Badruka, home">
+      <span class="brand__mark" aria-hidden="true">AB</span>
+      <span class="brand__word">Aarush Badruka</span>
+    </a>
+
+    <button class="nav__toggle" id="nav-toggle" type="button"
+            aria-expanded="false" aria-controls="nav-menu">
+      Menu
+      <span class="nav__burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+
+    <nav class="nav__links" id="nav-menu" aria-label="Primary">
+      <a class="nav__link" href="/#education">Education</a>
+      <a class="nav__link" href="/#experiences">Experiences</a>
+      <a class="nav__link" href="/#interests">Interests</a>
+      <a class="nav__link" href="/#achievements" aria-current="true">Achievements</a>
+      <a class="nav__link" href="/#writing">Op-eds</a>
+      <a class="pill" href="/#contact">
+        Get in touch
+        <span class="pill__arrow" aria-hidden="true">→</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <article>
+    <!-- ══ MASTHEAD ═══════════════════════════════════════════ -->
+    <section class="masthead shell">
+      <a class="crumb reveal" href="/#achievements">
+        <span aria-hidden="true">←</span> Back to achievements
+      </a>
+
+      <h1 class="reveal" style="--d:60ms">Turning AC exhaust<br>into power</h1>
+
+      <p class="masthead__standfirst reveal" style="--d:140ms">
+        Design and Development of a Device to Harvest AC Compressor Exhaust Heat
+        for Sustainable Electrical Energy Production.
+      </p>
+
+      <div class="masthead__meta reveal" style="--d:200ms">
+        <span class="tag">Research paper</span>
+        <span class="tag">Green technology</span>
+        <span class="tag">Thermoelectric energy harvesting</span>
+      </div>
+    </section>
+
+    <!-- ══ ABOUT ══════════════════════════════════════════════ -->
+    <section class="shell">
+      <div class="aside reveal">
+        <h2>About the paper</h2>
+        <p>
+          Written with Dr. Om Prakash Sahu, Associate Professor at the School of
+          Computer Science, University of Petroleum and Energy Studies, Dehradun,
+          together with Khyati Verma and Lekha Sahu of the Department of Computer
+          Science and Engineering, SSIPMT Raipur.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ THE STORY BEHIND IT ═══════════════════════════════════
+         What writing the paper was actually like (from my AIW doc). -->
+    <section class="band shell" aria-labelledby="story-title">
+      <div class="head">
+        <div class="head__title reveal">
+          <span class="tag">Behind the paper</span>
+          <h2 id="story-title">How I wrote it</h2>
+        </div>
+      </div>
+
+      <div class="prose reveal">
+        <p>
+          One and a half percent. That is the number I brought to Dr. Sahu after
+          four months of work. I expected him to end the project.
+        </p>
+        <p>
+          At eight, I filled a balloon with hydrogen using aluminium foil and drain
+          cleaner, and watched it burn. That was my first real experiment with
+          materials and reactions, a thread I picked up again years later, testing
+          metals for a thermoelectric device.
+        </p>
+        <p>
+          The idea was simple to say out loud: air conditioners and refrigerators
+          throw away heat, 40 °C to 70 °C of it, through the compressor exhaust, and
+          nobody uses it. Under Dr. Om Sahu, I built a device to catch that heat and
+          turn it into electricity, using Peltier modules and the Seebeck effect.
+          Simple to say. Not simple to build.
+        </p>
+        <p>
+          Nearly four hundred hours went into it, spread over four months. I tested
+          copper against stainless steel for the catchment plate; stainless steel
+          won on performance by a whisker, and by a mile on cost. This is a win-win
+          situation, I remember writing, because a cheaper metal winning was not
+          what I expected. I wired six Peltier modules in series, then in parallel,
+          even though the theory said the two should perform the same. Series won,
+          and I still do not fully understand why! I only trust what the graphs
+          showed me.
+        </p>
+        <p>
+          Then came the number that worried me. Carnot's theorem sets a ceiling on
+          how efficient a system like this can ever be, based on the temperature
+          difference available. Mine was small: a compressor at 40 °C to 70 °C, a
+          room at 25 °C to 35 °C. That ceiling sat around 5%. My device reached 1 to
+          2%. To charge one AA battery would take it 24 to 30 hours.
+        </p>
+        <p>
+          When I brought this to Dr. Sahu, expecting a change or worse, termination
+          of the project, he changed my perspective. There are millions of air
+          conditioners running right now, in every city, wasting heat the same way
+          mine was. Even 1% efficiency, multiplied across all of them, is not
+          nothing: it is scalable impact. That reframed how I judge engineering. Not
+          by how clean a number looks on its own, but by what it could do at scale.
+        </p>
+        <p>
+          The paper itself went through as many versions as the device did.
+        </p>
+        <p>
+          In October 2026, the paper will be presented at the IEEE TEMSET symposium.
+          I still think about that balloon, at eight, and how it is really the same
+          question I am still asking: what can I make from heat nobody wants.
+        </p>
+      </div>
+
+      <div class="next reveal" style="--d:80ms">
+        <a class="crumb" href="/#achievements">
+          <span aria-hidden="true">←</span> Back to achievements
+        </a>
+        <a class="pill pill--sm" href="files/research-paper.pdf" target="_blank" rel="noopener">
+          Read the full paper
+          <span class="pill__arrow" aria-hidden="true">↗</span>
+          <span class="u-hidden">(PDF, opens in a new tab)</span>
+        </a>
+      </div>
+    </section>
+  </article>
+
+</main>
+
+<footer class="foot">
+  <div class="shell foot__inner">
+    <span class="tag">Aarush Badruka</span>
+    <span class="tag">Sahyadri School — KFI · Class of 2027</span>
+    <span class="tag">© 2026</span>
+  </div>
+</footer>
+
+<script src="site.js" defer></script>
+</body>
+</html>
